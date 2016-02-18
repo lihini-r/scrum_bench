@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form id="create" method="POST" action="logic/test.php">
+    <input type="text" name="url">
+    <input type="submit" value="Create"/>
+    <input type="submit" value="Create"/>
+    <div id="created">kjjsgdhasdkjag</div>
+</form>
+<input type="button" value="Create" onclick="testRegex()"/>
+<script src="../bootstrap/js/content.load.js"></script>
+<script>
+    function testRegex() {
+        var s = "hi<style>font:5;</style>here";
+        var regex =/<style>.*<\/style>/i;
+        var new_str = s.replace(regex, "all");
+        window.alert(new_str);
+    }
+
+</script>
+
+</body>
+</html>
