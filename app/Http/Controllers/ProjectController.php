@@ -4,10 +4,15 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Project;
 use App\Team;
+use App\User;
 use Session;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Contracts\Auth\Guard;
 
 
 use Illuminate\Http\Request;
+use App\Account;
 
 class ProjectController extends Controller {
 
@@ -19,10 +24,28 @@ class ProjectController extends Controller {
 	public function index()
 	{
 	//	$project = Project::all();
+		if(\Auth::check() && \Auth::user()->designation === 'Account Head') {
 
-		$project=Project::where('Hide','off')->get();
+			$user = \Auth::user()->name;
 
-		return view('projects.index', array('projects' => $project));
+			$account = Account::where('acc_head',  $user)->get();
+
+
+			//$account_name=Account::where('acc_head',  $user)->get('acc_name');
+
+		//	$project = Project::where('Hide', 'off')->get();
+
+			foreach($account as $acc){
+
+				$aname=$acc->acc_name;
+
+			$project = Project::where('Hide', 'off')->where('acc_name', $aname)->get();
+
+			}
+		}
+
+
+		return view('projects.index', array('projects' => $project,'account' => $account));
 	}
 
 
@@ -36,7 +59,17 @@ class ProjectController extends Controller {
 	 */
 	public function create()
 	{
-		return view('projects.create');
+
+		if(\Auth::check() && \Auth::user()->designation === 'Account Head') {
+
+			$user = \Auth::user()->name;
+
+			$account = Account::where('acc_head', $user)->get();
+
+		}
+
+
+		return view('projects.create',array('account' => $account));
 	}
 
 	/**
@@ -50,8 +83,7 @@ class ProjectController extends Controller {
 			'ProjectName' => 'required',
 			'Description' => 'required',
 			'State' => 'required',
-			'add_date' => 'required|date|date_format:Y-m-d|',
-			'due_date' => 'required|date|date_format:Y-m-d|after:add_date'
+			'duration' => 'required|integer'
 		]);
 
 		$input = $request->all();
@@ -136,8 +168,7 @@ class ProjectController extends Controller {
 			'ProjectName' => 'required',
 			'Description' => 'required',
 			'State'=>'required',
-			'add_date' => 'required|date|date_format:Y-m-d',
-			'due_date' => 'required|date|date_format:Y-m-d|after:add_date'
+			'duration' => 'required|integer'
 		]);
 
 		$input = $request->all();
@@ -149,31 +180,6 @@ class ProjectController extends Controller {
 		return redirect()->back();
 	}
 
-	/*
-
-	public function updatehide($ProjectID, Request $request)
-	{
-		$project = Project::find($ProjectID);
-
-		$this->validate($request, [
-			'ProjectName' => 'required',
-			'Description' => 'required',
-			'State'=>'required',
-			'Hide'=>'required',
-			'add_date' => 'required|date|date_format:Y-m-d',
-			'due_date' => 'required|date|date_format:Y-m-d|after:add_date'
-		]);
-
-		$input = $request->all();
-
-		$project->fill($input)->save();
-
-		Session::flash('flash_message', 'Project successfully Hiden!!!!!!!');
-
-		return redirect()->back();
-	}
-
-*/
 
 
 

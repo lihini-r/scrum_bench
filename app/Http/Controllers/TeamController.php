@@ -5,128 +5,159 @@ use App\Team;
 use App\User;
 use Session;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB as DB;
+
 
 use Illuminate\Http\Request;
 
-class TeamController extends Controller {
+class TeamController extends Controller
+{
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$team = Team::all();
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $team = Team::all();
 
-		//$project=Project::where('Hide','off')->get();
+        //$project=Project::where('Hide','off')->get();
 
-		return view('teams.index', array('teams' => $team));
+        return view('teams.index', array('teams' => $team));
 
-	}
+    }
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return view('teams.create');
-	}
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        return view('teams.create');
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store(Request $request)
-	{
-		$this->validate($request, [
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
 
-			'TeamName' => 'required',
-			'Developers' => 'required'
-
-		]);
-
-		$input = $request->all();
-
-		Team::create($input);
+            'TeamName' => 'required',
+            'users' => 'required|array|min:1'
 
 
-		Session::flash('flash_message', 'Team successfully created!');
+        ]);
 
-		return redirect()->back();
-	}
+        $input = $request->all();
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($team_id)
-	{
-		$team = Team::find($team_id);
-		return view('teams.show', array('team' => $team));
-	}
+        $checked_user_ids = $input['users'];
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($team_id)
-	{
+        unset($input['users']);
 
-		$team = Team::find($team_id);
+        $team_id = Team::create($input)->team_id;
 
-		return view('teams.edit', array('team' => $team));
+        if (is_array($checked_user_ids)) {
+            foreach ($checked_user_ids as $user_id) {
+                DB::table('dev_team')->insert(
+                    ['team_id' => $team_id, 'user_id' => $user_id]
+                );
+            }
+        }
 
-	}
+        Session::flash('flash_message', 'Team successfully created!');
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	/*public function update($id)
-	{
-		//
-	}*/
+        return redirect()->back();
+    }
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $team_id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function show($team_id)
+    {
+        $team = Team::find($team_id);
+        return view('teams.show', array('team' => $team));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function edit($team_id)
+    {
+
+        $team = Team::find($team_id);
+
+        return view('teams.edit', array('team' => $team));
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    /*public function update($id)
+    {
+        //
+    }*/
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $team_id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
 
 
-	public function update($team_id, Request $request)
-	{
-		$team = Team::find($team_id);
+    public function update($team_id, Request $request)
+    {
+        $team = Team::find($team_id);
 
-		$this->validate($request, [
-			'TeamName' => 'required',
-			'Developers' => 'required',
-			'assigned_state'=>'required'
-		]);
-
-		$input = $request->all();
+        $this->validate($request, [
+            'TeamName' => 'required',
+            'assigned_state' => 'required',
+            'users' => 'required|array|min:1'
 
 
-		$team->fill($input)->save();
 
-		Session::flash('flash_message', 'Team successfully Updated!');
+        ]);
 
-		return redirect()->back();
-	}
+        $input = $request->all();
+
+        $checked_user_ids = $input['users'];
+
+        DB::table('dev_team')->where('team_id', '=', $team_id)->delete();
+
+        if (is_array($checked_user_ids)) {
+            foreach ($checked_user_ids as $user_id) {
+                DB::table('dev_team')->insert(
+                    ['team_id' => $team_id, 'user_id' => $user_id]
+                );
+            }
+        }
+
+        unset($input['users']);
+
+        $team->fill($input)->save();
+
+        Session::flash('flash_message', 'Team successfully Updated!');
+
+        return redirect()->back();
+    }
 
 }
