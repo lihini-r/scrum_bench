@@ -3,11 +3,16 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Project;
+use App\Team;
 use Session;
 
 use App\AssignProjects;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB as DB;
+
+use App\Account;
 
 class AssignController extends Controller {
 
@@ -31,8 +36,21 @@ class AssignController extends Controller {
 	 */
 	public function create()
 	{
-		return view('assign.create');
-		//
+
+		if(\Auth::check() && \Auth::user()->designation === 'Account Head') {
+
+		$user = \Auth::user()->name;
+
+		$account = Account::where('acc_head', $user)->get();
+
+			$project = Project::all();
+
+
+		}
+
+		return view('assign.create',array('account' => $account,'projects' => $project));
+
+
 	}
 
 	/**
@@ -42,10 +60,10 @@ class AssignController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+
 		$this->validate($request, [
-			'ProjectName' => 'required',
-			'ProjectManager' => 'required',
-			'TeamName' => 'required'
+			'ProjectName' => 'required|unique:assign_projects',
+			'ProjectManager'=>'required|unique:assign_projects'
 
 		]);
 
@@ -54,7 +72,7 @@ class AssignController extends Controller {
 		AssignProjects::create($input);
 
 
-		Session::flash('flash_message', 'Project successfully Assigned!!!');
+		Session::flash('flash_message', 'Project Manager successfully Added!!!');
 
 		return redirect()->back();
 
