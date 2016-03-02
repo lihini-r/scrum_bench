@@ -107,7 +107,7 @@ class DynamicUIHelper
 
     }
 
-    public static function getIdProjectNameArray()
+    public static function getProjectIdNameArray()
     {
         $results = DB::table("projects")->get();
         $id_project_name_array = array();
@@ -116,6 +116,8 @@ class DynamicUIHelper
         }
         return $id_project_name_array;
     }
+
+
 }
 
 ?>
