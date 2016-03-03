@@ -107,7 +107,7 @@ desired effect
                                 $accounts = Account::all();
                                 return view('accounts.index', array('accounts' => $accounts));
                             </li>
-                            <li class="footer"><a href="#">See All Messages</a></li>
+                            <li class="footer"><a href="{{ url('/messages1s') }}">See All Messages</a></li>
                         </ul>
                     </li><!-- /.messages-menu -->
 
@@ -253,6 +253,8 @@ desired effect
                         </li>
                         <li class="active"><a href="{{ url('/sprints') }}">Sprint</a>
                         </li>
+			<li class="active"><a href="{{ url('/messages1s') }}">Messages</a>
+			</li>
                         <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">search</a></li>
                     </ul>
                 </li>
@@ -272,7 +274,16 @@ desired effect
                     </ul>
                 </li>
                 @endif
+		<li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Code Board</span> <i
+                                class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
 
+                        <li class="active"><a href="{{ url('/codeshares') }}">view codes</a>
+                        </li>
+
+                    </ul>
+                </li>
 
 
                {{-- <li class="treeview">
@@ -288,7 +299,25 @@ desired effect
 
                 <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
                 </li>
+		<li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Projects</span> <i
+                                class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
+-->
+                        <li class="active"><a href="{{ url('/projects') }}">Projects</a>
+                        </li>
 
+                        <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
+
+
+
+                        <li class="active"><a href="{{ url('/assign/create') }}">Assign Projects</a>
+
+
+                        </li>
+                    </ul>
+                </li>
 
               {{--  <li>
                     <!-- Menu Toggle Button -->
@@ -304,9 +333,20 @@ desired effect
                         <li class="active"><a href="#" class="page-link" name="pages/ProjectDashboard.html">Project
                             Dashboard</a></li>
                         <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">My Dashboard</a>
+                        <li class="active"><a href="{{ url('accountheaddashboards/create') }}">Account Head Dashboard</a>
                         </li>
                     </ul>
                 </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Emails</span> <i
+                                class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/issues.html') }}">Issues</a></li>
+
+                        </li>
+                    </ul>
+                </li>
+
             </ul><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
