@@ -4,7 +4,13 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Project;
 use App\Team;
+use App\AssignProjects;
+use App\User;
 use Session;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Contracts\Auth\Guard;
+
 
 
 use Illuminate\Http\Request;
@@ -18,7 +24,24 @@ class HideController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		if(\Auth::check() && \Auth::user()->designation === 'Project Manager') {
+
+			$user = \Auth::user()->name;
+
+			$prjman = AssignProjects::where('ProjectManager',$user)->get();
+
+			foreach($prjman as $pj)
+
+				$pjt_name = $pj->ProjectName;
+
+				$projects = Project::where('ProjectName',$pjt_name)->get();
+
+
+			}
+
+
+		return view('hide.index', array('projects' => $projects,'prjman' => $prjman));
+
 	}
 
 	/**
@@ -97,8 +120,6 @@ class HideController extends Controller {
 			'ProjectName' => 'required',
 			'Description' => 'required',
 			'State'=>'required',
-			'add_date' => 'required|date|date_format:Y-m-d',
-			'due_date' => 'required|date|date_format:Y-m-d|after:add_date',
 			'Hide'=>'required'
 		]);
 
