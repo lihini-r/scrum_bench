@@ -5,7 +5,7 @@ Scrum Bench is a Tool which assists to manage Software Projects following Scrum 
 Software Developers, Project Managers, Project Administrators who seek for authentic visibility on the path where the projects heads to are warmly welcome to experience the power of Scrum Bench.
 
 
-![](scrum_bench/public/dist/img/md_view.jpg "Main Page Image")
+![](https://github.com/lihini-r/scrum_bench/blob/master/public/dist/img/md_view.jpg?raw=true)
 
 
 
