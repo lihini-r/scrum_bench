@@ -249,7 +249,6 @@ desired effect
                     <a href="#"><i class="fa fa-link"></i> <span>User Story</span> <i
                             class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <!--<li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/backlog.php') }}">Backlog</a></li>-->
                         <li class="active"><a href="{{ url('/user_stories') }}">Backlog</a>
                         </li>
                         <li class="active"><a href="{{ url('/sprints') }}">Sprint</a>
@@ -268,21 +267,18 @@ desired effect
                     <a href="#"><i class="fa fa-link"></i> <span>Accounts</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-
                         <li class="active"><a href="{{ url('/accounts') }}">Account</a>
                         </li>
-
                     </ul>
                 </li>
                 @endif
-		<li class="treeview">
+				
+				<li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Code Board</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-
                         <li class="active"><a href="{{ url('/codeshares') }}">view codes</a>
                         </li>
-
                     </ul>
                 </li>
 
@@ -291,42 +287,34 @@ desired effect
                     <a href="#"><i class="fa fa-link"></i> <span>Profile</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-
                         <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
                         </li>
-
                     </ul>
                 </li>--}}
 
                 <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
                 </li>
-		<li class="treeview">
+				
+				<li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Projects</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
--->
                         <li class="active"><a href="{{ url('/projects') }}">Projects</a>
                         </li>
-
                         <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
-
-
-
                         <li class="active"><a href="{{ url('/assign/create') }}">Assign Projects</a>
-
-
                         </li>
                     </ul>
                 </li>
 
-              {{--  <li>
+				{{--  <li>
                     <!-- Menu Toggle Button -->
                     <a href="{{ url('/auth/register') }}">
                         <span class="hidden-xs">Register</span>
                     </a>
                 </li--}}>
-		<li class="treeview">
+				
+				<li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
                             class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
@@ -335,6 +323,7 @@ desired effect
                         </li>
                     </ul>
                 </li>
+				
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
                             class="fa fa-angle-left pull-right"></i></a>
@@ -346,6 +335,7 @@ desired effect
                         </li>
                     </ul>
                 </li>
+				
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Emails</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
@@ -401,12 +391,12 @@ desired effect
 <script src="{{ URL::asset('dist/js/app.min.js') }}"></script>
 <script src="{{ URL::asset('bootstrap/js/content.load.js') }}"></script>
 
-
 @yield('page_script2')
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
+	 
 </body>
 </html>
