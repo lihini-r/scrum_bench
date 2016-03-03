@@ -36,3 +36,7 @@ Route::controllers([
 ]);
 
 Route::resource('accounts', 'AccountController');
+
+Route::resource('profiles', 'ProfileController');
+//Route::get('/{profiles}','ProfileController@show');
+
