@@ -185,6 +185,12 @@ desired effect
                                 <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image">
                                 <p>
                                     {{ Auth::user()->name }} - {{ Auth::user()->designation }}
+
+                                    {{--DB::table('users')
+                                    ->join('role_user', 'users.id', '=', 'role_user.user_id')
+                                    ->join('role', role_user.role_id', '=', 'role.id')
+                                    ->select('role.display_name')
+                                    ->get();--}}
                                 </p>
                             </li>
                             <!-- Menu Body -->
@@ -251,7 +257,11 @@ desired effect
                     </ul>
                 </li>
 
-                <li class="treeview">
+               @if(\Auth::user()->hasRole('Super Admin'))
+
+                    {{--<li class="active"><a href="{{ url('/accounts') }}">Accounts</a>
+                    </li>--}}
+                    <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Accounts</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
@@ -261,6 +271,31 @@ desired effect
 
                     </ul>
                 </li>
+                @endif
+
+
+
+               {{-- <li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Profile</span> <i
+                                class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+
+                        <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
+                        </li>
+
+                    </ul>
+                </li>--}}
+
+                <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
+                </li>
+
+
+              {{--  <li>
+                    <!-- Menu Toggle Button -->
+                    <a href="{{ url('/auth/register') }}">
+                        <span class="hidden-xs">Register</span>
+                    </a>
+                </li--}}>
 
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i

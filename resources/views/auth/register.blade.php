@@ -111,12 +111,7 @@ desired effect
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Employee ID</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="eid" value="{{ old('eid') }}">
-							</div>
-						</div>
+
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Name</label>
@@ -126,9 +121,25 @@ desired effect
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Designation</label>
+							<label class="col-md-4 control-label">Job Title</label>
+							<?php $results = DB::table('roles')->get(); ?>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="designation" value="{{ old('designation') }}">
+								<select class="form-control " name="designation" style="width: 100%"
+								>
+
+
+								<?php
+								foreach ($results as $result) {
+									$id = $result->id;
+									$name=$result->name;
+
+
+										echo "<option value = '$name' >$name</option >";
+
+
+								}
+								?>
+							</select>
 							</div>
 						</div>
 
