@@ -9,10 +9,6 @@ use Illuminate\Http\Request;
 class WorkflowController extends Controller
 {
 
-    private static $WORKFLOW_STATUS_LIST = array("To-Do", "In-Progress", "Testing", "Review", "Resolved", "Closed");
-    private static $WORKFLOW_NEXT_STATUS_INDEX_LIST = array("To-Do"=>1, "In-Progress"=>2, "Testing"=>3, "Review"=>4, "Resolved"=>5, "Closed"=>5);
-    private static $WORKFLOW_ACTION_LIST = array("To-Do" => "Start", "In-Progress" => "Start Testing", "Testing" => "To Review", "Review" => "Resolve", "Resolved" => "Close", "Closed" => "Hide");
-
     public static function getNextState($currentState){
         $WORKFLOW_STATUS_LIST = array("To-Do", "In-Progress", "Testing", "Review", "Resolved", "Closed");
         $WORKFLOW_NEXT_STATUS_INDEX_LIST = array("To-Do"=>1, "In-Progress"=>2, "Testing"=>3, "Review"=>4, "Resolved"=>5, "Closed"=>5);
@@ -20,7 +16,7 @@ class WorkflowController extends Controller
     }
 
     public static function getNextAction($currentState){
-        $WORKFLOW_ACTION_LIST = array("To-Do" => "Start", "In-Progress" => "Start Testing", "Testing" => "To Review", "Review" => "Resolve", "Resolved" => "Close", "Closed" => "Hide");
+        $WORKFLOW_ACTION_LIST = array("To-Do" => "Start", "In-Progress" => "Start Testing", "Testing" => "To Review", "Review" => "Resolve", "Resolved" => "Close", "Closed" => "Closed");
         return $WORKFLOW_ACTION_LIST[$currentState];
     }
     /**
@@ -59,9 +55,9 @@ class WorkflowController extends Controller
 
         Workflow::create($input)->id;
 
+
+
         Session::flash('flash_message', 'workflow successfully created!');
-        //Session::put($input['story_id'].'-'.Auth::user()->id, 'started');
-        //Session::put($input['story_id'].'-'.Auth::user()->id."-id", $new_id);
 
         return redirect()->back();
     }
