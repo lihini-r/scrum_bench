@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB as DB;
 use \App\Http\Controllers\AccountController;
 use \App\Http\Controllers\StoryController;
 use \App\Http\Controllers\WorklogController;
+
 $accounts = DB::table('accounts')->get();
 $user_stories = StoryController::getAssignStories();
 $result_projects = DB::table('projects')->get();
@@ -42,21 +43,8 @@ foreach ($result_projects as $result_project) {
 								<td>{{ $account->acc_name }}</td>
 								<td>{{ $account->description }}</td>
 								<td>{{ $account->acc_head }}</td>
-
-
-								<!-- we will also add show, edit, and delete buttons -->
 								<td>
-
-									<!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
-									<!-- we will add this later since its a little more complicated than the other two buttons -->
-
-									<!-- show the nerd (uses the show method found at GET /nerds/{id} -->
-
 									<a class="btn btn-small btn-success" href="{{ URL::to('accounts/' . $account->id) }}">Show </a>
-
-									<!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
-
-
 								</td>
 							</tr>
 						@endforeach
@@ -94,7 +82,7 @@ foreach ($result_projects as $result_project) {
 						</div>
 					</div>
 				</div>
-				<!-- we will also add show, edit, and delete buttons -->
+				
 			</div>
 			@endforeach
 		<?php echo $c?>		
