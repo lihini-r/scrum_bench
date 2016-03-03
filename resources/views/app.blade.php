@@ -29,6 +29,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
     <![endif]-->
 	@yield('page_styles')
 </head>
@@ -361,6 +362,7 @@ desired effect
                 <br/>
             </h1>
             <ol class="breadcrumb">
+                @yield('breadcrumb')
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Dashboard</li>
             </ol>
@@ -391,9 +393,6 @@ desired effect
 <script src="{{ URL::asset('dist/js/app.min.js') }}"></script>
 <script src="{{ URL::asset('bootstrap/js/content.load.js') }}"></script>
 
-<script src="{{ URL::asset('plugins/input-mask/jquery.inputmask.js') }}"></script>
-<script src="{{ URL::asset('plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
-<script src="{{ URL::asset('plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
 
 @yield('page_script2')
 
