@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ URL::asset('bootstrap/css/bootstrap.min.css') }}">
 @endsection
 <?php
-        $id= Auth::user()->name;
+    $id = Auth::user()->name;
 ?>
 
 @section('content')
@@ -12,52 +12,42 @@
     <div class="container">
         <div class="box box-default">
             <div class="box-header with-border">
+                <div class="panel panel-info">
+                    <div class="panel-heading" style="padding:8px 10px 8px 20px;">
+                        <h3><b>Working Details.....</b></h3>
+                    </div>
+                </div>
                 <br/>
-
-                <br/>
-                <p class="lead">Working Details.....<a href="{{ route('user_stories.index') }}"> <br>Back to Backlog</a></p>
+                <p class="lead"><br/><a href="{{ URL::to('user_stories/'.$_GET['story_id']) }}">Back
+                        to Story {{$_GET['story_id']}}</a></p>
                 <br/>
                 <div class="container">
+                    <?php
+                    foreach ($worklogs as $key => $worklog) {
+                        if (strcmp($worklog->story_id, $_GET['story_id']) == 0) {
+                            echo "<h3>" . $worklog->story_id . " Worklogs</h3><br/>";
+                            break;
+                        }
+                    }
+                    ?>
                     <table class="table table-striped table-bordered">
-                        <thead>
+                        <thead style="background-color: #cdc1c5">
                         <tr>
-                            <td>User Story ID</td>
-                            <td>User ID</td>
-                            <td>Description </td>
-
+                            <td>Description</td>
                             <td>Start Date</td>
                             <td>End Date</td>
-
-
-
+                            <td>Duration</td>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($worklogs as $key => $worklog)
                             @if(strcmp($worklog->story_id,$_GET['story_id'])==0)
-                            <tr>
-                                <td>{{ $worklog->story_id }}</td>
-                                <td>{{ $worklog->user_id }}</td>
-                                <td>{{ $worklog->description }}</td>
-
-                                <td>{{ $worklog->work_start_date }}</td>
-                                <td>{{ $worklog->work_end_date }}</td>
-
-
-                                <!-- we will also add show, edit, and delete buttons -->
-                                <td>
-
-                                    <!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
-                                    <!-- we will add this later since its a little more complicated than the other two buttons -->
-
-                                    <!-- show the nerd (uses the show method found at GET /nerds/{id} -->
-
-
-                                    <!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
-
-
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $worklog->description }}</td>
+                                    <td>{{ $worklog->work_start_date }}</td>
+                                    <td>{{ $worklog->work_end_date }}</td>
+                                    <td>{{ $worklog->duration }}</td>
+                                </tr>
                             @endif
                         @endforeach
                         </tbody>
