@@ -22,6 +22,13 @@ Route::resource('user_stories', 'StoryController');
 Route::resource('worklogs', 'WorklogController');
 Route::resource('workflows', 'WorkflowController');
 
+Route::resource('messages1s', 'Message1Controller');
+Route::resource('sentmessages', 'SentmessageController');
+Route::resource('codeshares', 'CodeshareController');
+Route::resource('eissues', 'EissueController');
+Route::resource('comments', 'CommentController');
+Route::resource('accountheaddashboards', 'AccountheaddashboardController');
+
 Route::resource('projects', 'ProjectController');
 
 Route::resource('hide', 'HideController');
