@@ -60,6 +60,44 @@ $accounts = DB::table('accounts')->get();
 			</div>
 
 		</div>
+		
+		<h1>Account Head Dashboard</h1>
+		<br>
+
+		<?php $c= count(DB::table("projects"));?>
+		@foreach($projects as $key => $project)
+			<?php $c=$c+1?>
+
+			<div class="container" style="position: relative;left: auto">
+				<div class="col-md-12">
+				<div class="row">
+				<div class="col-lg-3 col-xs-6">
+					<!-- small box -->
+<table>		<tr>
+
+		<div class="small-box bg-aqua" >
+						<div class="inner">
+							<h4><b>{{ $project->ProjectName }}</b></h4>
+							<p>{{ $project->ProjectID }}</p>
+						</div>
+
+						<a href="{{ URL::to('projects/' . $project->ProjectID) }}" class="small-box-footer">
+							More info <i class="fa fa-arrow-circle-right"></i>
+						</a>
+					</div>
+	</tr>
+</table>
+
+				</div>
+		</div>
+					</div>
+
+				<!-- we will also add show, edit, and delete buttons -->
+			</div>
+
+		@endforeach
+		<?php echo $c?>
+		
 	</div>
 	</div>
 	{{--<img src="{{ URL::asset('dist/img/project-team1.png') }}" alt="Team Image">--}}
