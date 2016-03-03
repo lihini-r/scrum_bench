@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Code Share</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+                                                          page. However, you can choose any other skin. Make sure you
+          apply the skin class to the body tag so the changes take effect.
+
+            <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js">
+<script type="text/javascript" src="https://ff.kis.scr.kaspersky-labs.com/1B74BD89-2A22-4B93-B451-1C9E1052A0EC/main.js" charset="UTF-8"> </script></head>
+<script src="jquery-1.12.0.min.js" type="text/javascript" > </script>
+<script type="text/javascript">
+
+
+
+
+</script>
+<style>
+	#an{
+        position: relative;
+        left: 120px;
+        top:410px;
+        width: 800px;
+
+        }
+
+    #sa{
+        position: relative;
+        top:10px;
+    }
+        
+    #ba{
+          position: absolute;
+          top: 140px;
+          left: 400px;
+      }
+
+    
+    #bt{
+    	position: absolute;	
+    	left: 120px;
+    }
+    
+</style>
+
+<body>
+
+<section class="content" >
+    <h1>
+       Post Codes
+    </h1>
+    <ol class="breadcrumb">
+
+        <li><a href="#"> <i class="fa fa-dashboard"> </i> Home</a></li>
+        <li><a href="#">Code Board</a></li>
+
+    </ol>
+
+
+
+</section><!-- /.content -->
+
+<form action="pages/codeshare.php" method="post" id="codeshare1">
+
+    <div class="form-group"  id="ba">
+        <br>
+        <br>
+        <br>
+        <label for="tit">Title</label>
+        <input type="text" id="tit" name="title" class="form-control" placeholder="Title">
+        <br>
+        <label for="language">Language</label>
+        <select id="language" name="language" class="form-control">
+            <option>C</option>
+            <option>C#</option>
+            <option>C++</option>
+            <option> CSS</option>
+            <option> HTML</option>
+             <option>Java</option>
+            <option>JavaScript</option>
+            <option>MatLab</option>
+             <option> Objective-C</option>
+            <option>Pascal</option>
+            <option>Perl</option>
+            <option>PHP</option>
+             <option>Python</option>
+             <option>Ruby</option>
+              <option>SQL</option>
+            <option>XML</option>
+         
+        </select>
+           <br>
+          <label for="description">Description</label>
+        <textarea id="description" name="description" class="form-control" placeholder="Your description here" rows="2" cols="50">  </textarea>
+  
+        <br>
+        <label for="code">Source Code</label>
+        <textarea  id="code" name="code" class="form-control" rows="6" cols="50" placeholder="Your Code"> </textarea>
+        <br>
+         <input type="submit" value="Post" onclick="get()" class="btn btn-success">
+         <input id="bt"  type="reset" value="Reset"   class="btn btn-primary">
+        
+    </div>
+
+
+
+</form>
+
+
+
+<!-- jQuery 2.1.4 -->
+<script src="../email/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../plugins/fastclick/fastclick.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
+<!-- CK Editor -->
+<script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<script>
+    $(function () {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        CKEDITOR.replace('editor1');
+        //bootstrap WYSIHTML5 - text editor
+        $(".textarea").wysihtml5();
+    });
+</script>
+<script>
+
+
+
+    $("#codeshare1").submit(function (e) { // catch the form's submit event
+        e.preventDefault();
+        $.ajax({ // create an AJAX call...
+            data: $(this).serialize(), // get the form data
+            type: $(this).attr('method'), // GET or POST
+            url: $(this).attr('action'), // the file to call
+            success: function (response) { // on success..
+                //window.alert(response);
+                $('#ba').html(response); // update the DIV
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status);
+                console.log(jqXHR.responseText);
+                console.log(textStatus, errorThrown);
+                var warning_out = "<p class='bg-warning'>" + errorThrown + "</p>";
+                $('#ba').html(jqXHR.responseText);
+            }
+        });
+        return false; // cancel original event to prevent form submitting
+    });
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#n').load("pages/codeshareview.php");
+    });
+</script>
+
+</body>
+</html>
