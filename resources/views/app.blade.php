@@ -326,7 +326,15 @@ desired effect
                         <span class="hidden-xs">Register</span>
                     </a>
                 </li--}}>
+		<li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
+                            class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
 
+                        <li class="active"><a href="{{ url('/home') }}">My Dashboard</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
                             class="fa fa-angle-left pull-right"></i></a>

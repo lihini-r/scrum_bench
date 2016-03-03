@@ -2,14 +2,22 @@
 <?php
 use Illuminate\Support\Facades\DB as DB;
 use \App\Http\Controllers\AccountController;
-
+use \App\Http\Controllers\StoryController;
+use \App\Http\Controllers\WorklogController;
 $accounts = DB::table('accounts')->get();
+$user_stories = StoryController::getAssignStories();
+$result_projects = DB::table('projects')->get();
+$project_id_name = array();
 
+foreach ($result_projects as $result_project) {
+    $project_id_name[$result_project->default . $result_project->ProjectID] = $result_project->ProjectName;
+}
 
 ?>
 
 @section('content')
 	<br/>
+    <div class="container">
 	<div style="width:80%;padding:5px 5px 15px 80px;">
 		<div class="panel panel-success" >
 			<div class="panel-heading">Home</div>
@@ -91,5 +99,44 @@ $accounts = DB::table('accounts')->get();
 			@endforeach
 		<?php echo $c?>		
 	</div>
+	<div style="width:95%;padding:5px 5px 15px 15px;">
+            @if($user_stories!=null)
+                <div class="panel panel-info">
+                    <div class="panel-heading">Developer Dashboard</div>
+
+                    <div class="panel-body">
+
+                        <table class="table table-striped table-hover">
+                            <thead style="background-color: #34cccd; color: white; font-size: 120%;">
+                            <tr>
+                                <td>Story ID</td>
+                                <td>Project Name</td>
+                                <td>Task</td>
+                                <td>Progress</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($user_stories as $key => $user_story)
+                                <tr>
+                                    <td>{{ $user_story->story_id }}</td>
+                                    <td>{{ $project_id_name[$user_story->project_id] }}</td>
+                                    <td>{{ $user_story->summary }}</td>
+                                    <td><?php
+                                        $logged_hrs = WorklogController::getTotalLoggedHours($user_story->story_id);
+                                        $est_hrs = intval($user_story->org_est);
+                                        echo DynUI::getProgressMarkup($est_hrs, $logged_hrs);
+                                        ?></td>
+
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            @endif
+        </div>
+	
+</div>
 	{{--<img src="{{ URL::asset('dist/img/project-team1.png') }}" alt="Team Image">--}}
 @endsection
