@@ -2,64 +2,80 @@
 
 @section('page_styles')
     <link rel="stylesheet" href="{{ URL::asset('bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('plugins/datetimepicker/css/bootstrap-datetimepicker.min.css') }}">
 
     <?php
     use Illuminate\Support\Facades\DB as DB;
     use \App\Http\Controllers\WorkflowController;
+    use \App\Http\Controllers\WorklogController;
 
-    $result = DB::table('workflows')->where('story_id', '=', $user_story->story_id)->get();
-    $statuses = array();
 
-    $last_status = "To-Do";
-    //$next_action = "Start";
-    //$next_status = "In-Progress";
+    //find the project name according to the given project id
+    $result_projects = DB::table('projects')->get();
+    $project_id_name = array();
 
-    foreach ($result as $res) {
-       // echo "statuses".$res->status;
-        $statuses[] = $res->status;
+    foreach ($result_projects as $result_project) {
+        $project_id_name[$result_project->default . $result_project->ProjectID] = $result_project->ProjectName;
     }
 
-    if(sizeof($statuses)>0){
-        $last_status = $statuses[sizeof($statuses)-1];
-    }else{
-        $last_status = "To-Do";
+
+    //find the name of the user according to the designation
+    $result_developers = DB::table('users')->where('designation', '=', 'Developer')->get();
+    $dev_id_name = array();
+
+    foreach ($result_developers as $result_developer) {
+        $dev_name = $result_developer->name;
+        $dev_id = $result_developer->id;
+
+        $dev_id_name[$result_developer->id] = $result_developer->name;
+
+
     }
+    $dev_id_name['Not Assigned'] = "Unassigned";
+
+    //update the next status and next action
+    $last_status=WorkflowController::getStoryStatus($user_story->story_id);
 
     $next_action = WorkflowController::getNextAction($last_status);
     $next_status = WorkflowController::getNextState($last_status);
 
-           // echo "next action : ".$next_action;
-            //echo "next status : ".$next_status;
     ?>
-
-
 
 @endsection
 <?php
- $results = DB::table('users')->get();
+$results = DB::table('users')->get();
 ?>
 
 @section('content')
     <br/>
     <div class="container">
-        <br/>
-        <div class="box box-default">
+        <div class="box box-default" style="padding: 20px 50px 0px 20px;">
             <div class="box-header with-border">
 
-                <h1>User Story {{ $user_story->story_id }}</h1>
-                <ul class="nav nav-pills">
-                    <li role="presentation"><a href="#">Edit</a>
-                    </li>
-                    <!--<li role="presentation"><a href="#" data-toggle="modal" data-target="#assign-me">Assign To Me</a></li>-->
-                    <li role="presentation"><a href="#" data-toggle="modal" data-target="#work-log">WorkLog</a></li>
-                    <li role="presentation"><a href="#" data-toggle="modal" data-target="#work-flow">{{$next_action}}</a></li>
-
-
-                <div class="form-group" style="padding:20px 30px 20px 20px;">
-                    <a class="btn btn-small btn-info pull-right" href="{{ url('/worklogs?story_id='.$user_story->story_id) }}">View My Work Logs</a>
+                <div class="panel panel-info">
+                    <div class="panel-heading" style="padding:8px 10px 8px 20px;">
+                        <h3><b>User Story {{ $user_story->story_id }}</b></h3>
+                    </div>
                 </div>
+
+                <ul class="nav nav-pills">
+
+
+                    <li role="presentation"><a href="#" data-toggle="modal" data-target="#work-log">WorkLog</a></li>
+                    <li role="presentation"><a href="#" data-toggle="modal"
+                                               data-target="#work-flow" <?php echo ($next_action == "Closed") ? "style='pointer-events: none; cursor: default; color:red'" : "" ?> >{{$next_action}}</a>
+                    </li>
+                    <li style="padding:0px 10px 0px 20px;" class="pull-right"><a
+                                href="{{ route('user_stories.index') }}">Back to Backlog</a></li>
+
                 </ul>
-                <br/><br/><br/>
+
+                <div class="form-group" style="padding:20px 10px 20px 20px;">
+                    <a class="btn btn-small btn-info pull-right"
+                       href="{{ url('/worklogs?story_id='.$user_story->story_id) }}">View My Work Logs</a>
+                </div>
+
+                <br/><br/>
 
                 <div class="row">
                     <div class="col-sm-6">
@@ -67,10 +83,10 @@
                             <tbody>
                             <tr>
                                 <td>Project</td>
-                                <td>{{ $user_story->project_id }}</td>
+                                <td>{{ $project_id_name[$user_story->project_id] }}</td>
                             </tr>
                             <tr>
-                                <td>Summary</td>
+                                <td>Task</td>
                                 <td>{{ $user_story->summary }}</td>
                             </tr>
                             <tr>
@@ -96,18 +112,32 @@
                     <div class="col-sm-4">
                         <table class="table pull-right">
                             <tbody>
-                            <tr>
-                                <td><a href="#" data-toggle="modal" data-target="#assign-me">assignee</a></td>
-                                <td>{{ $user_story->assignee }}</td>
-                            </tr>
+                            @if(DynUI::isUserRole("Project Manager")  || DynUI::isUserRole("Account Head"))
+                                <tr>
+                                    <td><a href="#" data-toggle="modal" data-target="#assign-me">assignee</a></td>
+                                    <td>{{ $dev_id_name[$user_story->assignee] }}</td>
+                                </tr>
+                            @endif
                             <tr>
                                 <td>Reporter</td>
                                 <td>{{ $user_story->reporter }}</td>
                             </tr>
                             <tr>
                                 <td>Status</td>
-                                <td>{{ $last_status }}</td>
+                                <td><span class="label label-warning">{{ $last_status }}</span></td>
                             </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Progress
+                                    <br/>
+                                    <?php
+                                    $logged_hrs = WorklogController::getTotalLoggedHours($user_story->story_id);
+                                    $est_hrs = intval($user_story->org_est);
+                                    echo DynUI::getProgressMarkup($est_hrs, $logged_hrs);
+                                    ?>
+                                </td>
+                            </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -121,22 +151,30 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Story Assignment</h4>
+                                <h4 class="modal-title">UPDATE STORY STATUS</h4>
                             </div>
                             <div class="modal-body">
                                 <section class="content">
                                     <div class="box box-default">
                                         <div class="box-header with-border">
                                             {!! Form::open(['route' => 'workflows.store']) !!}
-                                            <p>Successfully started the user story</p>
+                                            <p>Change Status to {{ $next_status }} </p>
 
                                             <input type="hidden" name="story_id" value="{{$user_story->story_id}}">
                                             <input type="hidden" name="user_id" value="{{ Auth::user()->id}}">
                                             <input type="hidden" name="status" value="{{$next_status}}">
                                             Date
-                                            <input class="form-control" name="updated_date" type="text"
-                                                   placeholder="Enter date"
-                                                   style="width: 50%;"/>
+
+                                            <div class="form-group">
+                                                <div class='input-group date' id='work_flow_start' style="width: 50%;">
+                                                    <input type='text' class="form-control" name="updated_date"
+                                                           readonly/>
+                                               <span class="input-group-addon">
+                                           <span class="glyphicon glyphicon-calendar"></span>
+                                         </span>
+                                                </div>
+                                            </div>
+
                                             <div class="modal-footer">
                                                 {!! Form::submit('Update Status', ['class' => 'btn btn-primary' ]) !!}
                                                 {!! Form::close() !!}
@@ -163,21 +201,26 @@
                                 <h4 class="modal-title">Log Your Work</h4>
                             </div>
                             <div class="modal-body">
-                                {{Session::get($user_story->story_id.'-'.Auth::user()->id)}}
-                                {{Session::get($user_story->story_id.'-'.Auth::user()->id."-id")}}
-                                {{"Condition : ".(strcmp(Session::get($user_story->story_id.'-'.Auth::user()->id),'started')==0)}}
+
 
                                 @if(strcmp(Session::get($user_story->story_id.'-'.Auth::user()->id),'started')!=0)
                                     {!! Form::open(['route' => 'worklogs.store']) !!}
                                     Start Date
-                                    <input class="form-control" name="work_start_date" type="text"
-                                           placeholder="Enter in hours"
-                                           style="width: 50%;"/>
+                                    <!--<input id="work_start" class="form-control" name="work_start_date" type="text"
+                                           style="width: 50%;"/>-->
+                                    <div class="form-group">
+                                        <div class='input-group date' id='work_start' style="width: 50%;">
+                                            <input type='text' class="form-control" name="work_start_date" readonly/>
+                                               <span class="input-group-addon">
+                                           <span class="glyphicon glyphicon-calendar"></span>
+                                         </span>
+                                        </div>
+                                    </div>
                                     <input type="hidden" name="description" value="STARTED">
                                     <input type="hidden" name="story_id" value="{{$user_story->story_id}}">
                                     <input type="hidden" name="user_id" value="{{ Auth::user()->id}}">
                                     <div class="modal-footer">
-                                        {!! Form::submit('Start User Story', ['class' => 'btn btn-primary' ,'id' => 'start-btn' ]) !!}
+                                        {!! Form::submit('Start Work Log', ['class' => 'btn btn-primary' ,'id' => 'start-btn' ]) !!}
                                         {!! Form::close() !!}
                                     </div>
 
@@ -186,20 +229,29 @@
                                     {!! Form::model(new \App\Worklog(), [
                                         'method' => 'PATCH',
                                         'route' => ['worklogs.update', Session::get($user_story->story_id.'-'.Auth::user()->id."-id")]
-                                    ]) !!}
+                                    ,'role' => 'form' , 'data-toggle' => 'validator' ]) !!}
                                     Description
+                                    <div class="form-group">
                                     <textarea class="form-control" placeholder="Enter ..." rows="3" name="description"
                                               style="width: 100%;"
-                                              tabindex="2" id="desc-txt"></textarea>
+                                              tabindex="2" id="desc-txt" required></textarea>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                     End Date
-                                    <input class="form-control" name="work_end_date" type="text"
-                                           placeholder="Enter in hours"
-                                           style="width: 50%;"/>
+
+                                    <div class="form-group">
+                                        <div class='input-group date' id='work_end' style="width: 50%;">
+                                            <input type='text' class="form-control" name="work_end_date"/>
+                                               <span class="input-group-addon">
+                                           <span class="glyphicon glyphicon-calendar"></span>
+                                         </span>
+                                        </div>
+                                    </div>
 
                                     <input type="hidden" name="story_id" value="{{$user_story->story_id}}">
                                     <input type="hidden" name="user_id" value="{{ Auth::user()->id}}">
                                     <div class="modal-footer">
-                                        {!! Form::submit('Update User Story', ['class' => 'btn btn-primary' ,'id' => 'end-btn' ]) !!}
+                                        {!! Form::submit('End Work Log', ['class' => 'btn btn-primary' ,'id' => 'end-btn' ]) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 @endif
@@ -237,10 +289,14 @@
                                                     tabindex="-1"
                                                     aria-hidden="true">
 
-                                                <option>dev1</option>
-                                                <option>dev2</option>
-                                                <option>dev3</option>
-                                                <option>dev4</option>
+                                                <?php
+                                                foreach ($result_developers as $result_developer) {
+                                                    $dev_name = $result_developer->name;
+                                                    $dev_id = $result_developer->id;
+                                                    $dev_id_name[$result_developer->id] = $result_developer->name;
+                                                    echo "<option value = '$dev_id' >$dev_name</option >";
+                                                }
+                                                ?>
 
 
                                             </select>
@@ -254,13 +310,7 @@
                                     </div>
 
                                 </section>
-
                             </div>
-                            <!-- <div class="modal-footer">
-                                 <button type="submit" class="btn btn-default" data-dismiss="modal">OK</button>
-                             </div>-->
-
-
                         </div>
 
                     </div>
@@ -323,3 +373,48 @@
         </div>
     </div>
 @endsection
+
+@section('page_script1')
+    <script src="{{ URL::asset('plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    <script src="{{ URL::asset('plugins/jQueryUI/jquery-ui.min.js') }}"></script>
+@endsection
+
+@section('page_script2')
+    <script src="{{ URL::asset('bootstrap/js/validator.js') }}"></script>
+    <script src="{{ URL::asset('bootstrap/js/validator.min.js') }}"></script>
+    <script src="{{ URL::asset('plugins/datetimepicker/js/moment.min.js') }}"></script>
+    <script src="{{ URL::asset('plugins/datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var dateNow = new Date();
+            $('#work_start').datetimepicker({
+
+                viewMode: 'years',
+                format: 'YYYY-MM-DD HH:mm:ss',
+                defaultDate: moment(dateNow)
+                //daysOfWeekDisabled: [0, 6]
+            });
+        });
+        $(function () {
+            var dateNow = new Date();
+            $('#work_end').datetimepicker({
+                viewMode: 'years',
+                format: 'YYYY-MM-DD HH:mm:ss',
+                defaultDate: moment(dateNow),
+                minDate: moment(dateNow)
+                //daysOfWeekDisabled: [0, 6]
+            });
+        });
+
+        $(function () {
+            var dateNow = new Date();
+            $('#work_flow_start').datetimepicker({
+                viewMode: 'years',
+                format: 'YYYY-MM-DD',
+                defaultDate: moment(dateNow)
+                //daysOfWeekDisabled: [0, 6]
+            });
+        });
+    </script>
+@endsection
+
