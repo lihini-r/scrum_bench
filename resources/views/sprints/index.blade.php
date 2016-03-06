@@ -41,7 +41,7 @@ foreach ($result as $res) {
 
                             <td>Sprint Name</td>
                             <td>Project Name</td>
-
+                            <td>Status</td>
                             <td>Show/Edit</td>
                         </tr>
                         </thead>
@@ -52,7 +52,10 @@ foreach ($result as $res) {
                                 <td>{{ $sprint->sprint_name }}</td>
                                 <td>{{ $project_id_name[$sprint->project_id] }}</td>
 
+                                <td>
 
+                                    <span <?php echo ($sprint->status == "Not_Started") ? "class='label label-danger'" : "class='label label-warning'"; ?> >{{ $sprint->status }}</span>
+                                </td>
                                 <!-- we will also add show, edit, and delete buttons -->
                                 <td>
                                     <a class="btn btn-small btn-success"  href="{{ URL::to('sprints/' . $sprint->id) }}">Show</a>

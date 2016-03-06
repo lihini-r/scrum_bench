@@ -18,13 +18,15 @@
             <div class="box-header with-border">
                 <div class="panel panel-info">
                     <div class="panel-heading" style="padding:8px 10px 8px 20px;">
-                        <h3 ><b>Create New Sprint</b></h3>
+                        <h3><b>Create New Sprint</b></h3>
                     </div>
                 </div>
-                <p class="lead"><small>Create and save new Sprint below, or <a href="{{ route('sprints.index') }}">Go back to
-                        all Sprints</a></small></p>
+                <p class="lead">
+                    <small>Create and save new Sprint below, or <a href="{{ route('sprints.index') }}">Go back to
+                            all Sprints</a></small>
+                </p>
                 <hr>
-                <!--div class="container"-->
+
                 @if($errors->any())
                     <div class="alert alert-danger">
                         @foreach($errors->all() as $error)
@@ -37,61 +39,57 @@
                     <div class="alert alert-success">
                         {{ Session::get('flash_message') }}
                     </div>
-                    @endif
+                @endif
 
-                    {!! Form::open(['route' => 'sprints.store' , 'role' => 'form' , 'data-toggle' => 'validator']) !!}
-
-                            <!--<div class="form-group">
-        Form::label('sprint_name', 'Sprint Name:', ['class' => 'control-label']) !!}
-		<input class="form-control" style="width:50%;" name="sprint_name" type="text" id="sprint_name" required>
-		<div class="help-block with-errors"></div>		
-    </div>-->
-
-                    <div class="form-group">
-                        {!! Form::label('project_id', 'Project ID:', ['class' => 'control-label']) !!}
-                                <!--<input class="form-control" style="width:50%;" name="project_id" type="text" id="project_id"  required>-->
-                        <select class="form-control select2 select2-hidden-accessible" name="project_id"
-                                style="width: 50%;"
-                                tabindex="-1"
-                                aria-hidden="true">
-                            <?php
-                            foreach ($results as $result) {
-                                $prj_id = $result->default . $result->ProjectID;
-                                $prj_name = $result->ProjectName;
+                {!! Form::open(['route' => 'sprints.store' , 'role' => 'form' , 'data-toggle' => 'validator']) !!}
 
 
-                                echo "<option value = '$prj_id' >$prj_name</option >";
-                            }
-                            ?>
-                        </select>
+                <div class="form-group">
+                    {!! Form::label('project_id', 'Project ID:', ['class' => 'control-label']) !!}
+                            <!--<input class="form-control" style="width:50%;" name="project_id" type="text" id="project_id"  required>-->
+                    <select class="form-control select2 select2-hidden-accessible" name="project_id"
+                            style="width: 50%;"
+                            tabindex="-1"
+                            aria-hidden="true">
+                        <?php
+                        foreach ($results as $result) {
+                            $prj_id = $result->default . $result->ProjectID;
+                            $prj_name = $result->ProjectName;
+
+
+                            echo "<option value = '$prj_id' >$prj_name</option >";
+                        }
+                        ?>
+                    </select>
+                    <div class="help-block with-errors"></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="control-label">Start Date</div>
+                    <div class='input-group date' id='start_date_picker' style='width:50%;'>
+                        <input type='text' class="form-control" name="start_date" required/>
                         <div class="help-block with-errors"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="control-label">Start Date</div>
-                        <div class='input-group date' id='start_date_picker' style='width:50%;'>
-                            <input type='text' class="form-control" name="start_date"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
-                        </div>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <div class="control-label">End Date</div>
-                        <div class='input-group date' id='end_date_picker' style='width:50%;'>
-                            <input type='text' class="form-control" name="end_date"/>
-
+                <div class="form-group">
+                    <div class="control-label">End Date</div>
+                    <div class='input-group date' id='end_date_picker' style='width:50%;'>
+                        <input type='text' class="form-control" name="end_date" required/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
-                        </div>
                     </div>
+                    <div class="help-block with-errors"></div>
+                </div>
 
-                    {!! Form::submit('Create Sprint', ['class' => 'btn btn-primary']) !!}
+                {!! Form::submit('Create Sprint', ['class' => 'btn btn-primary']) !!}
 
-                    {!! Form::close() !!}
-                    <br/>
+                {!! Form::close() !!}
+                <br/>
             </div>
         </div>
     </div>
@@ -124,9 +122,12 @@
          });*/
 
         $(function () {
+            var dateNow = new Date();
             $('#start_date_picker').datetimepicker({
                 viewMode: 'years',
                 format: 'YYYY-MM-DD',
+                defaultDate: moment(dateNow),
+                minDate: moment(dateNow)
                 //daysOfWeekDisabled: [0, 6]
             });
             $('#end_date_picker').datetimepicker({

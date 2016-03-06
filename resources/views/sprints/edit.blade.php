@@ -10,7 +10,7 @@
     </style>
 @endsection
 <?php
-$id_project_name_array = DynUI::getIdProjectNameArray();
+$id_project_name_array = DynUI::getProjectIdNameArray();
 ?>
 
 @section('content')
@@ -23,8 +23,10 @@ $id_project_name_array = DynUI::getIdProjectNameArray();
                         <h3><b>Edit {{ $sprint->sprint_name }}</b></h3>
                     </div>
                 </div>
-                <p class="lead"><small>Edit and save this Sprint below, or <a href="{{ route('sprints.index') }}">Go back to
-                        all Sprints</a></small></p>
+                <p class="lead">
+                    <small>Edit and save this Sprint below, or <a href="{{ route('sprints.index') }}">Go back to
+                            all Sprints</a></small>
+                </p>
                 <hr>
                 @if($errors->any())
                     <div class="alert alert-danger">
@@ -42,7 +44,7 @@ $id_project_name_array = DynUI::getIdProjectNameArray();
 
                 {!! Form::model($sprint, [
                 'method' => 'PATCH',
-                'route' => ['sprints.update', $sprint->id]
+                'route' => ['sprints.update', $sprint->id], 'data-toggle' => 'validator'
             ]) !!}
 
                 <div class="form-group">
@@ -56,7 +58,7 @@ $id_project_name_array = DynUI::getIdProjectNameArray();
                                         tabindex="-1"
                                         aria-hidden="true" readonly="true">
                         <?php
-                        echo "<option value='".$sprint->project_id."'>". $id_project_name_array[$sprint->project_id] . "</option>";
+                        echo "<option value='" . $sprint->project_id . "'>" . $id_project_name_array[$sprint->project_id] . "</option>";
                         ?>
                     </select>
                 </div>
@@ -65,22 +67,24 @@ $id_project_name_array = DynUI::getIdProjectNameArray();
                     <div class="control-label">Start Date</div>
                     <div class='input-group date' id='start_date_picker' style='width:50%;'>
                         <input type="hidden" id="start-date-data" value="<?php echo $sprint->start_date; ?>"/>
-                        <input type='text' class="form-control" name="start_date"/>
+                        <input type='text' class="form-control" name="start_date" required/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
                     </div>
+                    <div class="help-block with-errors"></div>
                 </div>
 
                 <div class="form-group">
                     <div class="control-label">End Date</div>
                     <div class='input-group date' id='end_date_picker' style='width:50%;'>
                         <input type="hidden" id="end-date-data" value="<?php echo $sprint->end_date; ?>"/>
-                        <input type='text' class="form-control" name="end_date"/>
+                        <input type='text' class="form-control" name="end_date" required/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
                     </div>
+                    <div class="help-block with-errors"></div>
                 </div>
 
                 {!! Form::submit('Update Sprint', ['class' => 'btn btn-primary']) !!}
