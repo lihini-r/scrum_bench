@@ -71,6 +71,7 @@ class DynamicUIHelper
         $success_class = "progress-bar-success";
         $danger_class = "progress-bar-yellow";
         $in_progress_class = "progress-bar-primary";
+        $label_string = "";
         $final_style_class = "";
         $progress_value = 0;
         $background_color = "#cfcfcf";
@@ -78,20 +79,23 @@ class DynamicUIHelper
         if ($total_hours > $logged_hours) {
             $final_style_class = $in_progress_class;
             $progress_value = ($logged_hours / $total_hours) * 100;
+            $label_string = round($progress_value);
         } else if ($total_hours == $logged_hours) {
             $final_style_class = $success_class;
             $progress_value = 100;
+            $label_string = "100";
         } else {
             $final_style_class = $danger_class;
             $diff = $logged_hours - $total_hours;
             $progress_value = ($total_hours / ($total_hours + $diff)) * 100;
             $background_color = "#e61414";
+            $label_string = "Exceeded by " . round(($diff / ($total_hours + $diff)) * 100);
         }
 
-        $progress_markup = "<div class='progress progress-xs progress-striped active' style='background-color: " . "; width: 95%;'>";
+        $progress_markup = "<div class='progress progress-xs progress-striped active' style='background-color: " . $background_color . "; width: 95%;'>";
         $progress_markup = $progress_markup . "<div class='progress-bar " . $final_style_class . "' style='width: " . $progress_value . "%'></div>";
         $progress_markup = $progress_markup . "</div>";
-        $progress_markup = $progress_markup . "<span class='badge bg-red'>" . round($progress_value) . "%</span>";
+        $progress_markup = $progress_markup . "<span class='badge bg-red'>" . $label_string . "%</span>";
         return $progress_markup;
     }
 
@@ -112,7 +116,7 @@ class DynamicUIHelper
         $results = DB::table("projects")->get();
         $id_project_name_array = array();
         foreach ($results as $res) {
-            $id_project_name_array[$res->default.$res->ProjectID] = $res->ProjectName;
+            $id_project_name_array[$res->default . $res->ProjectID] = $res->ProjectName;
         }
         return $id_project_name_array;
     }

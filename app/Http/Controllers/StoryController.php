@@ -203,8 +203,6 @@ class StoryController extends Controller
     {
         $user_story = UserStory::find($story_id);
 
-
-
         $input = $request->all();
 
         $user_story->fill($input)->save();

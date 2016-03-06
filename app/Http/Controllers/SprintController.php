@@ -38,12 +38,9 @@ class SprintController extends Controller
             }
 
 
-
-            $sprints = Sprint::where('project_id',$result_project)->get();
+            $sprints = Sprint::where('project_id', $result_project)->get();
             return view('sprints.index', array('sprints' => $sprints));
-        }
-
-        else if($res_des=='Account Head' || $res_des=='Administrator') {
+        } else if ($res_des == 'Account Head' || $res_des == 'Administrator') {
             $sprints = Sprint::all();
             return view('sprints.index', array('sprints' => $sprints));
         }
@@ -82,8 +79,8 @@ class SprintController extends Controller
         ]);
 
         $input = $request->all();
-        $new_sp_name=$this->generateSprintId($request->input('project_id'));
-        $input['sprint_name']=$new_sp_name;
+        $new_sp_name = $this->generateSprintId($request->input('project_id'));
+        $input['sprint_name'] = $new_sp_name;
         Sprint::create($input);
 
         Session::flash('flash_message', 'Successfully created ' . $new_sp_name);
@@ -178,6 +175,40 @@ class SprintController extends Controller
      */
     public function destroy($id)
     {
+    }
+
+    public static function getLastSprintId($project_id)
+    {
+        $Last_sprint_id = "";
+        $result = DB::table('sprints')->where('project_id', '=', $project_id)->get();
+        $sprint_ids = array();
+
+        foreach ($result as $res) {
+            $sprint_ids[] = $res->id;
+        }
+
+        if (sizeof($sprint_ids) > 0) {
+            rsort($sprint_ids);
+            $Last_sprint_id = $sprint_ids[0];
+
+        } else {
+            $Last_sprint_id = 0;
+        }
+
+        return $Last_sprint_id;
+    }
+
+    public static function updateSprint($id, Request $request)
+    {
+        $sprint = Sprint::find($id);
+
+        $input = $request->all();
+
+        $sprint->fill($input)->save();
+
+        Session::flash('flash_message', 'Sprint ' . $input['status'] . ' successfully!');
+
+        return redirect()->back();
     }
 
 }
