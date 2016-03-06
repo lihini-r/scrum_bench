@@ -253,6 +253,8 @@ desired effect
                         </li>
                         <li class="active"><a href="{{ url('/sprints') }}">Sprint</a>
                         </li>
+			<li class="active"><a href="{{ url('/sprint_schedules') }}">Scrum Board</a>
+                        </li>
 			<li class="active"><a href="{{ url('/messages1s') }}">Messages</a>
 			</li>
                         <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">search</a></li>

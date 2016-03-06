@@ -93,7 +93,7 @@ foreach ($result_projects as $result_project) {
                     <div class="panel-heading">Developer Dashboard</div>
 
                     <div class="panel-body">
-
+                        <h4>Stories Assigned to me</h4>
                         <table class="table table-striped table-hover">
                             <thead style="background-color: #34cccd; color: white; font-size: 120%;">
                             <tr>
@@ -106,7 +106,7 @@ foreach ($result_projects as $result_project) {
                             <tbody>
                             @foreach($user_stories as $key => $user_story)
                                 <tr>
-                                    <td>{{ $user_story->story_id }}</td>
+                                    <td><a href="{{ URL::to('user_stories/' . $user_story->story_id) }}">{{ $user_story->story_id }}</a></td>
                                     <td>{{ $project_id_name[$user_story->project_id] }}</td>
                                     <td>{{ $user_story->summary }}</td>
                                     <td><?php
@@ -114,7 +114,6 @@ foreach ($result_projects as $result_project) {
                                         $est_hrs = intval($user_story->org_est);
                                         echo DynUI::getProgressMarkup($est_hrs, $logged_hrs);
                                         ?></td>
-
                                 </tr>
                             @endforeach
                             </tbody>
@@ -124,7 +123,6 @@ foreach ($result_projects as $result_project) {
                 </div>
             @endif
         </div>
-	
 </div>
 	{{--<img src="{{ URL::asset('dist/img/project-team1.png') }}" alt="Team Image">--}}
 @endsection

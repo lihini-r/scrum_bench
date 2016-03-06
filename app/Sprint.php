@@ -13,6 +13,7 @@ class Sprint extends Model {
         'sprint_name',
         'project_id',
 		'start_date',
-		'end_date'
+		'end_date',
+        'status'
     ];
 }
