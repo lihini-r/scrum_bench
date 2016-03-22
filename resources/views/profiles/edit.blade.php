@@ -12,11 +12,16 @@
 
 @section('content')
     <br/>
-    <div class="container">
-        <div class="box box-default">
-            <div class="box-header with-border">
+    <div class="container"><div style="width:90%;padding:5px 5px 15px 80px;">
+            <div class="panel panel-info" >
+                <div class="panel-heading"><h1>Edit My Profile </h1></div>
+
+                <div class="panel-body">
+
+                    <div class="panel-body">
+
                 <br/>
-                <h1>Editing Profile {{ $profile->id }}</h1>
+
                 <p class="lead"> <a href="{{ route('profiles.index') }}">back</a></p>
                 <hr>
                 @if($errors->any())
@@ -68,7 +73,7 @@
 
                 {!! Form::close() !!}
             </div>
-        </div>
+        </div> </div> </div> </div>
     </div>
 @endsection
 

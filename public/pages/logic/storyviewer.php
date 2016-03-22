@@ -17,13 +17,7 @@ $response = $kernel->handle(
 
 use Illuminate\Support\Facades\DB as DB;
 
-
-$table_prefix = "<table class=\"table table - hover\"><thead><tr><th>Story Id</th><th>Summary</th><th>Assignee</th></tr></thead><tbody>";
-
-//$table_prefix = "<table id=\"myTable\" class=\"table table-striped\">
-
-
-
+$table_prefix = "<table class=\"table table-hover\"><thead><tr><th>Story Id</th><th>Summary</th><th>Assignee</th></tr></thead><tbody>";
 $table_suffix = "</tbody></table>";
 $row_prefix = "<tr><td>";
 $row_separator = "</td><td>";
@@ -40,6 +34,3 @@ foreach ($userstories as $userstory) {
 echo $table_suffix;
 
 ?>
-
-
-

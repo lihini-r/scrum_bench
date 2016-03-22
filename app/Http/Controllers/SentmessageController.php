@@ -16,15 +16,18 @@ class SentmessageController extends Controller {
 	 * @return Response
 	 */
 	public function index()
-	{
-		$user = \Auth::user()->name;
+{
+	//get current logged in user's name
+	$user = \Auth::user()->name;
 
-		$messages1s = Messages1::where('from', $user)->get();
+	//get messages sent by current logged in user ordered by date and time in descending order-to get the most recent message sent
+	$messages1s = Messages1::where('from', $user)->orderBy('created_at', 'desc')->get();
 
 
-		//$messages1s = Messages1::all();
-		return view('sentmessages.index', array('messages1s' => $messages1s));
-	}
+	//$messages1s = Messages1::all();
+	//return to sent messages page
+	return view('sentmessages.index', array('messages1s' => $messages1s));
+}
 
 	/**
 	 * Show the form for creating a new resource.

@@ -1,4 +1,13 @@
 <?php namespace App\Http\Controllers;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+
+use App\Project;
+use App\Color;
+use Session;
+use App\Accountheaddashboard;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller {
 
@@ -30,7 +39,11 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('home');
+		/*$project =Project::all();
+		$color =Color::all();
+		$count=Color::count();
+		return view('home', array('projects' => $project),array('colors' => $color),array('colors' => $count));*/
+		return view('/home');
 	}
 
 }

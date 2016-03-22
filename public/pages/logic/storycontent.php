@@ -155,52 +155,21 @@ foreach ($result as $res) {
                 <h4 class="modal-title">Story Assignment</h4>
             </div>
             <div class="modal-body">
-                <section class="content">
-                    <form id="story-editas-form" action="pages/logic/storymanager.php" method="post">
-                <input type="hidden" name="operation" value="editA">
                 <p>Select developer</p>
 
-
-                        <select class="form-control select2 select2-hidden-accessible" name="asi" style="width: 50%;"
-                                tabindex="-1"
-                                aria-hidden="true">
-
-                    <option value="1">dev1</option>
-                    <option value="2">dev3</option>
+                <select>
+                    <option value="" disabled="disabled" selected="selected">Please select a name</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
                 </select>
-                          </form>
-                    </section>
 
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-default" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
             </div>
         </div>
 
     </div>
 </div>
-
-<script>
-    $("#story-editas-form").submit(function (e) { // catch the form's submit event
-        e.preventDefault();
-        $.ajax({ // create an AJAX call...
-            data: $(this).serialize(), // get the form data
-            type: $(this).attr('method'), // GET or POST
-            url: $(this).attr('action'), // the file to call
-            success: function (response) { // on success..
-                //window.alert(response);
-                $('#dev-dash-sub-content').html(response); // update the DIV
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR.status);
-                console.log(jqXHR.responseText);
-                console.log(textStatus, errorThrown);
-                var warning_out = "<p class='bg-warning'>" + errorThrown + "</p>";
-                $('#dev-dash-sub-content').html("Proceed with warnings");
-            }
-        });
-        return false; // cancel original event to prevent form submitting
-    });
-</script>
 
 </html>

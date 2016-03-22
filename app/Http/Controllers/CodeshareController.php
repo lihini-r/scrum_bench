@@ -17,7 +17,8 @@ class CodeshareController extends Controller {
 	 */
 	public function index()
 	{
-		$codeshares = Codeshare::all();
+		//$codeshares = Codeshare::all();
+		$codeshares = Codeshare::orderBy('created_at', 'desc')->get();
 		$comments = Comment::all();
 		return view('codeshares.index', array('codeshares' => $codeshares),array('comments' => $comments));
 	}
@@ -29,9 +30,10 @@ class CodeshareController extends Controller {
 	 */
 	public function create()
 	{
-
 		//$codeshare = Codeshare::where('codeId', '20')->get();
 		//$codeshares = Codeshare::all();
+
+		//return to create after submiting details
 		return view('codeshares.create');
 	}
 
@@ -42,24 +44,27 @@ class CodeshareController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+		//validate fields
 		$this->validate($request, [
+
 			'title' => 'required',
 			'language'=>'required',
 			'sourceCode'=>'required'
 
-
-
 		]);
 
+		//request all required fields
 		$input = $request->all();
 
+		//get the inputs
 		Codeshare::create($input);
 
+		//show successful message
 		Session::flash('flash_message', 'Your code successfully posted! check in the code list to view your code');
 
+		//return back to page
 		return redirect()->back();
 	}
-
 
 	/**
 	 * Display the specified resource.
@@ -69,12 +74,14 @@ class CodeshareController extends Controller {
 	 */
 	public function show($codeId)
 	{
-
+		//get codes by codeId
 		$codeshare = Codeshare::find($codeId);
 
-		$comments = Comment::all();
+		//get all comments
+		//$comments = Comment::all();
 
-		return view('codeshares.show', array('codeshare' => $codeshare), array('comments' => $comments));
+		//return to show
+		return view('codeshares.show', array('codeshare' => $codeshare));
 	}
 
 	/**
@@ -105,9 +112,12 @@ class CodeshareController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
+
 	public function destroy($id)
 	{
 		//
 	}
+
+
 
 }

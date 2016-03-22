@@ -22,7 +22,7 @@ class Message1Controller extends Controller {
 
 			$user = \Auth::user()->name;
 
-			$messages1s = Messages1::where('to',$user)->get();
+			$messages1s = Messages1::where('to',$user)->orderBy('created_at', 'desc')->get();
 
 
 		//$messages1s = Messages1::all();
@@ -36,6 +36,7 @@ class Message1Controller extends Controller {
 	 */
 	public function create()
 	{
+		//return to send message form
 		return view('messages1s.create');
 	}
 
@@ -50,6 +51,7 @@ class Message1Controller extends Controller {
 	}*/
 	public function store(Request $request)
 	{
+		//validate fields
 		$this->validate($request, [
 
 			'to' => 'required',
@@ -58,28 +60,18 @@ class Message1Controller extends Controller {
 
 		]);
 
+		//request all required fields
 		$input = $request->all();
-		$name= $input['to'];
-		$users = DB::table('users')->lists('name');
 
-		foreach($users as $key=>$user)
-		{
-			if( $user===$name)
-			{
-				Messages1::create($input);
+		//$users = DB::table('users')->lists('name');
 
-				Session::flash('flash_message', 'Message successfully sent!');
-			}
+		//get the inputs
+		Messages1::create($input);
 
-			else
-			{
-				Session::flash('flash_message', 'User not found');
-			}
+		//display success message
+		Session::flash('flash_message', 'Message successfully sent!');
 
-
-
-		}
-
+		//return back to page
 		return redirect()->back();
 	}
 
@@ -92,8 +84,10 @@ class Message1Controller extends Controller {
 	 */
 	public function show($messageid)
 	{
-
+		//get message data from id
 		$messages1 = Messages1::find($messageid);
+
+		//return to view messsages page
 		return view('messages1s.show', array('messages1' => $messages1));
 	}
 
@@ -127,6 +121,7 @@ class Message1Controller extends Controller {
 	 */
 	public function destroy($id)
 	{
+		//get message by messageid
 		DB::table('messages1s')->where('messageid', $id)->delete();
 		//$this->db->where('messageid', $id);
 		//$this->db->delete('messages1s');

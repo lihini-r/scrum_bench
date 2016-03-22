@@ -17,8 +17,9 @@ class CommentController extends Controller {
 	 */
 	public function index()
 	{
-
+		//get all comments
 		$comments = Comment::all();
+		//return to show
 		return view('codeshares.show', array('comments' => $comments));
 	}
 
@@ -29,6 +30,7 @@ class CommentController extends Controller {
 	 */
 	public function create()
 	{
+		//return to show
 		return view('codeshares.show');
 	}
 
@@ -39,6 +41,7 @@ class CommentController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+		//validate fields
 		$this->validate($request, [
 
 			'name'=>'required',
@@ -47,12 +50,16 @@ class CommentController extends Controller {
 
 		]);
 
+		//request all required fields
 		$input = $request->all();
 
+		//get the inputs
 		Comment::create($input);
 
+		//display success message
 		Session::flash('flash_message', 'Comment successfully Added!');
 
+		//return back to page
 		return redirect()->back();
 	}
 
@@ -65,8 +72,8 @@ class CommentController extends Controller {
 	public function show($id)
 	{
 
-		$comment = Comment::find($id);
-		return view('codeshare.show', array('comments' => $comment));
+		//$comment = Comment::find($id);
+		//return view('codeshare.show', array('comments' => $comment));
 	}
 
 	/**

@@ -6,6 +6,7 @@ use App\Project;
 use App\Team;
 use App\AssignProjects;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Session;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,23 +25,36 @@ class HideController extends Controller {
 	 */
 	public function index()
 	{
+		//PROJECT MANAGER DASHBOARD(hide/index.blade.php)
+
 		if(\Auth::check() && \Auth::user()->designation === 'Project Manager') {
 
 			$user = \Auth::user()->name;
 
-			$prjman = AssignProjects::where('ProjectManager',$user)->get();
+			$prjman = AssignProjects::where('ProjectManager', $user)->get();
 
-			foreach($prjman as $pj)
+			foreach ($prjman as $pj) {
 
-				$pjt_name = $pj->ProjectName;
+					$pjt_id = $pj->ProjectName;
 
-				$projects = Project::where('ProjectName',$pjt_name)->get();
+				$projects = Project::where('ProjectID', $pjt_id)->get();
 
+				$projectids = DB::table('assign_teams')->where('ProjectID', $pjt_id)->get();
 
 			}
 
+			/*foreach ($projects as $pt) {
 
-		return view('hide.index', array('projects' => $projects,'prjman' => $prjman));
+				$pid = $pt->ProjectID;
+
+				$projectids = DB::table('assign_teams')->where('ProjectID', $pid)->get();
+
+			}*/
+
+
+		}
+
+		return view('hide.index', array('projects' => $projects,'prjman' => $prjman,'projectids' =>$projectids));
 
 	}
 
@@ -70,9 +84,10 @@ class HideController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($team_id)
 	{
-		//
+		$team = Team::find($team_id);
+		return view('hide.show', array('team' => $team));
 	}
 
 	/**
@@ -84,9 +99,6 @@ class HideController extends Controller {
 	public function edit($ProjectID)
 	{
 		$project = Project::find($ProjectID);
-
-
-
 
 		return view('hide.edit', array('project' => $project));
 
@@ -112,6 +124,9 @@ class HideController extends Controller {
 	{
 		//
 	}
+
+
+	//To Hide projects from View
 	public function update($ProjectID,Request $request)
 	{
 		$project = Project::find($ProjectID);

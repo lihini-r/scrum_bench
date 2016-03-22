@@ -22,8 +22,6 @@ class TeamController extends Controller
     {
         $team = Team::all();
 
-        //$project=Project::where('Hide','off')->get();
-
         return view('teams.index', array('teams' => $team));
 
     }
@@ -118,9 +116,26 @@ class TeamController extends Controller
      * @param  int $team_id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($team_id)
     {
-        //
+
+
+
+
+        $team = Team::findOrFail($team_id);
+
+        $team->delete();
+
+
+        DB::table('assign_teams')->where('team_id'
+            , '=', $team_id)->delete();
+
+        Session::flash('flash_message', 'Team successfully deleted!');
+
+        return redirect()->route('teams.index');
+
+
+
     }
 
 

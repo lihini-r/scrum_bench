@@ -4,10 +4,17 @@
     <br/>
     <br/>
     <br/>
-    <div class="container">
+    <div class="container"><div class="container"><div style="width:90%;padding:5px 5px 15px 80px;">
+                <div class="panel panel-info" >
+                    <div class="panel-heading"><h1>My Profile </h1></div>
+
+                    <div class="panel-body">
+
+                        <div class="panel-body">
 
 
-        <div align="left"><table><tr><td>
+
+                        <div align="left"><table><tr><td>
             <div><img src="{{ URL::asset('dist/img/pm.png')}}" class="user-image" alt="User Image" height="150" width="150">
 
 
@@ -50,5 +57,6 @@
 
         </div>
           @endif
+                        </div></div></div></div></div>
     </div>
 @endsection

@@ -12,8 +12,10 @@ class CreateEissuesTable extends Migration {
 	 */
 	public function up()
 	{
+		//create table
 		Schema::create('eissues', function(Blueprint $table)
 		{
+			//add columns
 			$table->increments('eID');
 			$table->string('emailFrom');
 			$table->string('subject');

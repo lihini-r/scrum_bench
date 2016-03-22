@@ -2,10 +2,13 @@
 
 use App\Account;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Auth;
 use App\User;
 use Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB as DB;
+
+
 
 class AccountController extends Controller {
 
@@ -17,7 +20,10 @@ class AccountController extends Controller {
 	public function index()
 	{
 		$accounts = Account::all();
+
 		return view('accounts.index', array('accounts' => $accounts));
+
+
 	}
 
 	/**
@@ -30,19 +36,16 @@ class AccountController extends Controller {
 		return view('accounts.create');
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
+     //Strore newly created records to the database
+
 	public function store(Request $request)
 	{
 		$acc_head = User::lists('name', 'designation');
 
 		$this->validate($request, [
-			'acc_name' => 'required',
+			'acc_name' => 'required|unique:accounts',
 			'description' => 'required',
-			'acc_head' => 'required',
+			'acc_head' => 'required |unique:accounts',
 
 
 		]);
@@ -65,7 +68,12 @@ class AccountController extends Controller {
 	public function show($id)
 	{
 		$account = Account::find($id);
+
 		return view('accounts.show', array('account' => $account));
+
+
+
+
 	}
 
 	/**
@@ -82,12 +90,7 @@ class AccountController extends Controller {
 
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+
 	/*public function update($id)
 	{
 		//
@@ -104,6 +107,9 @@ class AccountController extends Controller {
 		//
 	}
 
+
+    //Update method for accounts
+
 	public function update($id, Request $request)
 	{
 		$account = Account::find($id);
@@ -112,7 +118,6 @@ class AccountController extends Controller {
 			'acc_name' => 'required',
 			'description' => 'required',
 			'acc_head' => 'required',
-
 		]);
 
 		$input = $request->all();

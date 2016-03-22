@@ -12,8 +12,10 @@ class CreateCodesharesTable extends Migration {
 	 */
 	public function up()
 	{
+		//create table
 		Schema::create('codeshares', function(Blueprint $table)
 		{
+			//ad columns
 			$table->increments('codeId');
 			$table->string('title');
 			$table->string('language');

@@ -12,8 +12,6 @@ $response = $kernel->handle(
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
     <meta charset="UTF-8" content="authenticity_token" name="csrf-param">
     <title>Backlog</title>
 </head>
@@ -23,13 +21,8 @@ $response = $kernel->handle(
     <button class="btn btn-block btn-info pull-right" style="width: 10%;"
             onclick="loadOnButtonClick('pages/createUserStory.php')">
         CREATE
-    </button>
-    <button class="btn btn-block btn-info pull-right" style="width: 10%;"
-            onclick="loadOnButtonClick('pages/logic/test.php')">
-        TEST
-    </button>
+    </button>	
 </div>
-
 
 <section class="content">
     <div class="box box-default">

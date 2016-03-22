@@ -11,9 +11,31 @@ use \App\User;
         <a href="{{ route('teams.index') }}">Go back to all Teams</a></p>
 
 
-        <h1 style="color: #00a157">Team  : {{ $team->TeamName}}</h1>
 
-        <div class="col-md-6" style="background-color: #99ee99">
+
+        <div class="box box-default" style="padding: 20px 50px 0px 20px ;">
+            <div class="box-header with-border">
+
+                <div class="panel panel-info">
+
+                    <div class="panel-heading" style="padding: 8px 10px 8px 20px ;">
+
+                        <h1 style="color: #00a157"> {{ $team->TeamName}}</h1>
+                    </div>
+
+                </div>
+
+
+
+                <div class="panel panel-info">
+                    <div class="panel-heading"></div>
+
+
+
+                    <div class="panel-body">
+
+
+                    <div class="col-md-6" style="background-color: #7adddd">
             <br>
         <table class="table table-striped" style="background-color: #ddffdd">
 
@@ -22,6 +44,7 @@ use \App\User;
                 <td>{{  $team->TeamName }}</td></tr>
 
             <tr><td>Developers</td>
+
                 <?php
                 $devs=DB::table('dev_team')->where('team_id',$team->team_id)->get();
                 $users = User::where('designation','Developer')->get();
@@ -34,7 +57,7 @@ use \App\User;
                     $count = 0;
                     foreach ($devs as $dev) {
                         if($count!=0){
-                            echo ", ";
+                            echo "<br> ";
                         }
                         echo $user_id_name[$dev->user_id];
                         $count++;
@@ -55,7 +78,15 @@ use \App\User;
 
 
 
-    </div> </div>
+    </div>
+
+
+            </div>
+            <br>
+        </div>
+    </div>
+        </div>
+    </div>
 @endsection
 
 

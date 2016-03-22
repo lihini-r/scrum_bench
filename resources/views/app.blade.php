@@ -5,6 +5,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Dev Dashboard</title>
@@ -29,9 +30,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-
     <![endif]-->
-	@yield('page_styles')
+    @yield('page_styles')
+
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -92,7 +93,7 @@ desired effect
                                         <a href="#">
                                             <div class="pull-left">
                                                 <!-- User Image -->
-                                                <img src="{{ URL::asset('dist/img/pm.png') }}" class="img-circle" alt="User Image">
+                                                <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
                                             </div>
                                             <!-- Message title and timestamp -->
                                             <h4>
@@ -108,7 +109,7 @@ desired effect
                                 $accounts = Account::all();
                                 return view('accounts.index', array('accounts' => $accounts));
                             </li>
-                            <li class="footer"><a href="{{ url('/messages1s') }}">See All Messages</a></li>
+                            <li class="footer"><a href="#">See All Messages</a></li>
                         </ul>
                     </li><!-- /.messages-menu -->
 
@@ -176,14 +177,18 @@ desired effect
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="user-image" alt="User Image">
+                           {{-- <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">--}}
+                            <img src="{{ URL::asset('dist/img/pm.png')}}" class="user-image" alt="User Image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image">
+
+                                <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+
+                                {{--<img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image">--}}
                                 <p>
                                     {{ Auth::user()->name }} - {{ Auth::user()->designation }}
 
@@ -216,7 +221,8 @@ desired effect
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image">
+                    <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+
                 </div>
                 <div class="pull-left info">
                     <p>{{ Auth::user()->name }}</p>
@@ -238,117 +244,245 @@ desired effect
             <!-- /.search form -->
 
             <!-- Sidebar Menu -->
-            <ul class="sidebar-menu">
+           {{-- <ul class="sidebar-menu">
                 <li class="header">Favourites</li>
                 <!-- Optionally, you can add icons to the links -->
                 <li class="active"><a href="#" class="page-link" name="pages/Projects.html"><i class="fa fa-link"></i>
                     <span>Projects</span></a></li>
 
-
+--}}{{----}} {{--@if(\Auth::user()->hasRole('Developer'))
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>User Story</span> <i
-                            class="fa fa-angle-left pull-right"></i></a>
+                                class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="{{ url('/user_stories') }}">Backlog</a>
-                        </li>
+                        <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/backlog.php') }}">Backlog</a></li>
                         <li class="active"><a href="{{ url('/sprints') }}">Sprint</a>
                         </li>
-			<li class="active"><a href="{{ url('/sprint_schedules') }}">Scrum Board</a>
-                        </li>
-			<li class="active"><a href="{{ url('/messages1s') }}">Messages</a>
-			</li>
                         <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">search</a></li>
                     </ul>
-                </li>
+                </li>--}}{{--
+            @endif--}}
 
-               @if(\Auth::user()->hasRole('Super Admin'))
+                {{--Granting the permission of accessing project accounts to super admin--}}
 
-                    {{--<li class="active"><a href="{{ url('/accounts') }}">Accounts</a>
-                    </li>--}}
-                    <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Accounts</span> <i
-                                class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="{{ url('/accounts') }}">Account</a>
-                        </li>
-                    </ul>
-                </li>
+                            @if(\Auth::user()->can('create_accounts'))
+
+                    <li class="active"><a href="{{ url('/accounts') }}">Accounts</a>
+                    </li>
                 @endif
-				
-				<li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Code Board</span> <i
-                                class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="{{ url('/codeshares') }}">view codes</a>
-                        </li>
-                    </ul>
-                </li>
+
 
 
                {{-- <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Profile</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
+
                         <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
                         </li>
+
                     </ul>
                 </li>--}}
+                @if(\Auth::user()->can('create_profile'))
 
                 <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
                 </li>
-				
-				<li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Projects</span> <i
-                                class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="{{ url('/projects') }}">Projects</a>
-                        </li>
-                        <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
-                        <li class="active"><a href="{{ url('/assign/create') }}">Assign Projects</a>
-                        </li>
-                    </ul>
-                </li>
 
-				{{--  <li>
-                    <!-- Menu Toggle Button -->
-                    <a href="{{ url('/auth/register') }}">
-                        <span class="hidden-xs">Register</span>
-                    </a>
-                </li--}}>
-				
-				<li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
+                @endif
+
+
+
+                @if(\Auth::user()->can('view_user_roles'))
+
+                    <li class="active"><a href="{{ url('/roles') }}">User Roles</a>
+                    </li>
+            @endif
+                @if(\Auth::user()->can('edit_permissions'))
+
+                <li class="active"><a href="{{ url('/permissions') }}">Permissions</a>
+
+                </li>
+                @endif
+
+
+                @if(\Auth::user()->can('view_projects'))
+
+                    <li class="active"><a href="{{ url('/pages/ProjectDashboard.html') }}" >Projects</a>
+                    </li>
+
+
+                @endif
+
+
+
+
+
+
+
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Projects</span> <i
                             class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
+                <ul class="treeview-menu">
+                    <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
+-->
+                    <li class="active"><a href="{{ url('/projects') }}">Projects</a>
+                    </li>
 
-                        <li class="active"><a href="{{ url('/home') }}">My Dashboard</a>
-                        </li>
-                    </ul>
-                </li>
-				
-                <li class="treeview">
+                    <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
+
+
+
+                    <li class="active"><a href="{{ url('/assign/create') }}">Assign Project Managers</a>
+
+
+                    </li>
+                </ul>
+            </li>
+
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Teams</span> <i
+                            class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
+-->
+                    <li class="active"><a href="{{ url('/teams') }}">Teams</a>
+                    </li>
+
+                    <li class="active"><a href="{{ url('/teams/create') }}">Create Teams</a>
+
+
+                    <li class="active"><a href="{{ url('/assign_teams/create') }}">Assign Teams</a>
+
+
+
+
+
+
+                    </li>
+                </ul>
+            </li>
+
+
+
+
+
+
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
+                            class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li class="active"><a href="{{ url('/hide') }}">Project Manager
+                            Dashboard</a></li>
+                    <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">My Dashboard</a>
+                    </li>
+                    @if( Auth::user()->designation=='Account Head') <!-- Account head dashboard is displayed only if it is account head-->
+
+                        <li class="active"><a href="{{ url('home/') }}">Account Head Dashboard</a></li>
+                    @endif
+                </ul>
+            </li>
+
+
+            <li class="treeview">
+                <a href="/codeshares"><i class="fa fa-link"></i> <span>Code Board</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li class="active"><a href="{{ url('/codeshares') }}">view codes</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i><span>Messages</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li class="active"><a href="{{ url('/messages1s') }}">Inbox</a></li>
+                    <li class="active"><a href="{{ url('/sentmessages') }}">Outbox</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Emails</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li class="active"><a href="{{ URL::to('eissues/create') }}">Issues</a></li>
+                    <li class="active"><a href="{{ URL::to('eothers/create') }}">Others</a></li>
+
+                </ul>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                {{--  <li>
+                      <!-- Menu Toggle Button -->
+                      <a href="{{ url('/auth/register') }}">
+                          <span class="hidden-xs">Register</span>
+                      </a>
+                  </li>--}}
+
+                {{--<li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
                             class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
                         <li class="active"><a href="#" class="page-link" name="pages/ProjectDashboard.html">Project
                             Dashboard</a></li>
                         <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">My Dashboard</a>
-                        <li class="active"><a href="{{ url('accountheaddashboards/create') }}">Account Head Dashboard</a>
                         </li>
                     </ul>
-                </li>
-				
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Emails</span> <i
-                                class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/issues.html') }}">Issues</a></li>
-
-                        </li>
-                    </ul>
-                </li>
-
-            </ul><!-- /.sidebar-menu -->
+                </li>--}}
+            <!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
     </aside>
@@ -362,7 +496,6 @@ desired effect
                 <br/>
             </h1>
             <ol class="breadcrumb">
-                @yield('breadcrumb')
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Dashboard</li>
             </ol>
@@ -385,20 +518,29 @@ desired effect
 
 </div><!-- ./wrapper -->
 
-<!-- REQUIRED JS SCRIPTS -->
 @yield('page_script1')
+
+
+<!-- REQUIRED JS SCRIPTS -->
+
+<!-- jQuery 2.1.4 -->
+<script src="{{ URL::asset('plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="{{ URL::asset('bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ URL::asset('dist/js/app.min.js') }}"></script>
 <script src="{{ URL::asset('bootstrap/js/content.load.js') }}"></script>
 
+<script src="{{ URL::asset('plugins/input-mask/jquery.inputmask.js') }}"></script>
+<script src="{{ URL::asset('plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
+<script src="{{ URL::asset('plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
+
 @yield('page_script2')
 
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
+
+        <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
-	 
 </body>
 </html>

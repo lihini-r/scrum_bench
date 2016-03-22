@@ -29,6 +29,15 @@
 
         <div class="form-group">
             {!! Form::label('to', 'To', ['class' => 'control-label']) !!}
+            <select id="to" name="to" class="form-control" style="width: 150px">
+                <?php $users = DB::table('users')->pluck('name');
+                    foreach($users as $user)
+                    {
+                        echo '<option>'.$user->name.'</option>';
+                    }
+                ?>
+
+            </select>
             <input type='text' id='to' style="width: 150px" name='to'  >
             <input type='text' id='from' style="width: 0px" name='from' value={{ Auth::user()->name }}  >
 
@@ -44,5 +53,6 @@
 
         {!! Form::close() !!}
         </div>
+
     </div>
 @endsection

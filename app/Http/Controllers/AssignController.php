@@ -63,13 +63,21 @@ class AssignController extends Controller {
 
 		$this->validate($request, [
 			'ProjectName' => 'required|unique:assign_projects',
-			'ProjectManager'=>'required|unique:assign_projects'
+			'ProjectManager'=>'required|unique:assign_projects',
+
 
 		]);
 
 		$input = $request->all();
 
 		AssignProjects::create($input);
+
+		$pid = $request->get('ProjectName');
+
+		DB::table('projects')->where('ProjectID', '=', $pid)->update(
+
+			[ 'State'=> 'Open']);
+
 
 
 		Session::flash('flash_message', 'Project Manager successfully Added!!!');

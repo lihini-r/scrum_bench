@@ -2,26 +2,20 @@
 <?php
 use Illuminate\Support\Facades\DB as DB;
 use \App\Http\Controllers\AccountController;
-use \App\Http\Controllers\StoryController;
-use \App\Http\Controllers\WorklogController;
 
 $accounts = DB::table('accounts')->get();
-$user_stories = StoryController::getAssignStories();
-$result_projects = DB::table('projects')->get();
-$project_id_name = array();
 
-foreach ($result_projects as $result_project) {
-    $project_id_name[$result_project->default . $result_project->ProjectID] = $result_project->ProjectName;
-}
 
 ?>
 
 @section('content')
 	<br/>
-    <div class="container">
-	<div style="width:80%;padding:5px 5px 15px 80px;">
+	<div style="width:90%;padding:5px 5px 15px 80px;">
 		<div class="panel panel-success" >
-			<div class="panel-heading">Home</div>
+			   @if(\Auth::user()->hasRole('Super Admin'))
+
+			<div class="panel-heading">Super Admin Dashboard</div>
+
 			<div class="panel-body">
 
 				<div class="panel-body">
@@ -43,86 +37,35 @@ foreach ($result_projects as $result_project) {
 								<td>{{ $account->acc_name }}</td>
 								<td>{{ $account->description }}</td>
 								<td>{{ $account->acc_head }}</td>
+
+
+								<!-- we will also add show, edit, and delete buttons -->
 								<td>
+
+									<!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
+									<!-- we will add this later since its a little more complicated than the other two buttons -->
+
+									<!-- show the nerd (uses the show method found at GET /nerds/{id} -->
+
 									<a class="btn btn-small btn-success" href="{{ URL::to('accounts/' . $account->id) }}">Show </a>
+
+									<!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
+
+
 								</td>
 							</tr>
 						@endforeach
 						</tbody>
 					</table>
+
 				</div>
 			</div>
+
 		</div>
-		
-		<h1>Account Head Dashboard</h1>
-		<br>
-
-		<?php $c= count(DB::table("projects"));?>
-			@foreach($projects as $key => $project)
-			<?php $c=$c+1?>
-
-			<div class="container" style="position: relative;left: auto">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-lg-3 col-xs-6">
-							<!-- small box -->
-							<table>
-								<tr>
-									<div class="small-box bg-aqua" >
-										<div class="inner">
-											<h4><b>{{ $project->ProjectName }}</b></h4>
-											<p>{{ $project->ProjectID }}</p>
-										</div>
-										<a href="{{ URL::to('projects/' . $project->ProjectID) }}" class="small-box-footer">
-												More info <i class="fa fa-arrow-circle-right"></i>
-										</a>
-									</div>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</div>
-				
-			</div>
-			@endforeach
-		<?php echo $c?>		
+		@else
+			<img src="{{ URL::asset('dist/img/project-team1.png') }}" alt="Team Image">
+			@endif
 	</div>
-	<div style="width:95%;padding:5px 5px 15px 15px;">
-            @if($user_stories!=null)
-                <div class="panel panel-info">
-                    <div class="panel-heading">Developer Dashboard</div>
-
-                    <div class="panel-body">
-                        <h4>Stories Assigned to me</h4>
-                        <table class="table table-striped table-hover">
-                            <thead style="background-color: #34cccd; color: white; font-size: 120%;">
-                            <tr>
-                                <td>Story ID</td>
-                                <td>Project Name</td>
-                                <td>Task</td>
-                                <td>Progress</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($user_stories as $key => $user_story)
-                                <tr>
-                                    <td><a href="{{ URL::to('user_stories/' . $user_story->story_id) }}">{{ $user_story->story_id }}</a></td>
-                                    <td>{{ $project_id_name[$user_story->project_id] }}</td>
-                                    <td>{{ $user_story->summary }}</td>
-                                    <td><?php
-                                        $logged_hrs = WorklogController::getTotalLoggedHours($user_story->story_id);
-                                        $est_hrs = intval($user_story->org_est);
-                                        echo DynUI::getProgressMarkup($est_hrs, $logged_hrs);
-                                        ?></td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-            @endif
-        </div>
-</div>
+	</div>
 	{{--<img src="{{ URL::asset('dist/img/project-team1.png') }}" alt="Team Image">--}}
 @endsection

@@ -13,11 +13,15 @@
 @section('content')
     <br/>
     <div class="container">
-        <div class="box box-default">
-            <div class="box-header with-border">
-                <br/>
-                <h1>Editing Account {{ $account->id }}</h1>
-                <p class="lead"> <a href="{{ route('accounts.index') }}">back</a></p>
+        <div style="width:90%;padding:5px 5px 15px 80px;">
+            <div class="panel panel-info" >
+                <div class="panel-heading"><h1>Editing Account {{ $account->id }}</h1></div>
+
+                <div class="panel-body">
+
+                    <div class="panel-body">
+
+                    <p class="lead"> <a href="{{ route('accounts.index') }}">back</a></p>
                 <hr>
                 @if($errors->any())
                     <div class="alert alert-danger">
@@ -53,29 +57,15 @@
                     {!! Form::text('description', null, ['class' => 'form-control', 'style' => 'width:50%;']) !!}
                 </div>
 
-                <div class="form-group">
-                    {!! Form::label('acc_head', 'Account Head:', ['class' => 'control-label']) !!}
-                    <?php $results = DB::table('users')->get(); ?>
-                    <select class="form-control " name="acc_head" style="width: 50%"
-                    >
-                        <?php
-                        foreach ($results as $result) {
-                            $id = $result->id;
-                            $name=$result->name;
-                            $email = $result->email;
-                            $pwd = $result->password;
-                            $eid = $result->eid;
-                            $designation = $result->designation;
 
-                            if($designation=="Account Head"){
+                         <div class="form-group">
+                             {!! Form::label('acc_head', 'Account Head:', ['class' => 'control-label']) !!}
+                             {!! Form::text('acc_head', null, ['class' => 'form-control', 'style' => 'width:50%;','readonly'=>'true']) !!}
 
-                                echo "<option value = $name >$name</option >";
-                            }
 
-                        }
-                        ?>
-                    </select>
-                </div>
+
+
+                         </div>
 
 
 
@@ -85,8 +75,9 @@
                 {!! Form::close() !!}
 
             </div>
-        </div>
+        </div>  </div>  </div>  </div>
     </div>
+
 @endsection
 
 

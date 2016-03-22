@@ -2,10 +2,6 @@
 
 
 @section('page_styles')
-        <!--script type="text/javascript"
-            src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript"
-            src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script-->
 
 <link rel="stylesheet" href="{{ URL::asset('plugins/datatables/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('bootstrap/css/bootstrap.min.css') }}">
@@ -19,90 +15,121 @@
 @endsection
 
 
+
 @section('content')
     <br/>
-    <div class="form-group" style="padding:20px 30px 20px 20px;">
-        <a class="btn btn-small btn-info pull-right" href="{{ URL::to('projects/create') }}">Add New Project</a>
 
-        @foreach($account as $key => $acc)
 
-        <h4 style="color: #00a65a" ><b>{{$acc->acc_name}}</b></h4>
 
-            @endforeach
-
-    </div>
     <br/>
     <br/>
-    <div class="container">
 
-        <div class="col-md-11" style="background-color:  lightgreen">
-        <br>
+             <div class="container">
+
+                 <div class="box box-default" style="padding: 20px 50px 0px 20px ;">
+                     <div class="box-header with-border">
+
+                         <div class="panel panel-info">
+
+                             <div class="panel-heading" style="padding: 8px 10px 8px 20px ;">
+
+                                 <div class="form-group" >
+                                     <a class="btn btn-small btn-info pull-right" href="{{ URL::to('projects/create') }}">Add New Project</a>
+
+                                     @foreach($account as $key => $acc)
+
+                                         <h1 ><b>{{$acc->acc_name}}</b></h1>
+
+                                     @endforeach
+
+                                 </div>
 
 
-       <table class="table table-striped " id="myTable" >
+                             </div>
 
-
-            <thead style="background-color: mediumseagreen">
-            <tr>
-                <td>Project ID</td>
-                <td>Project Name</td>
-                <td> Description</td>
-                <td>State</td>
-                <td>Added Date</td>
-                <td>Due Date</td>
-                <td>Show/Edit/Hide</td>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach( $projects as $key =>  $project)
-                <tr>
-                    <td>{{$project->default. $project->ProjectID }}</td>
-                    <td>{{  $project->ProjectName }}</td>
-                    <td>{{  $project->Description }}</td>
-                     <td>{{  $project->State }}</td>
+                         </div>
 
 
 
 
-
-                    <td>{{  $project->add_date }}</td>
-                    <td>{{  $project->due_date }}</td>
-
+                         <div class="col-md-11" style="background-color: #7adddd">
+                            <br>
 
 
-
-                    <!-- we will also add show, edit, and delete buttons -->
-                    <td>
-
-                        <!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
-                        <!-- we will add this later since its a little more complicated than the other two buttons -->
-
-                        <!-- show the nerd (uses the show method found at GET /nerds/{id} -->
-                        <a class="btn btn-small btn-info" style="background-color: #5b9909" href="{{ URL::to('projects/' . $project->ProjectID) }}">Show</a>
-
-                        <!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
-                        <a class="btn btn-small btn-info" style="background-color: #005384" href="{{ URL::to('projects/' . $project->ProjectID . '/edit') }}">Edit </a>
-
-                        <a class="btn btn-small btn-info" href="{{ URL::to('hide/' . $project->ProjectID . '/edit') }}">Hide </a>
+                           <table class="table table-striped " id="myTable" >
 
 
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
+                                <thead style="background-color: #3c8dbc">
+                                <tr style="font-weight: 900 ;color: #eff7ff">
+
+                                <td>Project ID</td>
+                                    <td>Project Name</td>
+                                    <td> Description</td>
+                                    <td>State</td>
+                                    <td>Duration</td>
+                                    <td>Show/Edit/Hide</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach( $projects as $key =>  $project)
+                                    <tr>
+                                        <td style="color: red">{{$project->default. $project->ProjectID }}</td>
+                                        <td>{{  $project->ProjectName }}</td>
+                                        <td>{{  $project->Description }}</td>
 
 
-<br>
+                                        @if($project->State=='Open')
 
-    </div>
+                                            <td> <span class="label label-success">{{$project->State}}</span></td>
 
-    @section('page_script2')
-            <!--script type="text/javascript"
-            src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript"
-            src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script-->
+
+                                        @elseif($project->State=='Closed')
+
+                                            <td> <span class="label label-info">{{$project->State}}</span></td>
+
+                                        @elseif($project->State=='Released')
+
+                                            <td> <span class="label label-warning">{{$project->State}}</span></td>
+
+
+
+                                        @endif
+
+
+
+
+
+                                            <td>{{  $project->duration }}   months</td>
+
+
+
+
+
+                                        <td>
+
+
+                                            <a class="btn btn-small btn-info" style="background-color: #5b9909" href="{{ URL::to('projects/' . $project->ProjectID) }}">Show</a>
+
+                                            <a class="btn btn-small btn-info" style="background-color: #005384" href="{{ URL::to('projects/' . $project->ProjectID . '/edit') }}">Edit </a>
+
+                                            <a class="btn btn-small btn-info" href="{{ URL::to('hide/' . $project->ProjectID . '/edit') }}">Hide </a>
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    <br>
+
+             </div>
+
+
+
+                     </div></div>
+@section('page_script2')
 
     <link rel="stylesheet" href="{{ URL::asset('plugins/datatables/jquery.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('bootstrap/css/bootstrap.min.css') }}">
@@ -117,16 +144,8 @@
             $('#myTable').dataTable();
         });
     </script>
+
 @endsection
-
-
-
-
-
-
-
-
-
 
 
 

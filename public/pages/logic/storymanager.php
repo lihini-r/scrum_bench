@@ -29,7 +29,6 @@ $rep = $_POST['rep'];
 $des = $_POST['des'];
 $orgEst = $_POST['orgEst'];
 $op = $_POST['operation'];
-//$ed = $_POST['edas'];
 
 $info_panel_prefix = "<div class=\"panel panel-success\"><div class=\"panel-heading\">Operation Succeeded</div><div class=\"panel-body\">";
 $info_panel_suffix = "</div></div>";
@@ -44,12 +43,6 @@ if (strcmp($op,'insert')==0) {
     $affected = DB::table('userstories')
         ->where('story_id', '=', $id)
         ->update(array('project' => $pro, 'sumary' => $sum, 'priority' => $pri, 'dueDate' => $dueD, 'asignee' => $asi, 'reporter' => $rep, 'description' => $des, 'org_estimate' => $orgEst));
-    echo $info_panel_prefix . "User Story [" . $id . "] Updated Successfully" . $info_panel_suffix;
-}
-else if (strcmp($op,'editA')==0) {
-    $affected = DB::table('userstories')
-        ->where('story_id', '=', $id)
-        ->update(array( 'asignee' => $asi));
     echo $info_panel_prefix . "User Story [" . $id . "] Updated Successfully" . $info_panel_suffix;
 }
 

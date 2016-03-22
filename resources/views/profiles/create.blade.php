@@ -8,8 +8,15 @@
     <br/>
     <br/>
     <br/>
-    <div class="container">
-        @if($errors->any())
+    <div class="container"><div style="width:90%;padding:5px 5px 15px 80px;">
+            <div class="panel panel-info" >
+                <div class="panel-heading"><h1>Create My Profile</h1></div>
+
+                <div class="panel-body">
+
+                    <div class="panel-body">
+
+                    @if($errors->any())
             <div class="alert alert-danger">
                 @foreach($errors->all() as $error)
                     <p>{{ $error }}</p>
@@ -54,5 +61,6 @@
         {!! Form::submit('Create Profile', ['class' => 'btn btn-primary']) !!}
 
         {!! Form::close() !!}
+                    </div></div></div></div></div>
     </div>
 @endsection

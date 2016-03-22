@@ -59,7 +59,7 @@ foreach ($names as $name) {
         <div class="form-group">
             Project<select class="form-control select2 select2-hidden-accessible" name="pro" style="width: 50%;"
                            tabindex="-1"
-                           aria-hidden="true" readonly="">
+                           aria-hidden="true">
                 <option value="<?php echo $prj_id; ?>" selected="selected">
                     <?php echo $prj_name; ?>
                 </option>
@@ -97,7 +97,7 @@ foreach ($names as $name) {
                 </div>
                 <input class="form-control" type="text" data-mask="" name="dueD"
                        data-inputmask="'alias': 'dd/mm/yyyy'"
-                       style="width: 48.5%;" value="<?php echo $due_date; ?>" readonly/>
+                       style="width: 48.5%;" value="<?php echo $due_date; ?>"/>
 
             </div>
         </div>
@@ -119,7 +119,7 @@ foreach ($names as $name) {
             Reporter<select class="form-control select2 select2-hidden-accessible" name="rep"
                             style="width: 50%;"
                             tabindex="-1"
-                            aria-hidden="true" readonly>
+                            aria-hidden="true">
                 <option selected="selected" value="<?php echo $prj_id; ?>">
                     <?php echo $pm ; ?>
                 </option>
@@ -137,7 +137,7 @@ foreach ($names as $name) {
 
         <div class="form-group">
             Orginal estimate<input class="form-control" name="orgEst" type="text" placeholder=""
-                                   style="width: 50%;" value="<?php echo $orgEST; ?>" />
+                                   style="width: 50%;" value="<?php echo $orgEST; ?>"/>
         </div>
 
         <input type="hidden" name="_token" value="{{{ csrf_token() }}}"/>
@@ -175,7 +175,7 @@ foreach ($names as $name) {
                 console.log(jqXHR.responseText);
                 console.log(textStatus, errorThrown);
                 var warning_out = "<p class='bg-warning'>" + errorThrown + "</p>";
-                $('#dev-dash-sub-content').html(jqXHR.responseText);
+                $('#dev-dash-sub-content').html("Proceed with warnings");
             }
         });
         return false; // cancel original event to prevent form submitting

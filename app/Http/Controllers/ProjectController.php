@@ -23,18 +23,21 @@ class ProjectController extends Controller {
 	 */
 	public function index()
 	{
-	//	$project = Project::all();
+
 		if(\Auth::check() && \Auth::user()->designation === 'Account Head') {
 
 			$user = \Auth::user()->name;
 
 			$account = Account::where('acc_head',  $user)->get();
 
-			//$account_name=Account::where('acc_head',  $user)->get('acc_name');
+			foreach($account as $acc){
 
-			$project = Project::where('Hide', 'off')->get();
+				$aname=$acc->acc_name;
+
+			$project = Project::where('Hide', 'off')->where('acc_name', $aname)->get();
+
+			}
 		}
-
 
 		return view('projects.index', array('projects' => $project,'account' => $account));
 	}
@@ -74,8 +77,7 @@ class ProjectController extends Controller {
 			'ProjectName' => 'required',
 			'Description' => 'required',
 			'State' => 'required',
-			'add_date' => 'required|date|date_format:Y-m-d|',
-			'due_date' => 'required|date|date_format:Y-m-d|after:add_date'
+			'duration' => 'required|integer'
 		]);
 
 		$input = $request->all();
@@ -116,9 +118,6 @@ class ProjectController extends Controller {
 	{
 		$project = Project::find($ProjectID);
 
-
-
-
 		return view('projects.edit', array('project' => $project));
 
 	}
@@ -148,7 +147,11 @@ class ProjectController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+
+
+
+
+
 	}
 
 
@@ -160,8 +163,7 @@ class ProjectController extends Controller {
 			'ProjectName' => 'required',
 			'Description' => 'required',
 			'State'=>'required',
-			'add_date' => 'required|date|date_format:Y-m-d',
-			'due_date' => 'required|date|date_format:Y-m-d|after:add_date'
+			'duration' => 'required|integer'
 		]);
 
 		$input = $request->all();
@@ -173,31 +175,6 @@ class ProjectController extends Controller {
 		return redirect()->back();
 	}
 
-	/*
-
-	public function updatehide($ProjectID, Request $request)
-	{
-		$project = Project::find($ProjectID);
-
-		$this->validate($request, [
-			'ProjectName' => 'required',
-			'Description' => 'required',
-			'State'=>'required',
-			'Hide'=>'required',
-			'add_date' => 'required|date|date_format:Y-m-d',
-			'due_date' => 'required|date|date_format:Y-m-d|after:add_date'
-		]);
-
-		$input = $request->all();
-
-		$project->fill($input)->save();
-
-		Session::flash('flash_message', 'Project successfully Hiden!!!!!!!');
-
-		return redirect()->back();
-	}
-
-*/
 
 
 

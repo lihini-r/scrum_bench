@@ -9,9 +9,10 @@ class Project extends Model {
         'ProjectName',
         'Description',
         'State',
-        'add_date',
-        'due_date',
+        'duration',
         'Hide',
+        'acc_name',
+        'id',
     ];
 
 

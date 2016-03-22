@@ -12,8 +12,10 @@ class CreateAccountheaddashboardsTable extends Migration {
 	 */
 	public function up()
 	{
+		//create table
 		Schema::create('accountheaddashboards', function(Blueprint $table)
 		{
+			//add columns
 			$table->increments('id');
 			$table->timestamps();
 		});

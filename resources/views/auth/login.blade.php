@@ -70,11 +70,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ul class="nav navbar-nav">              
               <!-- User Account Menu -->
               <li>
-                <!-- Menu Toggle Button -->
-                <a href="{{ url('/auth/register') }}">
-                  <span class="hidden-xs">Register</span>
-                </a>
-              </li>
+                    <!-- Menu Toggle Button -->
+                    <a href="{{ url('/auth/register') }}">
+                        <span class="hidden-xs">Register</span>
+                    </a>
+                </li>
             </ul>
           </div>
         </nav>
@@ -109,6 +109,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/login') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+
+
+
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">E-Mail Address</label>
