@@ -10,7 +10,7 @@ $result = DB::table('projects')->get();
 $project_id_name = array();
 
 foreach ($result as $res) {
-    $project_id_name[$res->default . $res->ProjectID] = $res->ProjectName;
+    $project_id_name[$res->ProjectID] = $res->ProjectName;
 }
 
 ?>

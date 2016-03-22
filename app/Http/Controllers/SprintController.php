@@ -31,10 +31,10 @@ class SprintController extends Controller
                 $current_team_id = $result_team->team_id;
             }
 
-            $result_project_ids = DB::table('assign_projects')->where('team_id', '=', $current_team_id)->get();
+            $result_project_ids = DB::table('assign_teams')->where('team_id', '=', $current_team_id)->get();
 
             foreach ($result_project_ids as $result_project_id) {
-                $result_project = $result_project_id->project_id;
+                $result_project = $result_project_id->ProjectID;
             }
 
 

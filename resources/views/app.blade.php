@@ -408,61 +408,22 @@ desired effect
 
                 </ul>
             </li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			
+			<li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>User Story</span> <i
+                            class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <!--<li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/backlog.php') }}">Backlog</a></li>-->
+                        <li class="active"><a href="{{ url('/user_stories') }}">Backlog</a>
+                        </li>
+                        <li class="active"><a href="{{ url('/sprints') }}">Sprint</a>
+                        </li>
+                        <li class="active"><a href="{{ url('/sprint_schedules') }}">Scrum Board</a>
+                        </li>
+                        <li class="active"><a href="{{ url('/search') }}">Search</a>
+                        </li>
+                    </ul>
+                </li>
 
 
                 {{--  <li>

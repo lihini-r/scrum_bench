@@ -17,6 +17,15 @@ Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 
 Route::resource('sprints', 'SprintController');
+
+Route::POST('user_stories/assign/{story_id}', ['uses' => 'StoryController@updateAssignee', 'as' => 'user_stories.assign']);
+Route::POST('sprints/status/{id}', ['uses' => 'SprintController@updateSprint', 'as' => 'sprints.status']);
+Route::resource('user_stories', 'StoryController');
+Route::resource('worklogs', 'WorklogController');
+Route::resource('workflows', 'WorkflowController');
+Route::resource('sprint_schedules', 'SprintScheduleController');
+Route::resource('search', 'SearchController@index');
+Route::GET('sprint_schedules/sprint/{sprint_id}', ['uses' => 'SprintScheduleController@getIndex', 'as' => 'sprint_schedules.get_sprint']);
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

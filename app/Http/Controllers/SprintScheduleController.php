@@ -32,10 +32,10 @@ class SprintScheduleController extends Controller
             $current_team_id = $result_team->team_id;
         }
 
-        $result_project_ids = DB::table('assign_projects')->where('team_id', '=', $current_team_id)->get();
+        $result_project_ids = DB::table('assign_teams')->where('team_id', '=', $current_team_id)->get();
 
         foreach ($result_project_ids as $result_project_id) {
-            $result_project = $result_project_id->project_id;
+            $result_project = $result_project_id->ProjectID;
         }
 
         $result_sprints_ids = DB::table('sprints')->where('project_id', '=', $result_project)->get();
@@ -44,7 +44,7 @@ class SprintScheduleController extends Controller
         }
 
         $sprint_schedules = SprintSchedule::where('sprint_id', $result_ids)->get();
-        return view('sprint_schedules.index', array('sprint_schedules' => $sprint_schedules));
+        return view('sprint_schedules.index', array('sprint_schedules' => $sprint_schedules, 'sprint_id' => $result_ids));
 
 
 
@@ -71,7 +71,7 @@ class SprintScheduleController extends Controller
         $input = $request->all();
 
         $stories_to_add = $input['stories_to_add'];
-        $sprint_id=$input['sprint_id'];
+        $sprint_id = $input['sprint_id'];
         DB::table('sprint_schedules')->where('sprint_id', '=', $sprint_id)->delete();
 
         unset($input['stories_to_add']);
@@ -137,7 +137,8 @@ class SprintScheduleController extends Controller
         //
     }
 
-    public static function isStoryExistInSprint($story_id,$sprint_id){
+    public static function isStoryExistInSprint($story_id, $sprint_id)
+    {
         $result_user_stories = DB::table('sprint_schedules')->where('story_id', '=', $story_id)->where('sprint_id', '=', $sprint_id)->get();
         $story_ids = array();
         $accept = false;
@@ -153,7 +154,8 @@ class SprintScheduleController extends Controller
 
     }
 
-    public static function getStoryInSprint($sprint_id){
+    public static function getStoryInSprint($sprint_id)
+    {
         $result_user_stories = DB::table('sprint_schedules')->where('sprint_id', '=', $sprint_id)->get();
         $story_ids = array();
 
@@ -162,6 +164,8 @@ class SprintScheduleController extends Controller
         }
         return $story_ids;
     }
+
+
 
 
 }

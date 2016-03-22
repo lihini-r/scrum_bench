@@ -9,13 +9,14 @@
     use \App\Http\Controllers\WorkflowController;
     use \App\Http\Controllers\WorklogController;
 
+    $id = Auth::user()->designation;
 
     //find the project name according to the given project id
     $result_projects = DB::table('projects')->get();
     $project_id_name = array();
 
     foreach ($result_projects as $result_project) {
-        $project_id_name[$result_project->default . $result_project->ProjectID] = $result_project->ProjectName;
+        $project_id_name[$result_project->ProjectID] = $result_project->ProjectName;
     }
 
 
@@ -36,14 +37,18 @@
     //update the next status and next action
     $last_status=WorkflowController::getStoryStatus($user_story->story_id);
 
-    $next_action = WorkflowController::getNextAction($last_status);
-    $next_status = WorkflowController::getNextState($last_status);
 
+    //$next_action = WorkflowController::getNextAction($last_status);
+    //$next_status = WorkflowController::getNextState($last_status);
+
+    $logged_hrs = WorklogController::getTotalLoggedHours($user_story->story_id);
+    $est_hrs = intval($user_story->org_est);
     ?>
 
 @endsection
 <?php
 $results = DB::table('users')->get();
+$dateNoe=date("Y-m-d");
 ?>
 
 @section('content')
@@ -62,9 +67,27 @@ $results = DB::table('users')->get();
 
 
                     <li role="presentation"><a href="#" data-toggle="modal" data-target="#work-log">WorkLog</a></li>
+                    @if($id=="Developer" )
+                        <?php
+                        $next_action = WorkflowController::getNextActionPM($last_status);
+                        $next_status = WorkflowController::getNextStatePM($last_status);
+                        ?>
+                            @if($next_status!="Approved")
                     <li role="presentation"><a href="#" data-toggle="modal"
-                                               data-target="#work-flow" <?php echo ($next_action == "Closed") ? "style='pointer-events: none; cursor: default; color:red'" : "" ?> >{{$next_action}}</a>
+                                               data-target="#work-flow" <?php echo ($next_status == "Resolved") ? "style='pointer-events: none; cursor: default; color:red'" : "" ?> >{{$next_action}}</a>
                     </li>
+                            @endif
+                    @endif
+
+                    @if($id=="Project Manager")
+                        <?php
+                        $next_action = WorkflowController::getNextActionPM($last_status);
+                        $next_status = WorkflowController::getNextStatePM($last_status);
+                        ?>
+                    <li role="presentation"><a href="#" data-toggle="modal"
+                                               data-target="#work-flow" <?php echo ($last_status == "Approved") ? "style='pointer-events: none; cursor: default; color:red'" : "" ?>>{{$next_action}}</a>
+                    </li>
+                    @endif
                     <li style="padding:0px 10px 0px 20px;" class="pull-right"><a
                                 href="{{ route('user_stories.index') }}">Back to Backlog</a></li>
 
@@ -162,7 +185,9 @@ $results = DB::table('users')->get();
 
                                             <input type="hidden" name="story_id" value="{{$user_story->story_id}}">
                                             <input type="hidden" name="user_id" value="{{ Auth::user()->id}}">
+
                                             <input type="hidden" name="status" value="{{$next_status}}">
+
                                             Date
 
                                             <div class="form-group">

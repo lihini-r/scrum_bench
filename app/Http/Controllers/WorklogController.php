@@ -39,16 +39,23 @@ class WorklogController extends Controller
      * @return Response
      */
     public function store(Request $request)
+
     {
+
         $input = $request->all();
 
         $new_id = Worklog::create($input)->id;
+
 
         Session::flash('flash_message', 'worklog successfully created!');
         Session::put($input['story_id'] . '-' . Auth::user()->id, 'started');
         Session::put($input['story_id'] . '-' . Auth::user()->id . "-id", $new_id);
 
+
+
         return redirect()->back();
+
+
     }
 
     /**
@@ -96,16 +103,14 @@ class WorklogController extends Controller
         foreach ($result as $res) {
             $sdate = $res->work_start_date;
         }
-        //$endDate=$input['work_end_date'];
+
         $end = date_create($input['work_end_date']);
-        //$endDate= date("Y-m-d H:i:s", $end);
 
         $start = date_create($sdate);
-        //$startDate= date("Y-m-d H:i:s", $start);
+
 
         $duration = date_diff($end, $start);
 
-        //echo "----------------------------------------------> ".$duration;
 
         $hours = $duration->h;
         $hours = $hours + ($duration->days * 24);

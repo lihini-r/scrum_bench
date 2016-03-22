@@ -116,7 +116,7 @@ class DynamicUIHelper
         $results = DB::table("projects")->get();
         $id_project_name_array = array();
         foreach ($results as $res) {
-            $id_project_name_array[$res->default . $res->ProjectID] = $res->ProjectName;
+            $id_project_name_array[$res->ProjectID] = $res->ProjectName;
         }
         return $id_project_name_array;
     }

@@ -44,10 +44,10 @@ class StoryController extends Controller
                 $current_team_id = $result_team->team_id;
             }
 
-            $result_project_ids = DB::table('assign_projects')->where('team_id', '=', $current_team_id)->get();
+            $result_project_ids = DB::table('assign_teams')->where('team_id', '=', $current_team_id)->get();
 
             foreach ($result_project_ids as $result_project_id) {
-                $result_project = $result_project_id->project_id;
+                $result_project = $result_project_id->ProjectID;
             }
 
 
@@ -90,9 +90,9 @@ class StoryController extends Controller
         if (sizeof($story_ids) > 0) {
             rsort($story_ids);
             $story_id_suffix = substr($story_ids[0], strpos($story_ids[0], "-") + 1);
-            $new_story_id = $project_id . "-" . (intval($story_id_suffix) + 1);
+            $new_story_id = "P".$project_id . "-" . (intval($story_id_suffix) + 1);
         } else {
-            $new_story_id = $project_id . "-1";
+            $new_story_id = "P".$project_id . "-1";
         }
 
         return $new_story_id;
@@ -237,10 +237,10 @@ class StoryController extends Controller
                 $current_team_id = $result_team->team_id;
             }
 
-            $result_project_ids = DB::table('assign_projects')->where('team_id', '=', $current_team_id)->get();
+            $result_project_ids = DB::table('assign_teams')->where('team_id', '=', $current_team_id)->get();
 
             foreach ($result_project_ids as $result_project_id) {
-                $result_projectID = $result_project_id->project_id;
+                $result_projectID = $result_project_id->ProjectID;
 
             }
 

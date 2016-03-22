@@ -42,11 +42,13 @@
 use \App\Http\Controllers\SprintScheduleController;
 use \App\Http\Controllers\SprintController;
 
+
+
 $result = DB::table('projects')->get();
 $project_id_name = array();
 
 foreach ($result as $res) {
-    $project_id_name[$res->default . $res->ProjectID] = $res->ProjectName;
+    $project_id_name[$res->ProjectID] = $res->ProjectName;
 }
 
 $result_developers = DB::table('users')->where('designation', '=', 'Developer')->get();
@@ -211,6 +213,8 @@ $id_name_array = DynUI::getIdNameArray("sprints", "id", "sprint_name");
 
 @section('page_script2')
     <script type="text/javascript">
+
+
         var adjustment;
 
         $("ol.simple_with_animation").sortable({

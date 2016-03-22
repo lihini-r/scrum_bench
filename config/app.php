@@ -147,6 +147,7 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
+		'App\Providers\HelperServiceProvider',
 
 	],
 
@@ -197,7 +198,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Html'      => 'Illuminate\Html\HtmlFacade',
-		'Entrust'   =>' Zizaco\Entrust\EntrustFacade',
+		'DynUI' => 'App\Helpers\DynamicUIHelper',
 
 	],
 

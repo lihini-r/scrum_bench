@@ -58,7 +58,7 @@ $assigned_project=StoryController::getAssignedProject();
                                         aria-hidden="true">
                         <?php
                         foreach ($results as $result) {
-                            $prj_id = $result->default . $result->ProjectID;
+                            $prj_id = $result->ProjectID;
                             $prj_name = $result->ProjectName;
                             echo "<option value = '$prj_id' >$prj_name</option >";
                         }
