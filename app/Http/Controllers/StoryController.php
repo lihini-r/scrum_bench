@@ -13,6 +13,10 @@ use Exception;
 class StoryController extends Controller
 {
 
+    /**
+     * Get a list of User Stories assigned to currently logged user
+     * @return List of user stories assigned to the currently logged user
+     */
     public static function getAssignStories()
     {
         $res_des = Auth::user()->designation;
@@ -36,29 +40,54 @@ class StoryController extends Controller
     {
         $res_des = Auth::user()->designation;
         $res_id = Auth::user()->id;
+        $res_name = Auth::user()->name;
         $current_team_id = "";
         $result_project = "";
 
-        if ($res_des == 'Developer' || $res_des == 'Project Manager') {
+        if ($res_des == 'Developer') {
+			// Get Team that current user has been assigned to
             $result_teams = DB::table('dev_team')->where('user_id', '=', $res_id)->get();
 
             foreach ($result_teams as $result_team) {
                 $current_team_id = $result_team->team_id;
             }
 
+			// Get Project that the Team has been assigned to
             $result_project_ids = DB::table('assign_teams')->where('team_id', '=', $current_team_id)->get();
 
             foreach ($result_project_ids as $result_project_id) {
                 $result_project = $result_project_id->ProjectID;
             }
 
-
+			Log::info("StoryController:index - Dev User : " . $res_id . ", team : " . $current_team_id . ", project : " . $result_project);
+			
+			// Get user Stories relevant to the resolved Project
             $user_stories = UserStory::where('project_id', $result_project)->get();
+            
+			Log::debug("StoryController:index - Selected User Stories :  " . $user_stories);
             return view('user_stories.index', array('user_stories' => $user_stories));
-        } else if ($res_des == 'Account Head' || $res_des == 'Administrator') {
-            //$result_id = DB::table('userstories')->where('name', '=', $res_id)->get();
+			
+        } else if ($res_des == 'Project Manager') {			
+			// Get Project that the Project Manager has been assigned to
+            $result_project_ids = DB::table('assign_projects')->where('ProjectManager', '=', $res_name)->get();
+            foreach ($result_project_ids as $result_project_id) {
+                $result_project = $result_project_id->ProjectName;
+            }
+			
+			// Get user Stories relevant to the resolved Project
+            $user_stories = UserStory::where('project_id', $result_project)->get();
+			
+			Log::info("StoryController:index - Project Manager : " . $res_id . ", name : " . $res_name . ", project : " . $result_project);
+			Log::debug("StoryController:index - Selected User Stories :  " . $user_stories);
+			
+            return view('user_stories.index', array('user_stories' => $user_stories));
 
+        } else if ($res_des == 'Account Head' || $res_des == 'Administrator') {
+			// For Account Heads and Administrators, return all Stories
             $user_stories = UserStory::all();
+            
+			Log::info("StoryController:index - " . $res_des . ", All Stories will be displayed");
+			
             return view('user_stories.index', array('user_stories' => $user_stories));
         }
     }
@@ -76,8 +105,10 @@ class StoryController extends Controller
 
 
     /**
-     * @param $project_id
-     * @return string
+     * Generates Next Story Display Id for a given project
+     *
+     * @param  String $project_id
+     * @return Story Display Id
      */
     public function generateStoryId($project_id)
     {
@@ -90,13 +121,22 @@ class StoryController extends Controller
         }
 
         if (sizeof($story_ids) > 0) {
+			// Revers the resultant story_ids array and get 0th index Story as the last added Story
             rsort($story_ids);
+			
+			// Substring from '-' in order to get suffix
             $story_id_suffix = substr($story_ids[0], strpos($story_ids[0], "-") + 1);
-            $new_story_id = "P".$project_id . "-" . (intval($story_id_suffix) + 1);
+			
+			Log::info("StoryController:generateStoryId - Last Story Display Id : " . $story_ids[0]);
+			
+			// Generated Story Display Id format : P[PROJECT_ID]-[NEXT_INCREMENTAL_VALUE]
+            $new_story_id = "P" . $project_id . "-" . (intval($story_id_suffix) + 1);
         } else {
-            $new_story_id = "P".$project_id . "-1";
+            $new_story_id = "P" . $project_id . "-1";
         }
 
+		Log::info("StoryController:generateStoryId - New Generated Story Display Id : " . $new_story_id);
+		
         return $new_story_id;
     }
 
@@ -107,25 +147,31 @@ class StoryController extends Controller
      */
     public function store(Request $request)
     {
-        //$input =new UserStory();
-        $this->validate($request, [
-            'project_id' => 'required',
-            'summary' => 'required',
-            'priority' => 'required',
-            'assignee' => 'required',
-            'reporter' => 'required',
-            'description' => 'required',
-            'org_est' => 'required',
+        try {
+            $this->validate($request, [
+                'project_id' => 'required',
+                'summary' => 'required',
+                'priority' => 'required',
+                'assignee' => 'required',
+                'reporter' => 'required',
+                'description' => 'required',
+                'org_est' => 'required',
+                'due_date' => 'required|date|date_format:Y-m-d',
+            ]);
 
-            'due_date' => 'required|date|date_format:Y-m-d',
+            $input = $request->all();
 
-        ]);
-        $input = $request->all();
+            $input['story_id'] = $this->generateStoryId($request->input('project_id'));
 
-        $input['story_id'] = $this->generateStoryId($request->input('project_id'));
+            UserStory::create($input);
+			
+			Log::debug("StoryController:store - Creating new Story : " . implode(',', array_slice($input, 1)));
 
-        UserStory::create($input);
-        Session::flash('flash_message', 'Story successfully created! ->' . $request->input('project_id'));
+            Session::flash('flash_message', 'Story successfully created! ->' . $request->input('project_id'));
+
+        } catch (Exception $ex) {
+            Log::error($ex->getMessage());
+        }
 
         return redirect()->back();
     }
@@ -156,41 +202,41 @@ class StoryController extends Controller
         return view('user_stories.edit', array('user_story' => $user_story));
     }
 
-
-
-
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $story_id
-     * @return Response
+     * @param int $story_id
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    /*public function update($id)
-    {
-        //
-    }*/
-
     public function update($story_id, Request $request)
     {
-        $user_story = UserStory::find($story_id);
+        try {
 
-        $this->validate($request, [
-            'project_id' => 'required',
-            'summary' => 'required',
-            'priority' => 'required',
-            'assignee' => 'required',
-            'reporter' => 'required',
-            'description' => 'required',
-            'org_est' => 'required',
-            'due_date' => 'required|date|date_format:Y-m-d'
-            //'end_date' => 'required|date|date_format:Y-m-d|after:start_date'
-        ]);
+            $user_story = UserStory::find($story_id);
 
-        $input = $request->all();
+            $this->validate($request, [
+                'project_id' => 'required',
+                'summary' => 'required',
+                'priority' => 'required',
+                'assignee' => 'required',
+                'reporter' => 'required',
+                'description' => 'required',
+                'org_est' => 'required',
+                'due_date' => 'required|date|date_format:Y-m-d'
+            ]);
 
-        $user_story->fill($input)->save();
+            $input = $request->all();
 
-        Session::flash('flash_message', 'Story successfully Updated!');
+            $user_story->fill($input)->save();
+			
+			Log::debug("StoryController:update - Updating Story : " . implode(',', array_slice($input, 2)));
+
+            Session::flash('flash_message', 'Story successfully Updated!');
+
+        } catch (Exception $ex) {
+            Log::error($ex->getMessage());
+        }
 
         return redirect()->back();
     }
@@ -225,6 +271,10 @@ class StoryController extends Controller
         //
     }
 
+    /**
+     * Get the Project that currently logged user's team owns
+     * @return String Project Id
+     */
     public static function getAssignedProject()
     {
         $res_des = Auth::user()->designation;
@@ -233,19 +283,19 @@ class StoryController extends Controller
         $result_project = "";
 
         if ($res_des == 'Developer' || $res_des == 'Project Manager') {
+			// Get Team that current user has been assigned to
             $result_teams = DB::table('dev_team')->where('user_id', '=', $res_id)->get();
 
             foreach ($result_teams as $result_team) {
                 $current_team_id = $result_team->team_id;
             }
 
+			// Get Project that the Team has been assigned to
             $result_project_ids = DB::table('assign_teams')->where('team_id', '=', $current_team_id)->get();
 
             foreach ($result_project_ids as $result_project_id) {
                 $result_projectID = $result_project_id->ProjectID;
-
             }
-
 
         }
 
