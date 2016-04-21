@@ -7,6 +7,8 @@ use Session;
 use Illuminate\Support\Facades\DB as DB;
 use Auth;
 use Illuminate\Http\Request;
+use Log;
+use Exception;
 
 class StoryController extends Controller
 {
@@ -249,5 +251,128 @@ class StoryController extends Controller
 
         return $result_projectID;
     }
+
+    /**
+     * Get List of User Stories that currently logged user's project contains
+     * @return List of User Stories
+     */
+    public static function getStoriesInProject()
+    {
+        $res_des = Auth::user()->designation;
+        $res_id = Auth::user()->id;
+        $current_team_id = "";
+        $result_project = "";
+        $user_stories = "";
+
+        if ($res_des == 'Developer') {
+			// Get Team that current user has been assigned to
+            $result_teams = DB::table('dev_team')->where('user_id', '=', $res_id)->get();
+
+            foreach ($result_teams as $result_team) {
+                $current_team_id = $result_team->team_id;
+            }
+			
+			// Get Project that the Team has been assigned to
+            $result_project_ids = DB::table('assign_teams')->where('team_id', '=', $current_team_id)->get();
+
+            foreach ($result_project_ids as $result_project_id) {
+                $result_project = $result_project_id->ProjectID;
+            }
+
+			// Get user Stories relevant to the resolved Project
+            $user_stories = DB::table('user_stories')->where('project_id', $result_project)->get();
+
+        } else if ($res_des == 'Project Manager' || $res_des == 'Account Head') {
+			// For Project Managers and Account Head, return all Stories
+            $user_stories = DB::table('user_stories')->get();
+        }
+
+
+        return $user_stories;
+    }
+
+	/**
+     * Get count of User Stories having a given priority among those have been assinged to logged user
+     *
+     * @param $priority
+     * @return int count of User Stories having a given priority
+     */
+    public static function getPriority($priority)
+    {
+        $res_des = Auth::user()->designation;
+        $accept = 0;
+        if ($res_des == 'Developer') {
+            $stories = StoryController::getAssignStories();
+            foreach ($stories as $key => $story) {
+                $result_priority = $story->priority;
+                if ($result_priority == $priority) {
+                    $accept++;
+                }
+            }
+        }
+        return $accept;
+    }
+
+    /**
+     * Check whether current date is the due date of the User Story specified by Story Id
+     *
+     * @param $storyId
+     * @return bool true if current date is the due date of the User Story
+     */
+    public static function isDueDateOfStory($storyId)
+    {
+        $days = 0;
+        $endDate = "";
+        $sprint_results = DB::table('user_stories')->where('story_id', '=', $storyId)->get();
+        foreach ($sprint_results as $key => $sprint_result) {
+            $endDate = $sprint_result->due_date;
+        }
+
+        $end = date_create($endDate);
+        $dateNow = date("Y-m-d");
+        $now = date_create($dateNow);
+
+        $duration = date_diff($end, $now);
+
+        $days = $duration->days;
+
+		// If end date is lower than current date, multiply from -1 to indicate that date difference implies overdue time
+        if ($end < $now) {
+            $days = $days * -1;
+        }
+
+        return $days;
+    }
+
+    /**
+     * Helps to retrieve Progress of specified User Story as a percentage
+     *
+     * @param $story_id
+     * @param $org_est
+     * @return int Progress as a percentage
+     */
+    public static function progressbar($story_id, $org_est)
+    {
+        $logged_hrs = WorklogController::getTotalLoggedHours($story_id);
+        $est_hrs = intval($org_est);
+
+        if ($est_hrs > $logged_hrs) {
+
+            $progress_value = ($logged_hrs / $est_hrs) * 100;
+            return $progress_value;
+
+        } else if ($est_hrs == $logged_hrs) {
+
+            $progress_value = 100;
+            return $progress_value;
+
+        } else if ($est_hrs < $logged_hrs) {
+
+            $diff = $est_hrs - $logged_hrs;
+            $progress_value = ($diff / $est_hrs) * 100;
+            return $progress_value;
+        }
+    }
+
 
 }
