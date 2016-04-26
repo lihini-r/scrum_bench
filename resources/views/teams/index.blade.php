@@ -17,8 +17,6 @@ use \App\User;
 
 
 
-
-
 @endsection
 
 
@@ -47,11 +45,11 @@ use \App\User;
                         <div class="form-group" >
 
                             <h1 style="height: 80px;"><b>TEAMS
-                                    <a class="btn btn-small btn-info pull-right" href="{{ URL::to('teams/create') }}">Add New Team</a>
+                                    <a class="btn btn-small btn-info pull-right" href="{{ URL::to('teams/create') }}"><i class='glyphicon glyphicon-plus'> </i> Add New Team</a>
 
                                     <a  class="btn  pull-right " style="width: 50px"> </a>
 
-                                    <a class="btn btn-small btn-info pull-right" href="{{ URL::to('assign_teams/create') }}">Assign Teams</a>
+                                    <a class="btn btn-small btn-info pull-right" href="{{ URL::to('assign_teams/create') }}"><i class='glyphicon glyphicon-user'> </i> Assign Teams</a>
                                 </b></h1>
 
 
@@ -142,29 +140,59 @@ use \App\User;
 
                     <td>
 
-                        {!! Form::model( $team, [ 'method' => 'DELETE', 'route' => ['teams.destroy',$team->team_id] ]) !!}
-
                         <a class="btn btn-small btn-info" style="background-color: #5b9909"
-                           href="{{ URL::to('teams/' . $team->team_id) }}">Show</a>
+                           href="{{ URL::to('teams/' . $team->team_id) }}"><i class='glyphicon glyphicon-eye-open'></i> Show</a>
 
                         <a class="btn btn-small btn-info"
-                           href="{{ URL::to('teams/' . $team->team_id . '/edit') }}">Edit </a>
+                           href="{{ URL::to('teams/' . $team->team_id . '/edit') }}">
+                            <i class='glyphicon glyphicon-edit'> </i> Edit </a>
+
+
+                        <a class="btn btn-small btn-info bg-red-active glyphicon glyphicon-trash"
+                           href="#" data-toggle="modal"
+                           data-target="#delete"> Delete</a>
+
+                        <div id="delete" class="modal fade" role="dialog">
+                            <div class="modal-dialog" >
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background-color:#337ab7">
+                                        <!-- Modal buuton to close form-->
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title" style="color: white"><b>Confirmation Box</b></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <section class="content">
+                                            <div class="box box-default">
+                                                <div class="box-header with-border">
+                                                    <!-- route to store method in controller to store data-->
 
 
 
 
+                                                    {!! Form::model( $team, [ 'method' => 'DELETE', 'route' => ['teams.destroy',$team->team_id] ,'class'=>'delete']) !!}
+
+                                                        <h1>Do you really want to delete this?</h1>
+
+                                                    <button class='btn btn-danger' type='submit' id="btnDelete"  >
+
+                                                        <i class='glyphicon glyphicon-trash'></i> Delete
+
+                                                    </button>
 
 
-                         <button class='btn btn-danger' type='submit' id="btnDelete">
-
-                            <i class='glyphicon glyphicon-trash'></i> Delete
-
-                         </button>
+                                                    {!! Form::close() !!}
 
 
 
 
-                        {!! Form::close() !!}
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
 
@@ -197,6 +225,8 @@ use \App\User;
 
 
     <!--<script src="{{ URL::asset('bootstrap/js/bootstrap.min.js') }}"></script>-->
+
+    <!--load search/sort functionality on table-->
     <script>
         $(document).ready(function(){
             $('#myTable').dataTable();
@@ -211,6 +241,7 @@ use \App\User;
 
 
 @endsection
+
 
 
 
