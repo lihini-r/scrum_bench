@@ -60,6 +60,7 @@ Route::resource('assign', 'AssignController');
 
 Route::resource('assign_teams', 'AssignTeamsController');
 
+Route::resource('search', 'SearchController');
 
 
 Route::resource('queries', 'QueryController');
