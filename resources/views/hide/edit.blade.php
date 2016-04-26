@@ -1,3 +1,5 @@
+<!--Hide projects in peojects/index-->
+
 @extends('app')
 
 @section('content')
@@ -82,4 +84,5 @@
     </div>
 
 @endsection
+
 
