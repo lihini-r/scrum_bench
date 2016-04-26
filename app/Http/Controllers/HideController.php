@@ -43,13 +43,7 @@ class HideController extends Controller {
 
 			}
 
-			/*foreach ($projects as $pt) {
 
-				$pid = $pt->ProjectID;
-
-				$projectids = DB::table('assign_teams')->where('ProjectID', $pid)->get();
-
-			}*/
 
 
 		}
@@ -85,7 +79,8 @@ class HideController extends Controller {
 	 * @return Response
 	 */
 	public function show($team_id)
-	{
+	{ //show assigned team details on pm dashboard
+
 		$team = Team::find($team_id);
 		return view('hide.show', array('team' => $team));
 	}
@@ -126,7 +121,7 @@ class HideController extends Controller {
 	}
 
 
-	//To Hide projects from View
+	//To Hide projects from View(projects/index)
 	public function update($ProjectID,Request $request)
 	{
 		$project = Project::find($ProjectID);
@@ -148,3 +143,4 @@ class HideController extends Controller {
 	}
 
 }
+

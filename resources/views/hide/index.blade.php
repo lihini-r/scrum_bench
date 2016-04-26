@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\DB as DB;
 
 ?>
 
+
+
+
 @section('content')
     <br/>
 
@@ -70,6 +73,7 @@ use Illuminate\Support\Facades\DB as DB;
                         <tr><td style="color: #ca195a ; font-weight: 700 ;"> Duration</td>
                             <td style="color: #001a35; font-weight: 700 ;">{{ $pro->duration }} months</td></tr>
 
+
                         @endforeach
 
                         </tbody>
@@ -77,11 +81,15 @@ use Illuminate\Support\Facades\DB as DB;
 
                    </div>
 
+
+
+
                             </div>
                 </div>
 
                 </div>
                 <br> <br>
+
 
 
 
@@ -153,7 +161,11 @@ use Illuminate\Support\Facades\DB as DB;
         </div>
 
                 </div>
+
+
+
             </div>
     </div>
 
 @endsection
+
