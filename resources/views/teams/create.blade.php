@@ -1,6 +1,8 @@
 
 @extends('app')
-
+<?php
+use \App\User;
+?>
 
 @section('content')
     <br/>
@@ -61,39 +63,88 @@
 
                     <!--assign developers to team-->
 
-                 <div class="form-group">
-                       <label>Select Developers</label>
+                    <div class="form-group">
+                        <label>Select Developers</label>
                         <br>
 
-                            <?php
-                            use \App\User;
+                        <?php
+
+                        //get unassigned developers
+
+                        $assi_ids =array();
+
+                        $assdiv=DB::table('dev_team')->get();
+
+                        foreach($assdiv as $item)
+                        {
+                            array_push($assi_ids, $item->user_id);
+                        }
+
+                        $users1 = User::where('designation','Developer')->get();
 
 
-                            //get developers who are already assigned
-                            $assdiv=DB::table('dev_team')->get();
+                        foreach($users1 as $user)
+                        {
 
-                            foreach($assdiv as $ass)
-                            {
-                                //get developers in the system who are not assigned
-                                $users = User::where('designation','Developer')->where('id','!=', $ass->user_id)->get();
+                            $uname=$user->name;
 
+
+
+                            if (in_array($user->id, $assi_ids)) {
+
+
+                            } else {
+
+
+
+                                $users[$user->id]=$user->id;
+
+
+
+                              //  array_push($team,  $teams[$t->team_id]);
+
+
+                                $id=$users[$user->id];
+
+                                echo "<input tabindex='1' type='checkbox' name='users[]' id='$id' value='$id' /> ";
+
+
+
+                                echo $uname;
+                                echo "<br>";
                             }
-                            ?>
 
-                        @foreach ($users as $user)
-
-                                    <!--get developers names as chechboxes but input value is user id-->
+                        }
 
 
-                     <input tabindex="1" type="checkbox" name="users[]" id="{{$user->id}}"
-                                   value="{{$user->id}}"/> {{$user->name}} <br/>
 
 
-                     @endforeach
-                 </div>
 
 
-            {!! Form::submit('Create Team', ['class' => 'btn btn-primary']) !!}
+
+
+
+                        ?>
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    {!! Form::submit('Create Team', ['class' => 'btn btn-primary']) !!}
 
 
 
@@ -108,4 +159,5 @@
 
 
 @endsection
+
 

@@ -43,6 +43,11 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
+
+        //insert team details to teams & dev_teams tables
+        //developer list will be inserted to dev_teams
+
+
         $this->validate($request, [
 
             'TeamName' => 'required',
@@ -118,7 +123,7 @@ class TeamController extends Controller
      */
     public function destroy($team_id)
     {
-
+         //delete teams
 
 
 
@@ -141,6 +146,9 @@ class TeamController extends Controller
 
     public function update($team_id, Request $request)
     {
+
+        //update team detaails
+
         $team = Team::find($team_id);
 
         $this->validate($request, [
@@ -176,3 +184,4 @@ class TeamController extends Controller
     }
 
 }
+
