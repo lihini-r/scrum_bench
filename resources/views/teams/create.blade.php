@@ -160,4 +160,3 @@ use \App\User;
 
 @endsection
 
-
