@@ -34,7 +34,7 @@
                              <div class="panel-heading" style="padding: 8px 10px 8px 20px ;">
 
                                  <div class="form-group" >
-                                     <a class="btn btn-small btn-info pull-right" href="{{ URL::to('projects/create') }}">Add New Project</a>
+
 
                                      @foreach($account as $key => $acc)
 
@@ -45,12 +45,40 @@
                                  </div>
 
 
+
+
+
+
+                         <div class="form-group" >
+
+
+                         <a class="btn btn-small btn-info pull-right" href="{{ URL::to('projects/create') }}"><i class='glyphicon glyphicon-plus'> </i> Add New Project</a>
+
+
+
+                         <a  class="btn  pull-right " style="width: 50px"> </a>
+
+                         <a class="btn btn-small btn-info pull-right" href="{{ URL::to('assign_lead/create') }}"><i class='glyphicon glyphicon-user'> </i> Assign Project Leads</a>
+
+                         <a  class="btn  pull-right " style="width: 50px"> </a>
+
+                         <a class="btn btn-small btn-info pull-right" href="{{ URL::to('assign/create') }}"><i class='glyphicon glyphicon-user'> </i> Assign Project Managers</a>
+
+
+                         <a  class="btn  pull-right " style="width: 50px"> </a>
+
+                         <a class="btn btn-small btn-info pull-right" href="{{ url('/assign_teams') }}"><i class='glyphicon glyphicon-th-list'> </i> View with Hidden Projects</a>
+                             <br><br>
+
+                    </div>
+
+
+                                 <hr>
+
+
                              </div>
 
                          </div>
-
-
-
 
                          <div class="col-md-11" style="background-color: #7adddd">
                             <br>
@@ -91,6 +119,10 @@
 
                                             <td> <span class="label label-warning">{{$project->State}}</span></td>
 
+                                        @elseif($project->State=='Completed')
+
+                                            <td> <span class="label bg-maroon-gradient">{{$project->State}}</span></td>
+
 
 
                                         @endif
@@ -108,11 +140,17 @@
                                         <td>
 
 
-                                            <a class="btn btn-small btn-info" style="background-color: #5b9909" href="{{ URL::to('projects/' . $project->ProjectID) }}">Show</a>
+                                            <a class="btn btn-small btn-info" style="background-color: #5b9909" href="{{ URL::to('projects/' . $project->ProjectID) }}"><i class='glyphicon glyphicon-eye-open'></i> Show</a>
 
-                                            <a class="btn btn-small btn-info" style="background-color: #005384" href="{{ URL::to('projects/' . $project->ProjectID . '/edit') }}">Edit </a>
+                                            <a class="btn btn-small btn-info" style="background-color: #005384" href="{{ URL::to('projects/' . $project->ProjectID . '/edit') }}"><i class='glyphicon glyphicon-edit'> </i> Edit </a>
 
-                                            <a class="btn btn-small btn-info" href="{{ URL::to('hide/' . $project->ProjectID . '/edit') }}">Hide </a>
+                                            <a style="background-color: #8e57c2" class="btn btn-small btn-info" href="{{ URL::to('hide/' . $project->ProjectID . '/edit') }}"><i class='glyphicon glyphicon-eye-close'> </i> Hide </a>
+
+
+
+
+
+
 
                                         </td>
                                     </tr>
@@ -122,7 +160,7 @@
                         </div>
 
 
-                    <br>
+                    <br><br>
 
              </div>
 
@@ -139,6 +177,8 @@
 
 
     <script src="{{ URL::asset('bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <!--loading search function on datatable-->
     <script>
         $(document).ready(function(){
             $('#myTable').dataTable();

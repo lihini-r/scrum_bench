@@ -68,7 +68,7 @@
                         <div class="form-group" >
                             @foreach($account as $key => $acc)
                                 <!--Account ID-->
-                                <b></b><input  readonly class="form-control" name="id" type="hidden" value="{{$acc->id}}" placeholder="Enter Project Name"
+                                <b></b><input  readonly class="form-control" name="id" type="hidden" value="{{$acc->id}}"
                                                            style="width: 50%;" type="number"/>
 
                             @endforeach
@@ -97,13 +97,11 @@
             <!--get project state-->
 
                     <div class="form-group">
-                        <b>State</b><select class="form-control select2 select2-hidden-accessible" name="State" style="width: 50%;"
-                                     tabindex="-1"
-                                     aria-hidden="true">
-                            <option>Open</option>
-                            <option>Closed</option>
-                            <option>Released</option>
-                        </select>
+                        <div class="form-group">
+                            <b> State</b><input class="form-control" name="State" type="text" value="Closed" readonly
+                                                   style="width: 50%;" type="number"/>
+                        </div>
+
                     </div>
 
             <!--get project duration-->

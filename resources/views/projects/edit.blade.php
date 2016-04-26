@@ -70,23 +70,38 @@
 
 
                                             <option>Open</option>
+                                            <option>Completed</option>
                                             <option>Released</option>
+
 
                                         @endif
                                         @if($project->State =='Open')
                                             <option value='{{  $project->State }}'>{{  $project->State }}</option>
 
 
-                                            <option>Closed</option>
-                                            <option>Released</option>
+                                                 <option>Closed</option>
+                                                 <option>Completed</option>
+                                                 <option>Released</option>
 
                                         @endif
+
+                                             @if($project->State =='Completed')
+                                                 <option value='{{  $project->State }}'>{{  $project->State }}</option>
+
+
+                                                 <option>Closed</option>
+                                                 <option>Open</option>
+                                                 <option>Released</option>
+
+                                             @endif
+
                                         @if($project->State =='Released')
                                             <option value='{{  $project->State }}'>{{  $project->State }}</option>
 
 
-                                            <option>Closed</option>
-                                            <option>Open</option>
+                                                 <option>Closed</option>
+                                                 <option>Completed</option>
+                                                 <option>Open</option>
                                         @endif
 
 
@@ -118,4 +133,5 @@
     </div>
     </div>
 @endsection
+
 

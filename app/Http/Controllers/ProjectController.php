@@ -23,6 +23,7 @@ class ProjectController extends Controller {
 	 */
 	public function index()
 	{
+		//get only unhidden project details
 
 		if(\Auth::check() && \Auth::user()->designation === 'Account Head') {
 
@@ -178,5 +179,7 @@ class ProjectController extends Controller {
 
 
 
-
 }
+
+
+

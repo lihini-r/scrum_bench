@@ -47,7 +47,15 @@ Route::resource('permissions', 'PermissionController');
 
 
 
+Route::resource('search', 'SearchController');
+
+
+
+
 Route::resource('projects', 'ProjectController');
+
+
+
 
 Route::resource('hide', 'HideController');
 
@@ -60,7 +68,13 @@ Route::resource('assign', 'AssignController');
 
 Route::resource('assign_teams', 'AssignTeamsController');
 
-Route::resource('search', 'SearchController');
+Route::resource('assign_lead', 'LeadController');
+
+Route::resource('test_case', 'TestCaseController');
+
+Route::resource('release_backlog', 'ReleaseBacklogController');
+
+
 
 
 Route::resource('queries', 'QueryController');
