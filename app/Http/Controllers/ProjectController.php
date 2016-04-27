@@ -6,6 +6,7 @@ use App\Project;
 use App\Team;
 use App\User;
 use Session;
+use Log;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Contracts\Auth\Guard;
@@ -74,6 +75,9 @@ class ProjectController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+
+
+try{
 		$this->validate($request, [
 			'ProjectName' => 'required',
 			'Description' => 'required',
@@ -86,7 +90,19 @@ class ProjectController extends Controller {
 		Project::create($input);
 
 
+
+
+
+			Log::debug("ProjectController:store - Creating new Project : " . implode(',', array_slice($input, 1)));
+			
+
 		Session::flash('flash_message', 'Project successfully Added!!!');
+
+
+        } catch (Exception $ex) {
+            Log::error($ex->getMessage());
+        }
+
 
 		return redirect()->back();
 
@@ -180,6 +196,5 @@ class ProjectController extends Controller {
 
 
 }
-
 
 

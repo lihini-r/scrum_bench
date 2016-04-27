@@ -143,4 +143,3 @@ class HideController extends Controller {
 	}
 
 }
-

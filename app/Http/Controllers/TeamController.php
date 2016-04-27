@@ -184,4 +184,3 @@ class TeamController extends Controller
     }
 
 }
-

@@ -37,6 +37,8 @@ class AssignController extends Controller {
 	public function create()
 	{
 
+		//get logged in AH account and pass all project details
+
 		if(\Auth::check() && \Auth::user()->designation === 'Account Head') {
 
 		$user = \Auth::user()->name;
@@ -60,6 +62,8 @@ class AssignController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+		//insert project managers into assign_projects table and update state of the project in projects table
+		//to assign project managerss to projects
 
 		$this->validate($request, [
 			'ProjectName' => 'required|unique:assign_projects',

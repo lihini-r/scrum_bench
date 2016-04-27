@@ -337,20 +337,44 @@ desired effect
                             class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
--->
-                    <li class="active"><a href="{{ url('/projects') }}">Projects</a>
-                    </li>
+-->                       
 
-                    <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
+<!-- START ACCOUNT HEAD LINKS-->
+
+ <li class="active"><a href="{{ url('/projects') }}">Projects</a>
+                        </li>
+
+                        <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
+
+
+                        <li class="active"><a href="{{ url('/assign_teams') }}">view with hidden projects</a>
 
 
 
-                    <li class="active"><a href="{{ url('/assign/create') }}">Assign Project Managers</a>
+
+                        <li class="active"><a href="{{ url('/assign/create') }}">Assign Project Managers</a>
+
+
+
+                        <li class="active"><a href="{{ url('/assign_lead/create') }}">Assign Project Leads</a>
+
+
+
+
+
+                        <li class="active"><a href="{{ url('/release_backlog') }}"> Release Backlog</a>
+
 
 
                     </li>
                 </ul>
             </li>
+
+
+<!-- END ACCOUNT HEAD LINKS-->
+
+<!-- START PROJECT MANAGER LINKS-->
+
 
 
             <li class="treeview">
@@ -363,6 +387,7 @@ desired effect
                     </li>
 
                     <li class="active"><a href="{{ url('/teams/create') }}">Create Teams</a>
+
 
 
                     <li class="active"><a href="{{ url('/assign_teams/create') }}">Assign Teams</a>
@@ -378,6 +403,9 @@ desired effect
 
 
 
+<!-- END PROJECT MANAGER LINKS-->
+
+
 
 
 
@@ -386,15 +414,21 @@ desired effect
                 <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
                             class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li class="active"><a href="{{ url('/hide') }}">Project Manager
+                   
+
+ <li class="active"><a href="{{ url('/hide') }}">Project Manager
                             Dashboard</a></li>
-                    <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">My Dashboard</a>
-                    </li>
+
+
+
                     @if( Auth::user()->designation=='Account Head') <!-- Account head dashboard is displayed only if it is account head-->
 
+
                         <li class="active"><a href="{{ url('home/') }}">Account Head Dashboard</a></li>
-                    @endif
-                </ul>
+                  
+  @endif
+             
+   </ul>
             </li>
 
 
@@ -421,6 +455,11 @@ desired effect
                 </ul>
             </li>
 			
+
+<!-- START DEVELOPER LINKS-->
+
+
+
 			<li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>User Story</span> <i
                             class="fa fa-angle-left pull-right"></i></a>
@@ -434,8 +473,18 @@ desired effect
                         </li>
                         <li class="active"><a href="{{ url('/search') }}">Search</a>
                         </li>
+
+
+
+                        <li class="active"><a href="{{ url('/test_case') }}"> Test Lodge</a>
+
+
+
+
                     </ul>
                 </li>
+
+<!-- END DEVELOPER LINKS -->
 
 
                 {{--  <li>

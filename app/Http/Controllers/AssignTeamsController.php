@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 use App\Team;
 use App\User;
+
+
+use App\Account;
 use Session;
 
 use Illuminate\Support\Facades\DB as DB;
@@ -20,9 +23,30 @@ class AssignTeamsController extends Controller {
 	 *
 	 * @return Response
 	 */
+
+
+	//TO VIEW WITH HIDDEN PROJECTS ON PROJECTS INDEX(projects/index.blade)
 	public function index()
 	{
-		//
+
+		if(\Auth::check() && \Auth::user()->designation === 'Account Head') {
+
+			$user = \Auth::user()->name;
+
+			$account = Account::where('acc_head',  $user)->get();
+
+			foreach($account as $acc){
+
+				$aname=$acc->acc_name;
+
+				$project = Project::where('acc_name', $aname)->get();
+
+			}
+		}
+
+		return view('assign_teams.index', array('projects' => $project,'account' => $account));
+
+
 	}
 
 	/**
@@ -32,6 +56,9 @@ class AssignTeamsController extends Controller {
 	 */
 	public function create()
 	{
+	//get logged  in  project managers' project details
+	//get all team details
+    //to assign teams for project
 
 		if(\Auth::check() && \Auth::user()->designation === 'Project Manager') {
 
@@ -64,6 +91,8 @@ class AssignTeamsController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+		//insert assigned teams for project
+
 		$this->validate($request, [
 
 			'ProjectName' => 'required',

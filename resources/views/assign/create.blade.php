@@ -35,6 +35,10 @@
                                 <div class="panel-heading" style="padding: 8px 10px 8px 20px ;">
 
                                     <h1 style="color: #00a157">Assign Project Managers</h1>
+                                    <h6> <a href="{{ route('projects.index') }}">Go back to all Projects</a></h6>
+
+
+
                                 </div>
 
                             </div>
@@ -72,6 +76,8 @@
 
 
                                 <?php
+
+                                    //get  project names of the logged in Account  and insert it as project id
                                     $pid=array();
                                     $assigned=\App\AssignProjects::all();
 
@@ -126,6 +132,8 @@
 
                            <b> Select Project Manager</b>
                                    <?php
+
+                                //get unassigned project managers
 
                                 $unames=array();
                                 $assigned_pm=\App\AssignProjects::all();
