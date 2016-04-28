@@ -281,7 +281,8 @@ desired effect
 
                     <li class="active"><a href="{{ url('/accounts') }}">Accounts</a>
                     </li>
-                @endif
+                
+                            @endif
 
 
 
@@ -295,6 +296,8 @@ desired effect
 
                     </ul>
                 </li>--}}
+
+
                 @if(\Auth::user()->can('create_profile'))
 
                 <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
@@ -309,16 +312,21 @@ desired effect
                     <li class="active"><a href="{{ url('/roles') }}">User Roles</a>
                     </li>
             @endif
+
+
                 @if(\Auth::user()->can('edit_permissions'))
 
                 <li class="active"><a href="{{ url('/permissions') }}">Permissions</a>
 
                 </li>
-                @endif
+               
+
+               @endif
 
 
                 @if(\Auth::user()->can('view_projects'))
 
+                   
                     <li class="active"><a href="{{ url('/pages/ProjectDashboard.html') }}" >Projects</a>
                     </li>
 
@@ -329,6 +337,8 @@ desired effect
 
 
 
+<!-- START ACCOUNT HEAD LINKS-->
+
 
 
 
@@ -336,13 +346,17 @@ desired effect
                 <a href="#"><i class="fa fa-link"></i> <span>Projects</span> <i
                             class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
--->                       
+                   
+ <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
+-->                    
 
-<!-- START ACCOUNT HEAD LINKS-->
 
- <li class="active"><a href="{{ url('/projects') }}">Projects</a>
+
+
+
+                <li class="active"><a href="{{ url('/projects') }}">Projects</a>
                         </li>
+
 
                         <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
 
@@ -372,6 +386,8 @@ desired effect
 
 
 <!-- END ACCOUNT HEAD LINKS-->
+
+
 
 <!-- START PROJECT MANAGER LINKS-->
 
