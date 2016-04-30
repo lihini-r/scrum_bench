@@ -487,7 +487,7 @@ desired effect
                         </li>
                         <li class="active"><a href="{{ url('/sprint_schedules') }}">Scrum Board</a>
                         </li>
-                        <li class="active"><a href="{{ url('/search') }}">Search</a>
+                        <li class="active"><a href="{{ url('/story_search') }}">Search</a>
                         </li>
 
 
@@ -517,6 +517,7 @@ desired effect
                         <li class="active"><a href="#" class="page-link" name="pages/ProjectDashboard.html">Project
                             Dashboard</a></li>
                         <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">My Dashboard</a>
+			<li class="active"><a href="{{ url('/dev_dashboard') }}">My Dashboard</a>
                         </li>
                     </ul>
                 </li>--}}
