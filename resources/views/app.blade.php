@@ -77,159 +77,107 @@ desired effect
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <a class="btn btn-small btn-info pull-right" style="position:absolute;right: 300px;height: 30px;top:10px;" href="{{ URL::to('todolists') }}">To-Do</a>
                     <!-- Messages: style can be found in dropdown.less-->
                     <li class="dropdown messages-menu">
                         <!-- Menu toggle button -->
-                        <?php  $user = Auth::user()->name;
-                        $countMessages=DB::table('messages1s')->where('to',$user)->count();
-                        ?>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">{{$countMessages}}</span>
+                            <span class="label label-success">4</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have {{$countMessages}}
-                                messages</li>
+                            <li class="header">You have 4 messages</li>
                             <li>
                                 <!-- inner menu: contains the messages -->
                                 <ul class="menu">
                                     <li><!-- start message -->
                                         <a href="#">
                                             <div class="pull-left">
+                                                <!-- User Image -->
                                                 <?php
 
-                                                $user = Auth::user()->name;
-                                                $newMessage=DB::table('messages1s')->where('to',$user)->orderBy('created_at', 'desc')->first();
+                                                use App\Profile;
 
-                                                ?>
-                                                        <!-- User Image -->
-                                                <img src="{{ URL::asset('dist/img') }}/{{$newMessage->from }}.png" class="img-circle" alt="User Image" width="40px" height="40px">
+                                                $profile = Profile::where('id', '=', Auth::user()->id)->first(); ?>
+
+                                                @if ($profile === null)
+
+                                                    <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+
+                                                @endif
+                                                @if ($profile !== null)
+                                                    <img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" >
+
+
+
+                                                @endif
+
                                             </div>
                                             <!-- Message title and timestamp -->
                                             <h4>
-                                                {{$newMessage->from}}
+                                                Project Manager
                                                 <small><i class="fa fa-clock-o"></i> 5 mins</small>
                                             </h4>
                                             <!-- The message -->
-
-                                            <p>{{$newMessage->message}}</p>
+                                            <p>Next Release has been scheduled</p>
                                         </a>
                                     </li><!-- end message -->
-
-                                    </li>
-                                </ul><!-- /.menu -->
+                                </ul><!-- /.menu -->$sprints = Sprint::all();
+                                return view('sprints.index', array('sprints' => $sprints));
+                                $accounts = Account::all();
+                                return view('accounts.index', array('accounts' => $accounts));
                             </li>
-                            <li class="footer"><a href="{{ url('/messages1s') }}">See All Messages</a></li>
+                            <li class="footer"><a href="#">See All Messages</a></li>
                         </ul>
                     </li><!-- /.messages-menu -->
 
-                    <?php  $userDesignation= Auth::user()->designation; ?>
-
-                    @if($userDesignation=="Project Manager")
-                            <!-- Notifications Menu for Project Manager -->
+                    <!-- Notifications Menu -->
                     <li class="dropdown notifications-menu">
                         <!-- Menu toggle button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
-                            <?php
-                            $userid = Auth::user()->id;
-                            $countNotifications2=DB::table('assign_projects')->where('ProjectManager',$user)->count();
-                            $notification2=DB::table('assign_projects')->where('ProjectManager',$user)->orderBy('created_at', 'desc')->first();
-                            ?>
-                            <span class="label label-warning">{{$countNotifications2}}</span>
+                            <span class="label label-warning">10</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have {{$countNotifications2}} notifications</li>
+                            <li class="header">You have 10 notifications</li>
                             <li>
-                                <!-- Inner Menu: contains the tasks -->
+                                <!-- Inner Menu: contains the notifications -->
                                 <ul class="menu">
                                     <li><!-- start notification -->
                                         <a href="#">
-                                            <i class="fa fa-users text-aqua"></i>
-                                            Project {{$notification2->ProjectName}} Assigned
+                                            <i class="fa fa-users text-aqua"></i> User Story WPS-112 Approved
                                         </a>
                                     </li><!-- end notification -->
                                 </ul>
                             </li>
-                            <li class="footer"><a href="{{ url('/notify_project_assigns') }}">View all</a></li>
+                            <li class="footer"><a href="#">View all</a></li>
                         </ul>
                     </li>
-                    @endif
-
-
-                    @if($userDesignation=="Developer")
-                            <!-- Notifications Menu for developers -->
-                    <li class="dropdown notifications-menu">
-                        <!-- Menu toggle button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
-                            <?php
-                            $userid = Auth::user()->id;
-                            $countNotifications=DB::table('workflows')->where('user_id',$userid)->where('status','Approved')->count();
-                            $notification=DB::table('workflows')->where('user_id',$userid)->where('status','Approved')->orderBy('created_at', 'desc')->first();
-
-                            ?>
-                            <span class="label label-warning">{{$countNotifications}}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have {{$countNotifications}} notifications</li>
-                            <li>
-                                <!-- Inner Menu: contains the tasks -->
-                                <ul class="menu">
-                                    <li><!-- start notification -->
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i>
-                                            User Story {{$notification->story_id}} Approved
-                                        </a>
-                                    </li><!-- end notification -->
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="{{ url('/notifications') }}">View all</a></li>
-                        </ul>
-                    </li>
-                    @endif
-
-                    @if($userDesignation=="Developer")
-                            <!-- Tasks Menu -->
+                    <!-- Tasks Menu -->
                     <li class="dropdown tasks-menu">
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-flag-o"></i>
-
-                            <?php $countTasks=DB::table('user_stories')->where('reporter',$user)->where('assignee','!=','Not Assigned')->count();?>
-
-                            <span class="label label-danger">{{$countTasks}}</span>
+                            <span class="label label-danger">9</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have  {{$countTasks}} tasks</li>
+                            <li class="header">You have 9 tasks</li>
                             <li>
                                 <!-- Inner menu: contains the tasks -->
                                 <ul class="menu">
                                     <li><!-- Task item -->
                                         <a href="#">
-                                            <?php
-
-                                            $user = Auth::user()->name;
-                                            $userDesignation= Auth::user()->designation;
-                                            $progress=DB::table('user_stories')->where('reporter',$user)->where('assignee','!=','Not Assigned')->orderBy('created_at', 'desc')->first();
-                                            $newTask=DB::table('user_stories')->where('reporter',$user)->where('assignee','!=','Not Assigned')->orderBy('created_at', 'desc')->first();
-
-                                            ?>
-                                                    <!-- Task title and progress text -->
+                                            <!-- Task title and progress text -->
                                             <h3>
-
-                                                {{$newTask->story_id}} {{$newTask->summary}}
-                                                <small class="pull-right">{{$newTask->org_est}} %</small>
-
+                                                WPS-123 Validate Offline DB Identifiers
+                                                <small class="pull-right">20%</small>
                                             </h3>
                                             <!-- The progress bar -->
                                             <div class="progress xs">
                                                 <!-- Change the css width attribute to simulate progress -->
-                                                <div class="progress-bar progress-bar-aqua" style="width:{{$newTask->org_est}}%"
+                                                <div class="progress-bar progress-bar-aqua" style="width: 20%"
                                                      role="progressbar" aria-valuenow="20" aria-valuemin="0"
                                                      aria-valuemax="100">
-                                                    <span class="sr-only">{{$newTask->org_est}}% Complete</span>
+                                                    <span class="sr-only">20% Complete</span>
                                                 </div>
                                             </div>
                                         </a>
@@ -237,26 +185,59 @@ desired effect
                                 </ul>
                             </li>
                             <li class="footer">
-                                <a href="{{ url('tasks') }}">View all tasks</a>
+                                <a href="#">View all tasks</a>
                             </li>
                         </ul>
                     </li>
-                    @endif
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                           {{-- <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">--}}
-                            <img src="{{ URL::asset('dist/img/pm.png')}}" class="user-image" alt="User Image">
-                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs">{{ Auth::user()->name }}</span>
+                            {{-- <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">--}}
+                            <?php
+
+
+
+                            $profile = Profile::where('id', '=', Auth::user()->id)->first(); ?>
+
+                            @if ($profile === null)
+
+                                <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image" height="20" width="20">
+
+                            @endif
+                            @if ($profile !== null)
+                                <img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" height="20" width="20">
+
+
+
+                                @endif
+
+                                        <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                <span class="hidden-xs">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
+                                <?php
 
-                                <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+
+
+                                $profile = Profile::where('id', '=', Auth::user()->id)->first(); ?>
+
+                                @if ($profile === null)
+
+                                    <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+
+                                @endif
+                                @if ($profile !== null)
+                                    <div><img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" height="96" width="96">
+
+
+                                    </div>
+                                @endif
+
+
 
                                 {{--<img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image">--}}
                                 <p>
@@ -291,7 +272,23 @@ desired effect
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+                    <?php
+
+
+
+                    $profile = Profile::where('id', '=', Auth::user()->id)->first(); ?>
+
+                    @if ($profile === null)
+
+                        <img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">
+
+                    @endif
+                    @if ($profile !== null)
+                        <div><img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" height="50" width="50">
+
+
+                        </div>
+                    @endif
 
                 </div>
                 <div class="pull-left info">
@@ -302,37 +299,25 @@ desired effect
             </div>
 
             <!-- search form (Optional) -->
-
-
-
-            {!! Form::open(['route' => 'search.store','class' => 'sidebar-form']) !!}
-            <div class="input-group">
-
-                {!! Form::text('searchinput', null, ['class' => 'form-control' ,'placeholder' => 'Search...']) !!}
-
-                <span class="input-group-btn">
-                    <button class='btn btn-flat' type='submit' >
-                        <i class="fa fa-search"></i>
-                    </button>
-                </span>
-            </div>
-            {!! Form::close() !!}
-
-
-
-
-
-
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+                </div>
+            </form>
             <!-- /.search form -->
 
             <!-- Sidebar Menu -->
-           {{-- <ul class="sidebar-menu">
-                <li class="header">Favourites</li>
-                <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="#" class="page-link" name="pages/Projects.html"><i class="fa fa-link"></i>
-                    <span>Projects</span></a></li>
+            {{-- <ul class="sidebar-menu">
+                 <li class="header">Favourites</li>
+                 <!-- Optionally, you can add icons to the links -->
+                 <li class="active"><a href="#" class="page-link" name="pages/Projects.html"><i class="fa fa-link"></i>
+                     <span>Projects</span></a></li>
 
---}}{{----}} {{--@if(\Auth::user()->hasRole('Developer'))
+ --}}{{----}} {{--@if(\Auth::user()->hasRole('Developer'))
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>User Story</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
@@ -345,236 +330,85 @@ desired effect
                 </li>--}}{{--
             @endif--}}
 
-                {{--Granting the permission of accessing project accounts to super admin--}}
+            {{--Granting the permission of accessing project accounts to super admin--}}
 
-                            @if(\Auth::user()->can('create_accounts'))
+            @if(\Auth::user()->can('create_accounts'))
 
-                    <li class="active"><a href="{{ url('/accounts') }}">Accounts</a>
-                    </li>
-                
-                            @endif
+                <li class="active"><a href="{{ url('/accounts') }}">Accounts</a>
+                </li>
+            @endif
+            @if(\Auth::user()->can('view_activity_log'))
 
+                <li class="active"><a href="{{ url('/activities') }}">Activity Log</a>
+                </li>
 
+            @endif
+            {{-- <li class="treeview">
+                 <a href="#"><i class="fa fa-link"></i> <span>Profile</span> <i
+                             class="fa fa-angle-left pull-right"></i></a>
+                 <ul class="treeview-menu">
 
-               {{-- <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Profile</span> <i
-                                class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
+                     <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
+                     </li>
 
-                        <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
-                        </li>
-
-                    </ul>
-                </li>--}}
-
-
-                @if(\Auth::user()->can('create_profile'))
+                 </ul>
+             </li>--}}
+            @if(\Auth::user()->can('create_profile'))
 
                 <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
                 </li>
 
-                @endif
-
-
-
-                @if(\Auth::user()->can('view_user_roles'))
-
-                    <li class="active"><a href="{{ url('/roles') }}">User Roles</a>
-                    </li>
             @endif
 
 
-                @if(\Auth::user()->can('edit_permissions'))
+            @if(\Auth::user()->can('view_users'))
+
+                <li class="active"><a href="{{ url('/users') }}">Users</a>
+                </li>
+
+            @endif
+
+
+
+
+
+
+
+            @if(\Auth::user()->can('create_idea'))
+
+                <li class="active"><a href="{{ url('/ideas') }}">Ideas Backlog</a>
+                </li>
+
+            @endif
+
+
+
+
+
+            @if(\Auth::user()->can('view_super_admin_dashboard'))
+                <li class="active"><a href="{{ url('home') }}">Dashboard</a></li>
+            @endif
+
+            @if(\Auth::user()->can('view_user_roles'))
+
+                <li class="active"><a href="{{ url('/roles') }}">User Roles</a>
+                </li>
+            @endif
+            @if(\Auth::user()->can('edit_permissions'))
 
                 <li class="active"><a href="{{ url('/permissions') }}">Permissions</a>
 
                 </li>
-               
-
-               @endif
-
-
-                @if(\Auth::user()->can('view_projects'))
-
-                   
-                    <li class="active"><a href="{{ url('/pages/ProjectDashboard.html') }}" >Projects</a>
-                    </li>
-
-
                 @endif
 
 
+                {{-- @if(\Auth::user()->can('view_projects'))
 
+                     <li class="active"><a href="{{ url('/pages/ProjectDashboard.html') }}" >Projects</a>
+                     </li>
 
 
-<!-- START ACCOUNT HEAD LINKS-->
-
-
-
-
-            <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Projects</span> <i
-                            class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                   
- <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
--->                    
-
-
-
-
-
-                <li class="active"><a href="{{ url('/projects') }}">Projects</a>
-                        </li>
-
-
-                        <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
-
-
-                        <li class="active"><a href="{{ url('/assign_teams') }}">view with hidden projects</a>
-
-
-
-
-                        <li class="active"><a href="{{ url('/assign/create') }}">Assign Project Managers</a>
-
-
-
-                        <li class="active"><a href="{{ url('/assign_lead/create') }}">Assign Project Leads</a>
-
-
-
-
-
-                        <li class="active"><a href="{{ url('/release_backlog') }}"> Release Backlog</a>
-
-
-
-                    </li>
-                </ul>
-            </li>
-
-
-<!-- END ACCOUNT HEAD LINKS-->
-
-
-
-<!-- START PROJECT MANAGER LINKS-->
-
-
-
-            <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Teams</span> <i
-                            class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
--->
-                    <li class="active"><a href="{{ url('/teams') }}">Teams</a>
-                    </li>
-
-                    <li class="active"><a href="{{ url('/teams/create') }}">Create Teams</a>
-
-
-
-                    <li class="active"><a href="{{ url('/assign_teams/create') }}">Assign Teams</a>
-
-
-
-
-
-
-                    </li>
-                </ul>
-            </li>
-
-
-
-<!-- END PROJECT MANAGER LINKS-->
-
-
-
-
-
-
-            <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
-                            class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                   
-
- <li class="active"><a href="{{ url('/hide') }}">Project Manager
-                            Dashboard</a></li>
-
-
-
-                    @if( Auth::user()->designation=='Account Head') <!-- Account head dashboard is displayed only if it is account head-->
-
-
-                        <li class="active"><a href="{{ url('home/') }}">Account Head Dashboard</a></li>
-                  
-  @endif
-             
-   </ul>
-            </li>
-
-                <!-- Code Shares-->
-                <li class="treeview">
-                    <a href="/codeshares"><i class="fa fa-link"></i> <span>Code Board</span> <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="{{ url('/codeshares') }}">view codes</a></li>
-                    </ul>
-                </li>
-
-                <!-- Messages-->
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i><span>Messages</span> <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="{{ url('/messages1s') }}">Inbox</a></li>
-                        <li class="active"><a href="{{ url('/sentmessages') }}">Outbox</a></li>
-                    </ul>
-                </li>
-
-                <!--Emails-->
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Emails</span> <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="{{ URL::to('eissues/create') }}">Issues</a></li>
-                        <li class="active"><a href="{{ URL::to('eothers/create') }}">Others</a></li>
-                    </ul>
-                </li>
-			
-
-<!-- START DEVELOPER LINKS-->
-
-
-
-			<li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>User Story</span> <i
-                            class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <!--<li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/backlog.php') }}">Backlog</a></li>-->
-                        <li class="active"><a href="{{ url('/user_stories') }}">Backlog</a>
-                        </li>
-                        <li class="active"><a href="{{ url('/sprints') }}">Sprint</a>
-                        </li>
-                        <li class="active"><a href="{{ url('/sprint_schedules') }}">Scrum Board</a>
-                        </li>
-                        <li class="active"><a href="{{ url('/story_search') }}">Search</a>
-                        </li>
-
-
-
-                        <li class="active"><a href="{{ url('/test_case') }}"> Test Lodge</a>
-
-
-
-
-                    </ul>
-                </li>
-
-<!-- END DEVELOPER LINKS -->
-
-
+                 @endif--}}
                 {{--  <li>
                       <!-- Menu Toggle Button -->
                       <a href="{{ url('/auth/register') }}">
@@ -589,11 +423,10 @@ desired effect
                         <li class="active"><a href="#" class="page-link" name="pages/ProjectDashboard.html">Project
                             Dashboard</a></li>
                         <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">My Dashboard</a>
-			<li class="active"><a href="{{ url('/dev_dashboard') }}">My Dashboard</a>
                         </li>
                     </ul>
                 </li>--}}
-            <!-- /.sidebar-menu -->
+                        <!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
     </aside>
@@ -603,7 +436,7 @@ desired effect
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                 
+
                 <br/>
             </h1>
             <ol class="breadcrumb">
@@ -614,7 +447,7 @@ desired effect
 
         <!-- Main content -->
         @yield('content')
-		
+
     </div><!-- /.content-wrapper -->
 
     <!-- Main Footer -->
@@ -632,7 +465,7 @@ desired effect
 @yield('page_script1')
 
 
-<!-- REQUIRED JS SCRIPTS -->
+        <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.1.4 -->
 <script src="{{ URL::asset('plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
