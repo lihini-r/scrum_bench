@@ -2,11 +2,12 @@
 
 @section('page_styles')
     <link rel="stylesheet" href="{{ URL::asset('bootstrap/css/bootstrap.min.css') }}">
+
+
 @endsection
 <?php
 $id = Auth::user()->name;
 ?>
-
 @section('content')
     <br/>
     <div class="container">
@@ -30,15 +31,14 @@ $id = Auth::user()->name;
                             to Story {{$_GET['story_id']}}</a></small>
                 </p>
 
-
                 <br>
                 <table class="table table-striped table-bordered">
-                    <thead style="background-color: #cdc1c5">
-                    <tr>
+                    <thead style="background-color: #3c8dbc">
+                    <tr style="font-weight: 900 ;color: #eff7ff">
                         <td>Description</td>
                         <td>Start Date</td>
                         <td>End Date</td>
-                        <td>Duration</td>
+                        <td>Duration (Hours)</td>
                     </tr>
                     </thead>
                     <tbody>

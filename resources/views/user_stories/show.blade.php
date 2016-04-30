@@ -34,15 +34,29 @@
     }
     $dev_id_name['Not Assigned'] = "Unassigned";
 
-    //update the next status and next action
+    //get last status of user story to update the next status and next action
     $last_status=WorkflowController::getStoryStatus($user_story->story_id);
 
-
-    //$next_action = WorkflowController::getNextAction($last_status);
-    //$next_status = WorkflowController::getNextState($last_status);
-
+    //get total logged hours and estimated hours to draw progress bar
     $logged_hrs = WorklogController::getTotalLoggedHours($user_story->story_id);
     $est_hrs = intval($user_story->org_est);
+
+    //find remaining days for each user story
+    $date_value=\App\Http\Controllers\StoryController::isDueDateOfStory($user_story->story_id);
+    //echo "-----------------------------------------".$date_value;
+
+    $progress_value=\App\Http\Controllers\StoryController::progressbar($user_story->story_id,$user_story->org_est);
+
+    $timeIndicator =\App\Helpers\TimeIndicatorFactory::create("Total",$user_story->story_id,$user_story->org_est);
+    $new_progress_value = $timeIndicator->getMarkup();
+
+    $timeIndicatorR =\App\Helpers\TimeIndicatorFactory::create("Remaining",$user_story->story_id,$user_story->org_est);
+    $new_progress_remaining_value = $timeIndicatorR->getMarkup();
+
+    $timeIndicatorL =\App\Helpers\TimeIndicatorFactory::create("Logged",$user_story->story_id,$user_story->org_est);
+    $new_progress_logged_value = $timeIndicatorL->getMarkup();
+
+
     ?>
 
 @endsection
@@ -64,17 +78,15 @@ $dateNoe=date("Y-m-d");
                 </div>
 
                 <ul class="nav nav-pills">
-
-
-                    <li role="presentation"><a href="#" data-toggle="modal" data-target="#work-log">WorkLog</a></li>
+                    <li role="presentation" style="font-weight: 900 ;color: rgba(10, 13, 20, 0.95)"><a href="#" data-toggle="modal" data-target="#work-log">Work Log</a></li>
                     @if($id=="Developer" )
                         <?php
                         $next_action = WorkflowController::getNextActionPM($last_status);
                         $next_status = WorkflowController::getNextStatePM($last_status);
                         ?>
                             @if($next_status!="Approved")
-                    <li role="presentation"><a href="#" data-toggle="modal"
-                                               data-target="#work-flow" <?php echo ($next_status == "Resolved") ? "style='pointer-events: none; cursor: default; color:red'" : "" ?> >{{$next_action}}</a>
+                    <li role="presentation" style="font-weight: 900 ;color: rgba(10, 13, 20, 0.95)"><a href="#" data-toggle="modal"
+                                               data-target="#work-flow" <?php echo ($last_status == "Resolved") ? "style='pointer-events: none; cursor: default; color:red'" : "" ?> >{{$next_action}}</a>
                     </li>
                             @endif
                     @endif
@@ -84,19 +96,32 @@ $dateNoe=date("Y-m-d");
                         $next_action = WorkflowController::getNextActionPM($last_status);
                         $next_status = WorkflowController::getNextStatePM($last_status);
                         ?>
-                    <li role="presentation"><a href="#" data-toggle="modal"
+                    <li role="presentation" style="font-weight: 900 ;color: rgba(10, 13, 20, 0.95)"><a href="#" data-toggle="modal"
                                                data-target="#work-flow" <?php echo ($last_status == "Approved") ? "style='pointer-events: none; cursor: default; color:red'" : "" ?>>{{$next_action}}</a>
                     </li>
                     @endif
-                    <li style="padding:0px 10px 0px 20px;" class="pull-right"><a
+                    <li role="presentation" style="font-weight: 900 ;color: rgba(10, 13, 20, 0.95)"><a
+                                href="{{ url('/worklogs?story_id='.$user_story->story_id) }}">History</a></li>
+                    <li style=" padding:0px 10px 0px 20px; font-weight: 900 ; color: #5382CE" class="pull-right"><a
                                 href="{{ route('user_stories.index') }}">Back to Backlog</a></li>
 
                 </ul>
 
-                <div class="form-group" style="padding:20px 10px 20px 20px;">
-                    <a class="btn btn-small btn-info pull-right"
-                       href="{{ url('/worklogs?story_id='.$user_story->story_id) }}">View My Work Logs</a>
-                </div>
+                @if($date_value < 3 && $date_value > 0)
+                    <div class="alert alert-warning">
+                        <strong>Only {{$date_value}} days more to complete this user story!!</strong>
+                    </div>
+                @endif
+                @if($date_value < 0)
+                    <div class="alert alert-danger">
+                        <strong>Story is Overdue !!</strong>
+                    </div>
+                @endif
+
+                {{--<div class="form-group" style="padding:20px 10px 20px 20px;">--}}
+                    {{--<a class="btn btn-small btn-info pull-right"--}}
+                       {{--href="{{ url('/worklogs?story_id='.$user_story->story_id) }}">View My Work Logs</a>--}}
+                {{--</div>--}}
 
                 <br/><br/>
 
@@ -128,6 +153,7 @@ $dateNoe=date("Y-m-d");
                                 <td>Due Date</td>
                                 <td>{{ $user_story->due_date }}</td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -151,13 +177,22 @@ $dateNoe=date("Y-m-d");
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    Progress
-                                    <br/>
-                                    <?php
-                                    $logged_hrs = WorklogController::getTotalLoggedHours($user_story->story_id);
-                                    $est_hrs = intval($user_story->org_est);
-                                    echo DynUI::getProgressMarkup($est_hrs, $logged_hrs);
-                                    ?>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Total : <?php echo $new_progress_value ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                   Logged :  <?php echo $new_progress_logged_value ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Remaining : <?php echo $new_progress_remaining_value ?>
                                 </td>
                             </tr>
 

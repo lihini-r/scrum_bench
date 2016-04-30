@@ -85,6 +85,7 @@ class StoryController extends Controller
         } else if ($res_des == 'Account Head' || $res_des == 'Administrator') {
 			// For Account Heads and Administrators, return all Stories
             $user_stories = UserStory::all();
+           // $user_stories =DB::table('user_stories')->get();
             
 			Log::info("StoryController:index - " . $res_des . ", All Stories will be displayed");
 			

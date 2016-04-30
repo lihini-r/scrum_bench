@@ -57,19 +57,26 @@ $dev_id_name = array();
 foreach ($result_developers as $result_developer) {
     $dev_name = $result_developer->name;
     $dev_id = $result_developer->id;
-
     $dev_id_name[$result_developer->id] = $result_developer->name;
 
 }
 
 $dev_id_name['Not Assigned'] = "Unassigned";
 
-$project_id = $user_stories[0]->project_id;
+//find last sprint id and due date is closable
 
-
+$project_id = ($user_stories!=null && sizeof($user_stories)>0)?$user_stories[0]->project_id:"";
 $sprint_id = SprintController::getLastSprintId($project_id);
+$closable_value=SprintController::isSprintClosable($sprint_id);
+
 $id_name_array = DynUI::getIdNameArray("sprints", "id", "sprint_name");
 
+//get current sprint info for relavent project
+/*$result_sprint_sts = DB::table('sprints')->where('id', '=', $sprint_id)->get();
+foreach ($result_sprint_sts as $result_sprint_st) {
+$sprint_status = $result_sprint_st->status;
+$end_date= $result_sprint_st->end_date;
+}*/
 ?>
 @section('content')
     <br/>
@@ -82,9 +89,13 @@ $id_name_array = DynUI::getIdNameArray("sprints", "id", "sprint_name");
                             <h3><b>Backlog</b></h3>
                         </div>
                     </div>
-                    <div class="form-group" style="padding:0px 10px 0px 20px;">
+
+                    <div style="padding:0px 10px 0px 20px;">
+                        <a class="btn btn-small btn-info pull-right" href="{{ URL::to('story_search') }}"><i class="glyphicon glyphicon-search"></i></a>
+                    <!--/div>
+                    <div class="form-group" style="padding:0px 10px 0px 20px;"-->
                         @if(DynUI::isUserRole("Project Manager")  || DynUI::isUserRole("Account Head"))
-                            <a class="btn btn-small btn-info pull-right" href="{{ URL::to('user_stories/create') }}">Create
+                            <a class="btn btn-small btn-info pull-right" href="{{ URL::to('user_stories/create') }}"><i class='glyphicon glyphicon-plus'> </i>Create
                                 New User Story</a>
                         @endif
                     </div>
@@ -107,13 +118,17 @@ $id_name_array = DynUI::getIdNameArray("sprints", "id", "sprint_name");
 
                 <div class="box box-default" style="padding:0px 10px 0px 20px;">
                     <div class="box-header with-border">
-                        <h4><a href="{{ URL::to('sprints/' . $sprint_id) }}">{{ $id_name_array[$sprint_id] }}</a>
+                        <h4><a href="{{ URL::to('sprints/' . $sprint_id) }}">{{ (sizeof($id_name_array)>0 && strcmp($sprint_id,"")!=0)?$id_name_array[$sprint_id]:"No Active Sprints Available" }}</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Stories below</h4>
                         {!! Form::open(['route' => 'sprint_schedules.store']) !!}
                         <ol class='simple_with_animation'
                             style='list-style:none; border: 1px dashed #D9D9D9;border-radius: 10px; padding:50px 40px 50px 40px;'>
                             @foreach($user_stories as $key => $user_story)
-                                <?php $storyExistInSprint = SprintScheduleController::isStoryExistInSprint($user_story->story_id, $sprint_id); ?>
+                                <?php
+                                    $storyExistInSprint = SprintScheduleController::isStoryExistInSprint($user_story->story_id, $sprint_id);
+                                    $sprintExistInProject = SprintController::isSprintsExistInProject($user_story->project_id);
+                                ?>
+                                @if($sprintExistInProject)
                                 @if($storyExistInSprint)
                                     <li class="nostyle">
                                         <input type='hidden' name='stories_to_add[]'
@@ -135,19 +150,30 @@ $id_name_array = DynUI::getIdNameArray("sprints", "id", "sprint_name");
 
                                                 <td width="10%">
                                                     @if(DynUI::isUserRole("Project Manager")  || DynUI::isUserRole("Account Head"))
-                                                        <a class="btn btn-small btn-info"
-                                                           href="{{ URL::to('user_stories/' . $user_story->story_id . '/edit') }}">Edit</a>
+                                                        <a class="btn btn-small btn-info" style="background-color: #005384"
+                                                           href="{{ URL::to('user_stories/' . $user_story->story_id . '/edit') }}"><i class='glyphicon glyphicon-edit'> </i>Edit</a>
                                                     @endif
                                                 </td>
+
                                             </tr>
                                             </tbody>
                                         </table>
                                     </li>
-                                @endif
+                                    @endif
+                                    @if(!$sprintExistInProject)
+                                        no sprints
+                                    @endif
+
+                                    @endif
                             @endforeach
+                                @if($storyExistInSprint)
+                                @if($closable_value==true)
+                                    <div class="alert alert-info">
+                                        <strong>This Sprint is Already Completed !</strong> Close this Sprint and create new Sprint to start user stories
+                                    </div>
+                                @endif
+                                @endif
                         </ol>
-
-
                         <input type="hidden" name="project_id" value="{{ $project_id  }}">
                         <input type="hidden" name="sprint_id" value="{{ $sprint_id }}">
 
@@ -164,7 +190,10 @@ $id_name_array = DynUI::getIdNameArray("sprints", "id", "sprint_name");
                         <ol class='simple_with_animation' style='list-style:none;'>
 
                             @foreach($user_stories as $key => $user_story)
-                                <?php $storyExistInSprint = SprintScheduleController::isStoryExistInSprint($user_story->story_id, $sprint_id); ?>
+                                <?php $storyExistInSprint = SprintScheduleController::isStoryExistInSchedule($user_story->story_id);
+
+                                ?>
+
                                 @if(!$storyExistInSprint)
                                     <li class="nostyle">
                                         <input type='hidden' name='stories_to_add[]'
@@ -186,8 +215,8 @@ $id_name_array = DynUI::getIdNameArray("sprints", "id", "sprint_name");
 
                                                 <td width="10%">
                                                     @if(DynUI::isUserRole("Project Manager")  || DynUI::isUserRole("Account Head"))
-                                                        <a class="btn btn-small btn-info"
-                                                           href="{{ URL::to('user_stories/' . $user_story->story_id . '/edit') }}">Edit</a>
+                                                        <a class="btn btn-small btn-info" style="background-color: #005384"
+                                                           href="{{ URL::to('user_stories/' . $user_story->story_id . '/edit') }}"><i class='glyphicon glyphicon-edit'> </i>Edit</a>
                                                     @endif
                                                 </td>
                                             </tr>
