@@ -1,72 +1,80 @@
 @extends('app')
 
 @section('content')
+
     <br/>
-    <br/>
-    <br/>
-    <div class="container"><div style="width:90%;padding:5px 5px 15px 80px;">
-            <div class="panel panel-info" >
-                <div class="panel-heading"><h1>View My Profile</h1></div>
+    <div class="container" style="width: 100%" >
+        <div class="box box-default" style="padding: 20px 50px 0px 20px;">
 
-                <div class="panel-body">
+            <div class="box-header with-border">
+                <div style="width:100%;padding:5px 5px 15px 10px;">
+                    <div class="panel panel-info" >
+                        <div class="panel-heading"><h1>View My Profile</h1></div>
 
-                    <div class="panel-body">
+                        <div class="panel-body">
 
-                        <table class="table table-striped table-bordered">
-                            <thead style="background-color: #6495ED;">
-                            <tr>
-                                <td><b>Name</b></td>
-                                <td><b>{{ Auth::user()->name }}</b></td>
+                            <div class="panel-body">
 
-                            </tr>
-                            <tr>
-                                <td><b>Email</b></td>
-                                <td><b>{{ Auth::user()->email }}</b></td>
 
-                            </tr>
-                            <tr>
-                                <td><b>Designation</b></td>
-                                <td><b> {{ Auth::user()->designation }}</b></td>
+                                <table><tr><td align="top">
+                                            <?php
 
-                            </tr>
-                            <tr>
-                                <td><b>About</b></td>
-                                <td> <b>{{$profile->about }}</b></td>
+                                            use App\Profile;
 
-                            </tr>
-                            <tr>
-                                <td><b>Proffessional Qualifications</b> </td>
-                                <td>  <b>{{ $profile->prof_qual }}</b></td>
+                                            $profile = Profile::where('id', '=', Auth::user()->id)->first(); ?>
 
-                            </tr>
-                            <tr>
-                                <td><b> Academic Qualifications </b></td>
-                                <td> <b>  {{$profile->acad_qual }}</b></td>
+                                            @if ($profile === null)
+                                                <div><img src="{{ URL::asset('dist/img/pm.png')}}" class="user-image" alt="User Image" height="150" width="150">
 
-                            </tr>
-                            <tr>
-                                <td><b> Prefered Technologies </b></td>
-                                <td> <b> {{ $profile->techno }}</b></td>
 
-                            </tr>
-                            </thead>
+                                                </div>  @endif
+                                            @if ($profile !== null)
+                                                <div><img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="user-image" alt="User Image" height="150" width="150">
 
-</table>
-           {{--                 <ul>
-            <li> Name: {{ Auth::user()->name }}</li>
-            <li> Email : {{ Auth::user()->email }}</li>
-            <li> Designation: {{ Auth::user()->designation }}</li>
-            <li> About: {{$profile->about }}</li>
-            <li> Proffessional Qualifications : {{ $profile->prof_qual }}</li>
-            <li> Academic Qualifications: {{$profile->acad_qual }}</li>
-            <li> Prefered Technologies: {{ $profile->techno }}</li>
+
+                                                </div>
+                                            @endif
 
 
 
+                                        </td><td>
+                                            <div style="margin-left: 10%; ">
+                                                <h3><b>{{Auth::user()->name}}</b></h3>
+                                                <h4> <b>E-mail :</b></h4>
+                                                <h4>{{Auth::user()->email}}</h4>
+                                                <h4><b>Designation :</b></h4><h4>{{Auth::user()->designation}}</h4>
+
+
+                                            </div> </td>
+                                        <td>
+
+                                        </td></tr>
+                                    <tr><td>
+
+                                        </td><td>  <div style="margin-left: 10%; ">
+                                                <h4><b>About :</b></h4>
+                                                <h4>{{$profile->about }}</h4>
+                                                <h4><b>Proffessional Qualifications :</b></h4>
+                                                <h4>{{ $profile->prof_qual }}</h4>
+                                                <h4><b>Academic Qualifications :</b></h4>
+                                                <h4>{{$profile->acad_qual }}</h4>
+
+                                                @if(Auth::user()->designation==='Developer')
+                                                    <h4><b>Prefered Technologies :</b></h4>
+                                                    <h4>{{ $profile->techno }}</h4>
+
+                                                @endif
+                                            </div></td></tr></table>
 
 
 
-        </ul>--}}
-                    </div>  </div>  </div>  </div>  </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 @endsection

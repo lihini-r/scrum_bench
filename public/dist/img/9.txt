@@ -1,0 +1,5 @@
+A.A.M.A.S.S.Perera
+IT14118296
+1.As an administrator i want to grant user role based access permissions to different users so that i can ensure the safety and integrity of the system.
+2.As a super admin i want to view the progress of each project under each project account so that i can take further actions.
+3.As a super admin i want to search account details so that i can find specific account details where necessary.
