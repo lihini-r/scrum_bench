@@ -40,6 +40,13 @@ Route::resource('sprint_schedules', 'SprintScheduleController');
 Route::resource('story_search', 'StorySearchController');
 Route::resource('dev_dashboard', 'DevDashboardController');
 Route::GET('sprint_schedules/sprint/{sprint_id}', ['uses' => 'SprintScheduleController@getIndex', 'as' => 'sprint_schedules.get_sprint']);
+
+
+
+
+
+
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
@@ -53,6 +60,41 @@ Route::resource('profiles', 'ProfileController');
 Route::resource('roles', 'RoleController');
 
 Route::resource('permissions', 'PermissionController');
+Route::controllers([
+	'auth' => 'Auth\AuthController',
+	'password' => 'Auth\PasswordController',
+]);
+
+Route::resource('accounts', 'AccountController');
+
+Route::resource('profiles', 'ProfileController');
+//Route::get('/{profiles}','ProfileController@show');
+
+Route::resource('roles', 'RoleController');
+
+Route::resource('permissions', 'PermissionController');
+
+Route::POST('profiles/upload/{id}', ['uses' => 'ProfileController@uploadProfilePicture', 'as' => 'profiles.upload']);
+
+Route::POST('accounts/show/{id}', ['uses' => 'AccountController@showProjectProgress', 'as' => 'accounts.showProgress']);
+
+Route::resource('ideas', 'IdeaController');
+
+Route::resource('activities', 'ActivityController');
+
+Route::resource('users', 'UserController');
+
+Route::POST('accounts/hide/{id}', ['uses' => 'AccountController@hide', 'as' => 'accounts.hide']);
+
+
+Route::resource('accountunhide', 'AccountunhideController');
+
+Route::POST('accounts/unhide/{id}', ['uses' => 'AccountunhideController@unhide', 'as' => 'accountunhide.unhide']);
+
+Route::resource('superadmindashboards', 'SuperadmindashboardController');
+//Route::POST('cleanActivityLog', 'ActivityController@cleanActivityLog');
+
+
 
 
 

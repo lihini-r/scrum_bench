@@ -137,6 +137,8 @@ return [
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Html\HtmlServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
+		'Spatie\Activitylog\ActivitylogServiceProvider',
+
 
 
 		/*
@@ -199,7 +201,8 @@ return [
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Html'      => 'Illuminate\Html\HtmlFacade',
 		'DynUI' => 'App\Helpers\DynamicUIHelper',
-
+		'Entrust'   =>' Zizaco\Entrust\EntrustFacade',
+		'Activity' => 'Spatie\Activitylog\ActivitylogFacade',
 	],
 
 ];
