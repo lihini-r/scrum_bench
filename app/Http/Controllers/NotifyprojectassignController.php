@@ -1,26 +1,29 @@
 <?php namespace App\Http\Controllers;
 
+use App\AssignProjects;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Codeshare;
-use App\Comment;
-use Session;
+use App\Project;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller {
+class NotifyprojectassignController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-
-	//function to view all comments relavent to the code post
 	public function index()
 	{
-		$comments = Comment::all();
-		return view('codeshares.show', array('comments' => $comments));
+		$user = \Auth::user()->name;
+
+		$notifications = AssignProjects::where('ProjectManager',$user)->orderBy('created_at', 'desc')->get();
+
+
+
+		//$messages1s = Messages1::all();
+		return view('notify_project_assigns.index', array('notifications' => $notifications));
 	}
 
 	/**
@@ -28,12 +31,9 @@ class CommentController extends Controller {
 	 *
 	 * @return Response
 	 */
-
-	//function to add comments
 	public function create()
 	{
-		//return to show
-		return view('codeshares.show');
+		//
 	}
 
 	/**
@@ -41,21 +41,9 @@ class CommentController extends Controller {
 	 *
 	 * @return Response
 	 */
-	//function to store a comment
-	public function store(Request $request)
+	public function store()
 	{
-		//validate fields
-		$this->validate($request, [
-
-			'name'=>'required',
-			'comment' => 'required',
-			'codeId' => 'required'
-
-		]);
-		$input = $request->all();
-		Comment::create($input);
-		Session::flash('flash_message', 'Comment successfully Added!');
-		return redirect()->back();
+		//
 	}
 
 	/**
@@ -66,9 +54,7 @@ class CommentController extends Controller {
 	 */
 	public function show($id)
 	{
-
-		//$comment = Comment::find($id);
-		//return view('codeshare.show', array('comments' => $comment));
+		//
 	}
 
 	/**

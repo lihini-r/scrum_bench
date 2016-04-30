@@ -9,7 +9,8 @@ class Codeshare extends Model {
         'title',
         'language',
         'description',
-        'sourceCode'
+        'sourceCode',
+        'userName'
     ];
 
     //unique retrieval by codeId

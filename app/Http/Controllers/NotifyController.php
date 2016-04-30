@@ -3,24 +3,32 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Codeshare;
-use App\Comment;
-use Session;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller {
+
+use App\User;
+use Session;
+use App\Workflow;
+use App\UserStory;
+use Illuminate\Support\Facades\DB as DB;
+
+
+class NotifyController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-
-	//function to view all comments relavent to the code post
 	public function index()
 	{
-		$comments = Comment::all();
-		return view('codeshares.show', array('comments' => $comments));
+		$user = \Auth::user()->id;
+
+		$notifications = Workflow::where('user_id',$user)->where('status','Approved')->orderBy('created_at', 'desc')->get();
+
+
+		//$messages1s = Messages1::all();
+		return view('notifications.index', array('notifications' => $notifications));
 	}
 
 	/**
@@ -28,12 +36,9 @@ class CommentController extends Controller {
 	 *
 	 * @return Response
 	 */
-
-	//function to add comments
 	public function create()
 	{
-		//return to show
-		return view('codeshares.show');
+		//
 	}
 
 	/**
@@ -41,21 +46,9 @@ class CommentController extends Controller {
 	 *
 	 * @return Response
 	 */
-	//function to store a comment
-	public function store(Request $request)
+	public function store()
 	{
-		//validate fields
-		$this->validate($request, [
-
-			'name'=>'required',
-			'comment' => 'required',
-			'codeId' => 'required'
-
-		]);
-		$input = $request->all();
-		Comment::create($input);
-		Session::flash('flash_message', 'Comment successfully Added!');
-		return redirect()->back();
+		//
 	}
 
 	/**
@@ -64,11 +57,9 @@ class CommentController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show()
 	{
 
-		//$comment = Comment::find($id);
-		//return view('codeshare.show', array('comments' => $comment));
 	}
 
 	/**

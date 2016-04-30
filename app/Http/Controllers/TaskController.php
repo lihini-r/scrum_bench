@@ -3,24 +3,29 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Codeshare;
-use App\Comment;
+use App\User;
 use Session;
+use App\UserStory;
+use Illuminate\Support\Facades\DB as DB;
 use Illuminate\Http\Request;
 
-class CommentController extends Controller {
+class TaskController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-
-	//function to view all comments relavent to the code post
 	public function index()
 	{
-		$comments = Comment::all();
-		return view('codeshares.show', array('comments' => $comments));
+
+		$user = \Auth::user()->name;
+
+		$tasks = UserStory::where('reporter',$user)->where('assignee','!=','Not Assigned')->orderBy('created_at', 'desc')->get();
+
+
+		//$messages1s = Messages1::all();
+		return view('tasks.index', array('tasks' => $tasks));
 	}
 
 	/**
@@ -28,12 +33,9 @@ class CommentController extends Controller {
 	 *
 	 * @return Response
 	 */
-
-	//function to add comments
 	public function create()
 	{
-		//return to show
-		return view('codeshares.show');
+		//
 	}
 
 	/**
@@ -41,21 +43,9 @@ class CommentController extends Controller {
 	 *
 	 * @return Response
 	 */
-	//function to store a comment
-	public function store(Request $request)
+	public function store()
 	{
-		//validate fields
-		$this->validate($request, [
-
-			'name'=>'required',
-			'comment' => 'required',
-			'codeId' => 'required'
-
-		]);
-		$input = $request->all();
-		Comment::create($input);
-		Session::flash('flash_message', 'Comment successfully Added!');
-		return redirect()->back();
+		//
 	}
 
 	/**
@@ -64,12 +54,12 @@ class CommentController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($story_id)
 	{
-
-		//$comment = Comment::find($id);
-		//return view('codeshare.show', array('comments' => $comment));
+		$task = UserStory::find($story_id);
+		return view('tasks.show', array('task' => $task));
 	}
+
 
 	/**
 	 * Show the form for editing the specified resource.

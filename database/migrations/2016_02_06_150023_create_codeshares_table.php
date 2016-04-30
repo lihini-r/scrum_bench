@@ -17,10 +17,12 @@ class CreateCodesharesTable extends Migration {
 		{
 			//ad columns
 			$table->increments('codeId');
+			$table->string('userName');
 			$table->string('title');
 			$table->string('language');
 			$table->string('description');
 			$table->string('sourceCode');
+
 			$table->timestamps();
 		});
 

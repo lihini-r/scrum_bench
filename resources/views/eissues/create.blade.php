@@ -32,14 +32,14 @@
                     @endif
 
                     <div class="form-group">
-                        <!-- form heading-->
                         <h1>Send Your Issue</h1>
                     </div>
-                        <hr>
+                    <hr>
 
                     <br>
                     <br>
                     <div class="container">
+                        <!--Form to enter email message-->
                         {!! Form::open(['route' => 'eissues.store', 'method'=>'POST', 'role' => 'form' , 'data-toggle' => 'validator','enctype'=>'multipart/form-data']) !!}
 
                         <div class="form-group" >
@@ -61,9 +61,7 @@
                             {!! Form::label('File', 'File Input', ['class' => 'control-label']) !!}
                             {!! Form::file('File', null, ['class' => 'form-control' , 'style' => 'width:40%;']) !!}
                         </div>
-                        <!--submit form details to store-->
                         {!! Form::submit('Send', ['class' => 'btn btn-success']) !!}
-                                <!--reset form details to entered-->
                         {!! Form::reset('Reset', ['class' => 'btn btn-primary']) !!}
                         {!! Form::close() !!}
                     </div>

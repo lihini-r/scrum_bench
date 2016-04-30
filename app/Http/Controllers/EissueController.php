@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use App\Eissue;
 use Illuminate\Support\Facades\File;
+use PhpSpec\Exception\Exception;
 use Session;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,7 @@ class EissueController extends Controller {
 	 *
 	 * @return Response
 	 */
+
 	public function index()
 	{
 		$eissues = Eissue::all();
@@ -26,6 +28,8 @@ class EissueController extends Controller {
 	 *
 	 * @return Response
 	 */
+
+	//function to display email form
 	public function create()
 	{
 		return view('eissues.create');
@@ -36,14 +40,16 @@ class EissueController extends Controller {
 	 *
 	 * @return Response
 	 */
+
+	//function to send email
 	public function store(Request $request)
 	{
 
 		$this->validate($request, [
 
-		'email' => 'required|Between:3,64|email',
-		'subject' => 'required',
-		'message' => 'required'
+			'email' => 'required|Between:3,64|email',
+			'subject' => 'required',
+			'message' => 'required'
 
 		]);
 
@@ -108,6 +114,7 @@ class EissueController extends Controller {
 
 		$sentMail = @mail($recipient_email, $subject, $body, $headers);
 
+
 		if ($sentMail) //output success or failure messages
 		{
 			Session::flash('flash_message', 'Your email successfully sent');
@@ -115,9 +122,20 @@ class EissueController extends Controller {
 		}
 		else
 		{
-			Session::flash('flash_message', 'Could not send mail! Please check your PHP mail configuration.');
 
+			Session::flashDanger('flash_message', 'Oops!!! Something went wrong. Please check your computer\'s Internet connection!');
+			//Session::flash('flash_message', 'Oops!!! Something went wrong. Please check your computer\'s Internet connection!');
 		}
+
+		//	try {
+		//	mail($recipient_email, $subject, $body, $headers);
+
+		//	}
+
+//catch exception
+		//catch (phpmailerException $e) {
+		//	echo $e->errorMessage(); //Pretty error messages from PHPMailer
+		//	}
 
 
 		//return back to page

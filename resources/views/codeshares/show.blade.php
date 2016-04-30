@@ -1,86 +1,143 @@
 <!--display source code from index-->
 @extends('app')
 
+@section('page_styles')
+    <link rel="stylesheet" href="{{ URL::asset('bootstrap/css/bootstrap.min.css') }}">
+    <style>
+        .text-width {
+            width: 50%;
+        }
+    </style>
+@endsection
+
 @section('content')
-  <!--  <script src="jquery-1.12.0.min.js" type="text/javascript" > </script>
-        <script type='text/javascript'>
-            function addi()
-            {
-                var comment=$('#comment').val();
-                // var name=$('#name').val();
-                $('#sa').prepend('<div class="well" style="width: 80%"><b> <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="user-image" alt="User Image"  width="40" height="40"> {{ Auth::user()->name }} said:</b><br>'+comment+'<br> </div><br></hr>');
-            }
-        </script>-->
 
     <div class="container">
-        <div class="form-group" style="padding:20px 30px 20px 20px; position: absolute;top: 100px;right: 150px">
-            <!--Directs to create to post codes-->
-            <a class="btn btn-small btn-info pull-right" href="{{ URL::to('codeshares/create') }}">Post new code</a>
-        </div>
-
         <div class="container" >
+            @if(Auth::user()->name == $codeshare->userName)
+                <a class="glyphicon glyphicon-pencil " style="position: absolute;right:180px;top: 160px; " href="#" data-toggle="modal" data-target="#edit_code"></a>
+                @endif
+                        <!-- Edit Code-->
+                <div id="edit_code" class="modal fade" role="dialog">
+                    <div class="modal-dialog" >
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color:#337ab7">
+                                <!-- Modal button to close form-->
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title" style="color: white"><b>Update Your Post</b></h4>
+                            </div>
+                            <div class="modal-body">
+                                <section class="content">
+                                    <div class="box box-default">
+                                        <div class="box-header with-border">
+                                            <!-- Update code-->
+                                            {!! Form::model($codeshare, ['method' => 'PATCH','route' => ['codeshares.update', $codeshare->codeId   ], 'data-toggle' => 'validator']) !!}
 
-            <!--Display code title-->
-            <h4><b>{{ $codeshare->title }}</b></h4>
-            <br>
-            <!--Display code language-->
-            <span style='background-color: #5bc0de'><b>{{ $codeshare->language }}</b></span>
-            <br>
-            <br>
+                                            <div class="form-group">
+                                                {!! Form::label('title', 'Title', ['class' => 'control-label']) !!}
+                                                <input value="{{$codeshare->title }}" type="text" class="form-control" style="width:100%;" name="title"  id="title"  >
 
-            <!--Display code description-->
-            <pre style="width:80%">{{ $codeshare->description }}</pre>
+                                            </div>
 
-            <br>
-            <!--Display source code -->
-            <pre style='overflow-y: scroll; height:400px;width: 80%'><code class="javascript">{{ $codeshare->sourceCode }}</code></pre>
-            <p style="position: absolute;right: 180px">{{ $codeshare->created_at }}</p>
-            <hr/>
+                                            <div class="form-group">
+                                                {!! Form::label('language', 'Language', ['class' => 'control-label']) !!}
+                                                <select id="language" name="language" class="form-control" style="width: 250px">
+                                                    <option>C</option>
+                                                    <option>C#</option>
+                                                    <option>C++</option>
+                                                    <option> CSS</option>
+                                                    <option> HTML</option>
+                                                    <option>Java</option>
+                                                    <option>JavaScript</option>
+                                                    <option>MatLab</option>
+                                                    <option> Objective-C</option>
+                                                    <option>Pascal</option>
+                                                    <option>Perl</option>
+                                                    <option>PHP</option>
+                                                    <option>Python</option>
+                                                    <option>Ruby</option>
+                                                    <option>SQL</option>
+                                                    <option>XML</option>
+                                                </select >
+                                            </div>
 
-            <!--comments form-->
-            {!! Form::open(['route' => 'comments.store']) !!}
-            <!--get code ID of the displayed code-->
-            <input type='hidden' id='codeId' style="width: 0px" name='codeId' value={{ $codeshare->codeId }} >
-            <!--get currently logged in user's name-->
-            <input type='hidden' id='name' style="width: 0px" name='name' value={{ Auth::user()->name }}  >
-            <br>
-            <!--display currently logged in user's profile photo-->
-            <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image" width="50px" height="50px">
-            <!--get comment-->
-            <input type='text' id='comment' style="width: 800px;height: 35px;padding: 6px 12px;font-size: 14px;" name='comment'  placeholder='Write a comment'>
-            <!--store comment-->
-            <input type='submit'  id='add' value='Add'  class='btn btn-success'>
+                                            <div class="form-group">
+                                                {!! Form::label('description', 'Description', ['class' => 'control-label']) !!}
+                                                <textarea  id="description" name="description" class="form-control" rows="2" cols="50" style="width: 500px;" > {{ $codeshare->description }} </textarea>
+                                            </div>
 
-            <!--<div id='sa'>
+                                            <div class="form-group">
+                                                {!! Form::label('sourceCode', 'Source Code', ['class' => 'control-label']) !!}
+                                                <textarea  id="sourceCode" name="sourceCode" rows="10" cols="40" style='width: 450px;overflow-y: scroll;' class="form-control">{{ $codeshare->sourceCode }} </textarea>
 
-            </div>-->
-            <hr/>
-            {!! Form::close() !!}
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
+                                                {!! Form::close() !!}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Display selected code Post-->
+                <h4><b>{{ $codeshare->title }}</b></h4>
+                <input type='hidden' id='userName' style="width: 60px" name='codeId' value={{$codeshare->userName }}>
+                <br>
+                <span style='background-color: #5bc0de'><b>{{ $codeshare->language }}</b></span>
+                <br>
+                <br>
+
+
+                <pre style="width:80%;">{{ $codeshare->description }}</pre>
+
+                <br>
+                <pre style='overflow-y: scroll; height:400px;width: 80%'><code class="javascript">{{ $codeshare->sourceCode }}</code></pre>
+                <p style="position: absolute;right: 180px">{{ $codeshare->created_at }}</p>
+                <hr/>
+
+                <!-- form to add comments-->
+                {!! Form::open(['route' => 'comments.store']) !!}
+                <input type='hidden' id='codeId' style="width: 0px" name='codeId' value={{ $codeshare->codeId }} >
+                <input type='hidden' id='name' style="width: 0px" name='name' value="{{ Auth::user()->name }}"  >
+                <br>
+                <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image" width="50px" height="50px">
+                <input type='text' id='comment' style="width: 800px;height: 35px;padding: 6px 12px;font-size: 14px;" name='comment'  placeholder='Write a comment'>
+                <input type='submit'  id='add' value='Add'  class='btn btn-success'>
+                <hr/>
+                {!! Form::close() !!}
         </div>
 
         <?php
-            //get comments by code ID(displayed code) order by date and time in decsending order
-            $comments=DB::table('comments')->where('codeId',$codeshare->codeId)->orderBy('created_at', 'desc')->get();
+        $comments=DB::table('comments')->where('codeId',$codeshare->codeId)->orderBy('created_at', 'desc')->get();
         ?>
-        <!-- Display comments for the spacific code post in most recent from date and time-->
+                <!-- Display comments for the spacific code post in most recent from date and time-->
         <div class="container" >
             <?php
-               //get all the comments one by one relavent to the displayed code
-                foreach($comments as $comment)
-                {
-                    echo '<tr><td><b style="color: #3f729b">';
+            foreach($comments as $comment)
+            {
+            echo '<tr><td><b style="color: #3f729b">';
             ?>
 
-            <!-- Display profile pic of comment posted user -->
             <img src="{{ URL::asset('dist/img') }}/{{$comment->name }}.png" class="img-circle" alt="User Image" width="35px" height="35px">
 
-             <?php
-                    //display commenter's name,comment and comment added date and time
-                    echo $comment->name .'</b></td></tr><td>'." ".$comment->comment.'</td><p>'.$comment->created_at.'</p><hr>';
-                }
-             ?>
+            <?php
+            echo $comment->name .'</b></td></tr><td>'." ".$comment->comment.'</td><p>'.$comment->created_at.'</p><hr>';
+            }
+            ?>
         </div>
     </div>
 
+@endsection
+
+@section('page_script1')
+    <script src="{{ URL::asset('bootstrap/js/validator.js') }}"></script>
+    <script src="{{ URL::asset('bootstrap/js/validator.min.js') }}"></script>
 @endsection
 

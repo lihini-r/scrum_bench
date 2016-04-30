@@ -19,14 +19,18 @@
                     <p>
                         <!--display message sent date and time-->
                         {{ $messages1->created_at }}
-                        <!--delete message -->
-                        <a style="position: absolute;right: 180px; " href="{{ route('messages1s.destroy', $messages1->messageid) }}" class=" fa fa-trash-o"></a>
                     </p>
+                    <!--delete message -->
+                    {!! Form::model($messages1,['method'=>'DELETE','route'=>['sentmessages.destroy',$messages1->messageid] ,'class'=>'delete' ]) !!}
+
+                    <button  style="position: absolute;right: 100px;color: #f00000 " class="close" type="submit" id="btnDelete"> <i class="fa fa-trash-o"></i> </button>
+                    <!--<a style="position: absolute;right: 180px; " href="{{ route('messages1s.destroy', $messages1->messageid) }}" class=" fa fa-trash-o"></a>-->
+                    {!! Form::close() !!}
                     <hr/>
                 </div>
 
             @endforeach
-          </div>
+        </div>
     </div>
 
 @endsection

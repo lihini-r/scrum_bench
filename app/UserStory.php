@@ -15,7 +15,8 @@ class UserStory extends Model {
         'reporter',
         'description',
         'org_est',
-        'story_id'
+        'story_id',
+        'created_at'
     ];
 
     protected $primaryKey = 'story_id';

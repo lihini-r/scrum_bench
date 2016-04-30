@@ -38,7 +38,6 @@ class AccountheaddashboardController extends Controller {
 	{
 		$this->validate($request, [
 
-
 		]);
 
 		$input = $request->all();

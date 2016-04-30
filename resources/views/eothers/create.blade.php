@@ -35,7 +35,7 @@
                         <!-- form heading-->
                         <h1>Other mails</h1>
                     </div>
-                        <hr>
+                    <hr>
 
                     <br>
                     <br>

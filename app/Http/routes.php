@@ -13,10 +13,22 @@
 
 
 Route::get('/', 'WelcomeController@index');
-
 Route::get('home', 'HomeController@index');
-
 Route::resource('sprints', 'SprintController');
+
+Route::resource('tasks', 'TaskController');
+Route::resource('notifications', 'NotifyController');
+Route::resource('notify_project_assigns', 'NotifyprojectassignController');
+Route::resource('todolists', 'TodolistController');
+Route::resource('queries', 'QueryController');
+Route::get('queries', 'QueryController@search');
+Route::resource('messages1s', 'Message1Controller');
+Route::resource('sentmessages', 'SentmessageController');
+Route::resource('codeshares', 'CodeshareController');
+Route::resource('eissues', 'EissueController');
+Route::resource('eothers', 'EotherController');
+Route::resource('comments', 'CommentController');
+Route::resource('accountheaddashboards', 'AccountheaddashboardController');
 
 Route::POST('user_stories/assign/{story_id}', ['uses' => 'StoryController@updateAssignee', 'as' => 'user_stories.assign']);
 Route::PATCH('workflows/storyStatus/{story_id}', ['uses' => 'WorkflowController@updateWorkflowStatus', 'as' => 'workflows.storyStatus']);
@@ -79,17 +91,9 @@ Route::resource('release_backlog', 'ReleaseBacklogController');
 
 
 
-Route::resource('queries', 'QueryController');
-Route::get('queries', 'QueryController@search');
 
-Route::resource('messages1s', 'Message1Controller');
-Route::resource('sentmessages', 'SentmessageController');
-Route::resource('codeshares', 'CodeshareController');
-Route::resource('eissues', 'EissueController');
-Route::resource('eothers', 'EotherController');
-Route::resource('comments', 'CommentController');
-Route::resource('accountheaddashboards', 'AccountheaddashboardController');
 
 Route::get('messages1/delete/{messages1}', ['as' => 'messages1.delete', 'uses' => 'Message1Controller@destroy']);
+
 
 

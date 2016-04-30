@@ -15,19 +15,16 @@ class SentmessageController extends Controller {
 	 *
 	 * @return Response
 	 */
+
+	//Function to get messages sent by current logged in user ordered by date and time in descending order-to get the most recent message sent
 	public function index()
-{
-	//get current logged in user's name
-	$user = \Auth::user()->name;
+	{
 
-	//get messages sent by current logged in user ordered by date and time in descending order-to get the most recent message sent
-	$messages1s = Messages1::where('from', $user)->orderBy('created_at', 'desc')->get();
+		$user = \Auth::user()->name;
+		$messages1s = Messages1::where('from', $user)->orderBy('created_at', 'desc')->get();
 
-
-	//$messages1s = Messages1::all();
-	//return to sent messages page
-	return view('sentmessages.index', array('messages1s' => $messages1s));
-}
+		return view('sentmessages.index', array('messages1s' => $messages1s));
+	}
 
 	/**
 	 * Show the form for creating a new resource.
@@ -88,9 +85,14 @@ class SentmessageController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+
+	//delete user's messages
+	public function destroy($messageid)
 	{
-		//
+		$messages1=Messages1::findOrFail($messageid);
+		$messages1->delete();
+		DB::table('messages1s')->where('messageid','=', $messageid)->delete();
+		return redirect()->route('sentmessages.index');
 	}
 
 }

@@ -4,7 +4,7 @@
 
 
 <?php
-use Illuminate\Support\Facades\DB as DB;
+/*use Illuminate\Support\Facades\DB as DB;
 
 use App\Http\Requests;
 
@@ -34,7 +34,7 @@ foreach ($prjman as $pj) {
 
 }
 
-?>
+*/?>
 
 
 
@@ -55,7 +55,7 @@ foreach ($prjman as $pj) {
 
 
 <?php
-use Illuminate\Support\Facades\DB as DB;
+//use Illuminate\Support\Facades\DB as DB;
 use \App\Http\Controllers\AccountController;
 
 $accounts = DB::table('accounts')->get();
@@ -68,6 +68,160 @@ $accounts = DB::table('accounts')->get();
 
 
 @section('content')
+<!--START ACOUNTHEAD DASHBOARD-->
+@if( Auth::user()->designation=='Account Head')
+	<div class="container">
+		<h1>Account Head Dashboard</h1>
+		<br>
+		<?php  $count=1 ?>
+
+				<!--get all project -->
+		@foreach($projects as $key => $project)
+			@if($count%4==0)
+				<div class="container" style="position:absolute;left:650px;top: 200px">
+					<div class="col-md-12">
+						<div class="col-lg-3 col-xs-6">
+							<div class="small-box bg-red" >
+								<div class="inner">
+									<h4><b>{{ $project->ProjectName }}</b></h4>
+									<p>Project ID: {{ $project->ProjectID }}</p>
+								</div>
+								<a href="{{ URL::to('projects/' . $project->ProjectID) }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			@endif
+
+			@if($count%5==0)
+				<div class="container" style="position:absolute;left:650px;top: 340px">
+					<div class="col-md-12">
+						<div class="col-lg-3 col-xs-6">
+							<div class="small-box bg-yellow" >
+								<div class="inner">
+									<h4><b>{{ $project->ProjectName }}</b></h4>
+									<p>Project ID: {{ $project->ProjectID }}</p>
+								</div>
+
+								<a href="{{ URL::to('projects/' . $project->ProjectID) }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			@endif
+
+			@if($count%6==0)
+				<div class="container" style="position:absolute;left:650px;top: 480px">
+					<div class="col-md-12">
+						<div class="col-lg-3 col-xs-6">
+
+							<div class="small-box bg-aqua" >
+								<div class="inner">
+									<h4><b>{{ $project->ProjectName }}</b></h4>
+									<p>Project ID: {{ $project->ProjectID }}</p>
+								</div>
+								<a href="{{ URL::to('projects/' . $project->ProjectID) }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			@endif
+
+			@if($count%7==0)
+				<div class="container" style="position:absolute;left:1000px;top: 200px">
+					<div class="col-md-12">
+						<div class="col-lg-3 col-xs-6">
+							<!-- small box -->
+							<div class="small-box bg-green" >
+								<div class="inner">
+									<h4><b>{{ $project->ProjectName }}</b></h4>
+									<p>Project ID: {{ $project->ProjectID }}</p>
+								</div>
+								<a href="{{ URL::to('projects/' . $project->ProjectID) }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			@endif
+
+
+			@if($count==1)
+				<div class="container"  style="position:absolute;top:200px;">
+					<div class="col-md-12">
+						<div class="col-lg-3 col-xs-6">
+							<!-- small box -->
+							<div class="small-box bg-aqua" >
+								<div class="inner">
+									<h4><b>{{ $project->ProjectName }}</b></h4>
+									<p>Project ID: {{ $project->ProjectID }}</p>
+								</div>
+								<a href="{{ URL::to('projects/' . $project->ProjectID) }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			@endif
+
+			@if($count==3)
+				<div class="container" style="position:absolute;left:245px;top: 480px" >
+					<div class="col-md-12">
+						<div class="col-lg-3 col-xs-6">
+							<!-- small box -->
+							<div class="small-box bg-red" >
+								<div class="inner">
+									<h4><b>{{ $project->ProjectName }}</b></h4>
+									<p>Project ID: {{ $project->ProjectID }}</p>
+								</div>
+								<a href="{{ URL::to('projects/' . $project->ProjectID) }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			@endif
+
+			@if($count==2)
+				<div class="container" style="position:absolute;left:245px;top: 340px">
+					<div class="col-md-12">
+						<div class="col-lg-3 col-xs-6">
+							<!-- small box -->
+							<div class="small-box bg-green" >
+								<div class="inner">
+									<h4><b>{{ $project->ProjectName }}</b></h4>
+									<p>Project ID: {{ $project->ProjectID }}</p>
+								</div>
+								<a href="{{ URL::to('projects/' . $project->ProjectID) }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			@endif
+
+			<?php
+			$count=$count+1
+			?>
+		@endforeach
+	</div>
+
+	<!--<br/>
+<div style="width:80%;padding:5px 5px 15px 80px;">
+<div class="panel panel-success" >
+	<div class="panel-heading">Home</div>
+
+	<div class="panel-body">
+		You are logged in!
+	</div>
+</div>
+</div>
+<img src="{{ URL::asset('dist/img/project-team1.png') }}" alt="Team Image">-->
+	@endif
+<!--END ACOUNTHEAD DASHBOARD-->
+
+
+
+
+
 	<br/>
 	<div style="width:90%;padding:5px 5px 15px 80px;">
 		<div class="panel panel-success" >
@@ -254,7 +408,7 @@ $accounts = DB::table('accounts')->get();
 
 
 
-							@foreach($projectids as $key =>$pids)
+							{{--@foreach($projectids as $key =>$pids)
 
 
 								<div class="col-lg-3 col-xs-6">
@@ -291,7 +445,7 @@ $accounts = DB::table('accounts')->get();
 								</div>
 
 
-							@endforeach
+							@endforeach--}}
 
 						</div>
 

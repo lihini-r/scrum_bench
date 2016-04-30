@@ -12,6 +12,7 @@ class Workflow extends Model {
         'user_id',
         'updated_date',
         'status',
+        'created_at'
 
 
 

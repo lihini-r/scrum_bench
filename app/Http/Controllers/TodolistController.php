@@ -3,13 +3,15 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\User;
-use Session;
-use App\Messages1;
-use Illuminate\Support\Facades\DB as DB;
 use Illuminate\Http\Request;
 
-class Message1Controller extends Controller {
+use Session;
+use App\Todolist;
+
+use Illuminate\Support\Facades\DB as DB;
+
+
+class TodolistController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -17,14 +19,14 @@ class Message1Controller extends Controller {
 	 * @return Response
 	 */
 
-	//function to view all recieved user messages
+	//function to view user tasks added to to-do list
 	public function index()
+
 	{
-
 		$user = \Auth::user()->name;
-		$messages1s = Messages1::where('to',$user)->orderBy('created_at', 'desc')->get();
 
-		return view('messages1s.index', array('messages1s' => $messages1s));
+		$tasks = Todolist::where('userName',$user)->orderBy('created_at', 'desc')->get();
+		return view('todolists.index', array('tasks' => $tasks));
 	}
 
 	/**
@@ -32,55 +34,44 @@ class Message1Controller extends Controller {
 	 *
 	 * @return Response
 	 */
-
-
 	public function create()
 	{
-		//return to send message form
-		return view('messages1s.create');
+		return view('todolists.create');
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
+	 */
 
-	public function store()
-	{
-
-	}*/
-
-	//funtion to store messages
+	//function to store tasks
 	public function store(Request $request)
 	{
 		//validate fields
 		$this->validate($request, [
 
-			'to' => 'required',
-			'message' => 'required',
-			'from' => 'required'
+			'task' => 'required',
+			'userName'=> 'required'
 
 		]);
 
 		$input = $request->all();
-		Messages1::create($input);
-		Session::flash('flash_message', 'Message successfully sent!');
-
+		//$users = DB::table('users')->lists('name');
+		Todolist::create($input);
+		Session::flash('flash_message', 'Task added successfully sent!');
 		return redirect()->back();
 	}
-
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $messageid
+	 * @param  int  $id
 	 * @return Response
 	 */
-
-	public function show($messageid)
+	public function show($id)
 	{
-		$messages1 = Messages1::find($messageid);
-		return view('messages1s.show', array('messages1' => $messages1));
+		//
 	}
 
 	/**
@@ -112,14 +103,16 @@ class Message1Controller extends Controller {
 	 * @return Response
 	 */
 
-	//function to delete user's recieved messages
-	public function destroy($messageid)
+	//delete user tasks from to-do list
+	public function destroy($taskid)
 	{
-		$messages1=Messages1::findOrFail($messageid);
-		$messages1->delete();
-		DB::table('messages1s')->where('messageid','=', $messageid)->delete();
+		$tasks=Todolist::findOrFail($taskid);
+		$tasks->delete();
+		DB::table('todolists')->where('task_id','=', $taskid)->delete();
 
-		return redirect()->route('messages1s.index');
+
+		return redirect()->route('todolists.index');
+
 
 	}
 
