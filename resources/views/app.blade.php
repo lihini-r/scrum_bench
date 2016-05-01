@@ -376,8 +376,35 @@ desired effect
 
             @if(\Auth::user()->can('create_idea'))
 
-                <li class="active"><a href="{{ url('/ideas') }}">Ideas Backlog</a>
-                </li>
+
+                <?php $results = DB::table('assign_projects')->get();
+                $status=false;
+
+                foreach($results as $result)
+                {
+                    if($result->ProjectManager==\Auth::user()->name)
+                    {
+                        $status=true;
+                        break;
+                    }
+
+                    else
+                    {
+                        $status=false;
+                    }
+                }
+
+                ?>
+
+
+                    @if($status==true)
+
+                        <li class="active"><a href="{{ url('/ideas') }}">Ideas Backlog</a>
+                        </li>
+
+                    @endif
+
+
 
             @endif
 
@@ -385,7 +412,14 @@ desired effect
 
 
 
-            @if(\Auth::user()->can('view_super_admin_dashboard'))
+
+
+
+
+
+
+
+        @if(\Auth::user()->can('view_super_admin_dashboard'))
                 <li class="active"><a href="{{ url('home') }}">Dashboard</a></li>
             @endif
 
