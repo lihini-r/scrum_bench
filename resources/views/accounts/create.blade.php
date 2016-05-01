@@ -69,21 +69,27 @@
 
                                                 $accounts=DB::table('accounts')->get();
 
-
-
-                                                foreach($accounts as $account)
+                                                if($accounts==null)
                                                 {
-                                                    if($account->acc_head==$name)
+                                                    $status=true;
+                                                }
+                                                else{
+                                                    foreach($accounts as $account)
                                                     {
-                                                        $status=false;
-                                                        break;
-                                                    }
+                                                        if($account->acc_head==$name)
+                                                        {
+                                                            $status=false;
+                                                            break;
+                                                        }
 
-                                                    else
-                                                    {
-                                                        $status=true;
+                                                        else
+                                                        {
+                                                            $status=true;
+                                                        }
                                                     }
                                                 }
+
+
 
                                                 if($status==true)
                                                 {
