@@ -1,20 +1,6 @@
 @extends('app')
-
-
-
-
-
-
-.
-
-
-
-
-
-
-
 <?php
-//use Illuminate\Support\Facades\DB as DB;
+use Illuminate\Support\Facades\DB as DB;
 use \App\Http\Controllers\AccountController;
 
 $accounts = DB::table('accounts')->get();
@@ -22,86 +8,40 @@ $accounts = DB::table('accounts')->get();
 
 ?>
 
-
-
-
-
 @section('content')
-
-
-
 	<br/>
-	<div style="width:90%;padding:5px 5px 15px 80px;">
-		<div class="panel panel-success" >
-
-
-
-
-			   @if(\Auth::user()->hasRole('Super Admin'))
-
-			<div class="panel-heading">Super Admin Dashboard</div>
-
-			<div class="panel-body">
+	<div class="container"> <div style="width:90%;padding:5px 5px 15px 80px;">
+			<div class="panel panel-info" style="width: 80%">
+				<div class="panel-heading"><h1> Dashboard</h1></div>
 
 				<div class="panel-body">
 
-					<table class="table table-striped table-hover">
-						<thead style="background-color: #34cccd; color: white; font-size: 120%;">
-						<tr>
-							<td>Account ID</td>
-							<td>Account Name</td>
-							<td>Description</td>
-							<td>Account Head</td>
-							<td>Show</td>
-						</tr>
-						</thead>
-						<tbody>
-						@foreach($accounts as $key => $account)
-							<tr>
-								<td>{{ $account->id }}</td>
-								<td>{{ $account->acc_name }}</td>
-								<td>{{ $account->description }}</td>
-								<td>{{ $account->acc_head }}</td>
+					<div class="panel-body" style="margin-left: 1%">
 
 
-								<!-- we will also add show, edit, and delete buttons -->
-								<td>
+						@if(\Auth::user()->hasRole('Super Admin'))
+							@foreach($accounts as $key => $account)
+								@if($account->Hide==="off")
+									<div class="col-lg-6 col-xs-10" >
+										<div class="small-box bg-aqua">
+											<div class="inner">
 
-									<!-- delete the nerd (uses the destroy method DESTROY /nerds/{id} -->
-									<!-- we will add this later since its a little more complicated than the other two buttons -->
+												<h4>{{ $account->acc_name }}</h4>
 
-									<!-- show the nerd (uses the show method found at GET /nerds/{id} -->
+												<p>Account Head : {{ $account->acc_head }}</p>
 
-									<a class="btn btn-small btn-success" href="{{ URL::to('accounts/' . $account->id) }}">Show </a>
+												<a class="btn btn-small btn-success"  href="{{ URL::to('superadmindashboards/' . $account->id) }}" >
+													More Info..
+													<i class="fa fa-arrow-circle-right"></i>
+												</a>
 
-									<!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
+											</div></div></div>
+								@endif
+							@endforeach
+						@else
+							<img src="{{ URL::asset('dist/img/project-team1.png') }}" alt="Team Image">
+						@endif
 
-
-								</td>
-							</tr>
-						@endforeach
-						</tbody>
-					</table>
-
-				</div>
-			</div>
-
-		</div>
-		@else
-			<img src="{{ URL::asset('dist/img/project-team1.png') }}" alt="Team Image">
-			@endif
-	</div>
-	</div>
+					</div></div></div></div></div>
 	{{--<img src="{{ URL::asset('dist/img/project-team1.png') }}" alt="Team Image">--}}
-
-
-
-
-
-
-
-
-			.
-
-
 @endsection
