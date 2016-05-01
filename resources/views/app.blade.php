@@ -317,45 +317,33 @@ desired effect
                  <li class="active"><a href="#" class="page-link" name="pages/Projects.html"><i class="fa fa-link"></i>
                      <span>Projects</span></a></li>
 
- --}}{{----}} {{--@if(\Auth::user()->hasRole('Developer'))
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>User Story</span> <i
-                                class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/backlog.php') }}">Backlog</a></li>
-                        <li class="active"><a href="{{ url('/sprints') }}">Sprint</a>
-                        </li>
-                        <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">search</a></li>
-                    </ul>
-                </li>--}}{{--
-            @endif--}}
+ --}}{{----}}
 
-            {{--Granting the permission of accessing project accounts to super admin--}}
+
+
+
+
+
+            {{--GRANTING PERMISSION SANJANI LINKS--}}
 
             @if(\Auth::user()->can('create_accounts'))
 
-                <li class="active"><a href="{{ url('/accounts') }}">Accounts</a>
+                <li class="active"><a href="{{ url('/accounts') }}"> <i class="fa fa-link"></i> Accounts</a>
                 </li>
             @endif
+
+
             @if(\Auth::user()->can('view_activity_log'))
 
-                <li class="active"><a href="{{ url('/activities') }}">Activity Log</a>
+                <li class="active"><a href="{{ url('/activities') }}"> <i class="fa fa-link"></i> Activity Log</a>
                 </li>
 
             @endif
-            {{-- <li class="treeview">
-                 <a href="#"><i class="fa fa-link"></i> <span>Profile</span> <i
-                             class="fa fa-angle-left pull-right"></i></a>
-                 <ul class="treeview-menu">
 
-                     <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
-                     </li>
 
-                 </ul>
-             </li>--}}
             @if(\Auth::user()->can('create_profile'))
 
-                <li class="active"><a href="{{ url('/profiles') }}">Profile</a>
+                <li class="active"><a href="{{ url('/profiles') }}"> <i class="fa fa-link"></i> Profile</a>
                 </li>
 
             @endif
@@ -363,13 +351,10 @@ desired effect
 
             @if(\Auth::user()->can('view_users'))
 
-                <li class="active"><a href="{{ url('/users') }}">Users</a>
+                <li class="active"><a href="{{ url('/users') }}"> <i class="fa fa-link"></i> Users</a>
                 </li>
 
             @endif
-
-
-
 
 
 
@@ -399,7 +384,7 @@ desired effect
 
                     @if($status==true)
 
-                        <li class="active"><a href="{{ url('/ideas') }}">Ideas Backlog</a>
+                        <li class="active"><a href="{{ url('/ideas') }}"> <i class="fa fa-link"></i> Ideas Backlog</a>
                         </li>
 
                     @endif
@@ -410,56 +395,172 @@ desired effect
 
 
 
-
-
-
-
-
-
-
-
-
         @if(\Auth::user()->can('view_super_admin_dashboard'))
-                <li class="active"><a href="{{ url('home') }}">Dashboard</a></li>
+                <li class="active"><a href="{{ url('home') }}"><i class="fa fa-link"></i> Dashboard</a></li>
             @endif
+
+
 
             @if(\Auth::user()->can('view_user_roles'))
 
-                <li class="active"><a href="{{ url('/roles') }}">User Roles</a>
+                <li class="active"><a href="{{ url('/roles') }}"><i class="fa fa-link"></i> User Roles</a>
                 </li>
             @endif
+
+
             @if(\Auth::user()->can('edit_permissions'))
 
-                <li class="active"><a href="{{ url('/permissions') }}">Permissions</a>
+                <li class="active"><a href="{{ url('/permissions') }}"><i class="fa fa-link"></i> Permissions</a>
 
                 </li>
                 @endif
 
 
-                {{-- @if(\Auth::user()->can('view_projects'))
-
-                     <li class="active"><a href="{{ url('/pages/ProjectDashboard.html') }}" >Projects</a>
-                     </li>
 
 
-                 @endif--}}
-                {{--  <li>
-                      <!-- Menu Toggle Button -->
-                      <a href="{{ url('/auth/register') }}">
-                          <span class="hidden-xs">Register</span>
-                      </a>
-                  </li>--}}
 
-                {{--<li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
-                            class="fa fa-angle-left pull-right"></i></a>
+             {{--HASINI LINKS           --}}
+
+
+            @if(\Auth::user()->can('view_projects'))
+
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Projects</span> <i
+                                class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="#" class="page-link" name="pages/ProjectDashboard.html">Project
-                            Dashboard</a></li>
-                        <li class="active"><a href="#" class="page-link" name="pages/MyDashboard.html">My Dashboard</a>
+
+                        <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
+-->
+
+
+
+
+
+                        <li class="active"><a href="{{ url('/projects') }}">Projects</a>
+                        </li>
+
+
+                        <li class="active"><a href="{{ url('/projects/create') }}">Add Projects</a>
+
+
+                        <li class="active"><a href="{{ url('/assign_teams') }}">view with hidden projects</a>
+
+
+
+
+                        <li class="active"><a href="{{ url('/assign/create') }}">Assign Project Managers</a>
+
+
+
+                        <li class="active"><a href="{{ url('/assign_lead/create') }}">Assign Project Leads</a>
+
+
+
+
+
+                        <li class="active"><a href="{{ url('/release_backlog') }}"> Release Backlog</a>
+
+
+
                         </li>
                     </ul>
-                </li>--}}
+                </li>
+
+                @endif
+
+
+            @if(\Auth::user()->can('create_teams'))
+
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Teams</span> <i
+                                class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <!-- <li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/Projects.html') }}">Projects</a></li>
+-->
+                        <li class="active"><a href="{{ url('/teams') }}">Teams</a>
+                        </li>
+
+                        <li class="active"><a href="{{ url('/teams/create') }}">Create Teams</a>
+
+
+
+                        <li class="active"><a href="{{ url('/assign_teams/create') }}">Assign Teams</a>
+
+
+
+
+
+
+                        </li>
+                    </ul>
+                </li>
+                @endif
+
+
+
+            @if(\Auth::user()->can('view_pm_dashboard'))
+
+                <li class="active"><a href="{{ url('/hide') }}"><i class="fa fa-link"></i> Project Manager
+                        Dashboard</a></li>
+                @endif
+
+
+        {{--LIHINI LINKS--}}
+
+
+                @if(\Auth::user()->can('view_userstories'))
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>User Story</span> <i
+                                class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+
+                        @if(\Auth::user()->can('view_userstories'))
+                                <!--<li class="active"><a href="#" class="page-link" name="{{ URL::asset('pages/backlog.php') }}">Backlog</a></li>-->
+                        <li class="active"><a href="{{ url('/user_stories') }}">Backlog</a>
+                        </li>
+                        <li class="active"><a href="{{ url('/sprints') }}">Sprint</a>
+                        </li>
+                        <li class="active"><a href="{{ url('/sprint_schedules') }}">Scrum Board</a>
+                        </li>
+                        <li class="active"><a href="{{ url('/story_search') }}">Search</a>
+                        </li>
+                        @endif
+
+                        @if(\Auth::user()->can('create_testcases'))
+
+                            <li class="active"><a href="{{ url('/test_case') }}"> Test Lodge</a>
+                            </li>
+                        @endif
+
+                    </ul>
+                </li>
+            @endif
+
+
+
+            @if(\Auth::user()->can('view_devdashboard'))
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Dashboards</span> <i
+                                class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        //This link -> only developers
+                        <li class="active"><a href="{{ url('/dev_dashboard') }}">My Dashboard</a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+
+
+                        {{--DANUSHKA LINKS--}}
+
+
+            @if(\Auth::user()->can('view_acchead_dashboard'))
+                <li class="active"><a href="{{ url('home') }}"><i class="fa fa-link"></i> Account Head Dashboard</a></li>
+                @endif
+
+
+
+
                         <!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
