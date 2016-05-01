@@ -528,13 +528,37 @@ desired effect
 
 
             @if(\Auth::user()->can('view_pm_dashboard'))
+                <?php $results = DB::table('assign_projects')->get();
+                $status=false;
 
-                <li class="active"><a href="{{ url('/hide') }}"><i class="fa fa-link"></i> Project Manager
-                        Dashboard</a></li>
+                foreach($results as $result)
+                {
+                    if($result->ProjectManager==\Auth::user()->name)
+                    {
+                        $status=true;
+                        break;
+                    }
+
+                    else
+                    {
+                        $status=false;
+                    }
+                }
+
+                ?>
+
+
+                @if($status==true)
+
+
+                    <li class="active"><a href="{{ url('/hide') }}"><i class="fa fa-link"></i> Project Manager
+                            Dashboard</a></li>
                 @endif
+            @endif
 
 
-        {{--LIHINI LINKS--}}
+
+            {{--LIHINI LINKS--}}
 
 
                 @if(\Auth::user()->can('view_userstories'))

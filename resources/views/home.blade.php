@@ -372,6 +372,29 @@ $accept_blocker=StoryController::getPriority("blocker");
 
 		{{--START PROJECT MANAGER DASHBOARD--}}
 
+		<?php $results = DB::table('assign_projects')->get();
+		$status=false;
+
+		foreach($results as $result)
+		{
+			if($result->ProjectManager==\Auth::user()->name)
+			{
+				$status=true;
+				break;
+			}
+
+			else
+			{
+				$status=false;
+			}
+		}
+
+		?>
+
+
+		@if($status==true)
+
+
 @section('content')
 	<br/>
 
@@ -526,6 +549,7 @@ $accept_blocker=StoryController::getPriority("blocker");
 
 @endsection
 
+@endif
 
 {{--END PROJECT MANAGER DASHBOARD--}}
 
