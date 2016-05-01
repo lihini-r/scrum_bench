@@ -612,9 +612,9 @@ $accept_blocker=StoryController::getPriority("blocker");
 										<br/>
 										<div id="inner">
 											<div class="chartjq">
-												<div class="pie-thychart" data-set='[["To Do", {{$todo}}], ["In Progress",{{$inProgress}}], ["Approved",{{$approved}}]]' data-colors="#FBE4DB,#F17F49,#BD380F"></div>
+												<div class="pie-thychart2" data-set='[["Major", {{$accept_major}}], ["Minor",{{$accept_minor}}], ["Blocker",{{$accept_blocker}}]]' data-colors="#FBE4DB,#F17F49,#BD380F"></div>
 											</div>
-										</div>
+										</div>										
 										<br/>
 										<table class="table table-striped table-hover" width="70%">
 											<thead style="background-color: #95cd2a; color: white; font-weight: 900 ;">
@@ -647,7 +647,7 @@ $accept_blocker=StoryController::getPriority("blocker");
 										<br/>
 										<div id="inner">
 											<div class="chartjq">
-												<div class="pie-thychart2" data-set='[["Major", {{$accept_major}}], ["Minor",{{$accept_minor}}], ["Blocker",{{$accept_blocker}}]]' data-colors="#FBE4DB,#F17F49,#BD380F"></div>
+												<div class="pie-thychart" data-set='[["To Do", {{$todo}}], ["In Progress",{{$inProgress}}], ["Approved",{{$approved}}]]' data-colors="#FBE4DB,#F17F49,#BD380F"></div>
 											</div>
 										</div>
 										<br/>
@@ -710,7 +710,7 @@ $accept_blocker=StoryController::getPriority("blocker");
 														<div class="info-box-content">
 															<span class="info-box-text" ><a href="{{ URL::to('user_stories/' . $user_story->story_id) }}" style="color: #FFFFFF;">{{ $user_story->story_id }}</a></span>
                                                                 <span class="info-box-number">
-                                                                @if($date_value < 3 && $date_value > 0)
+                                                                @if($date_value > 0)
 																		Only {{$date_value}} days more to complete this user story!!
 																	@endif
 																	@if($date_value < 0)

@@ -32,12 +32,9 @@ foreach ($result_developers as $result_developer) {
     $dev_name = $result_developer->name;
     $dev_id = $result_developer->id;
     $dev_id_name[$result_developer->id] = $result_developer->name;
-
 }
 
 $dev_id_name['Not Assigned'] = "Unassigned";
-
-
 
 ?>
 
@@ -56,7 +53,7 @@ $dev_id_name['Not Assigned'] = "Unassigned";
                 <br>
 
                 <table  id="example" class="display" cellspacing="0" width="100%">
-                    <thead style="background-color: #cdc1c5">
+                    <thead style="background-color: #3c8dbc; color: white; font-weight: 900 ;">
                     <tr>
                         <th>Story</th>
                         <th>Project name</th>
@@ -81,10 +78,10 @@ $dev_id_name['Not Assigned'] = "Unassigned";
 
                             <tr>
                                 <td><a href="{{ URL::to('user_stories/' . $story->story_id) }}">{{ $story->story_id }}</a></td>
-                                <td>{{ $project_id_name[$story->project_id] }}</td>
+                                <td>{{ (sizeof($project_id_name)>1)?$project_id_name[$story->project_id]:"" }}</td>
                                 <td>{{ $story->summary }}</td>
                                 <td>{{ $story->priority }}</td>
-                                <td><span <?php echo ($story->assignee == "Not Assigned") ? "class='label label-danger'" : "class='label label-warning'"; ?> >{{ $dev_id_name[$story->assignee] }}</span></td>
+                                <td><span <?php echo ($story->assignee == "Not Assigned") ? "class='label label-danger'" : "class='label label-warning'"; ?> >{{ array_key_exists($story->assignee,$dev_id_name)? $dev_id_name[$story->assignee]:"" }}</span></td>
                                 <td>{{ $story->reporter }}</td>
                             </tr>
 

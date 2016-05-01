@@ -13,7 +13,7 @@
 <?php
 use \App\Http\Controllers\StoryController;
 $results = DB::table('projects')->get();
-$assigned_project=StoryController::getAssignedProject();
+//$assigned_project=StoryController::getAssignedProject();
 
 
 ?>

@@ -42,8 +42,6 @@
 use \App\Http\Controllers\SprintScheduleController;
 use \App\Http\Controllers\SprintController;
 
-
-
 $result = DB::table('projects')->get();
 $project_id_name = array();
 
@@ -64,19 +62,13 @@ foreach ($result_developers as $result_developer) {
 $dev_id_name['Not Assigned'] = "Unassigned";
 
 //find last sprint id and due date is closable
-
 $project_id = ($user_stories!=null && sizeof($user_stories)>0)?$user_stories[0]->project_id:"";
 $sprint_id = SprintController::getLastSprintId($project_id);
-$closable_value=SprintController::isSprintClosable($sprint_id);
+$closable_value = SprintController::isSprintClosable($sprint_id);
+$sprint_status = SprintController::getStatusOfSprint($sprint_id);
 
 $id_name_array = DynUI::getIdNameArray("sprints", "id", "sprint_name");
 
-//get current sprint info for relavent project
-/*$result_sprint_sts = DB::table('sprints')->where('id', '=', $sprint_id)->get();
-foreach ($result_sprint_sts as $result_sprint_st) {
-$sprint_status = $result_sprint_st->status;
-$end_date= $result_sprint_st->end_date;
-}*/
 ?>
 @section('content')
     <br/>
@@ -137,7 +129,7 @@ $end_date= $result_sprint_st->end_date;
                                             <tbody>
                                             <tr>
                                                 <td width="10%"><a
-                                                            href="{{ URL::to('user_stories/' . $user_story->story_id) }}">{{ $user_story->story_id }}</a>
+                                                            href="{{ URL::to('user_stories/' . $user_story->story_id) }}" style="z-index: 2500;">{{ $user_story->story_id }}</a>
                                                 </td>
 
                                                 <td width="20%">{{ $project_id_name[$user_story->project_id] }}</td>
@@ -150,7 +142,7 @@ $end_date= $result_sprint_st->end_date;
 
                                                 <td width="10%">
                                                     @if(DynUI::isUserRole("Project Manager")  || DynUI::isUserRole("Account Head"))
-                                                        <a class="btn btn-small btn-info" style="background-color: #005384"
+                                                        <a class="btn btn-small btn-info" style="background-color: #005384; z-index: 2500;"
                                                            href="{{ URL::to('user_stories/' . $user_story->story_id . '/edit') }}"><i class='glyphicon glyphicon-edit'> </i>Edit</a>
                                                     @endif
                                                 </td>
@@ -166,13 +158,18 @@ $end_date= $result_sprint_st->end_date;
 
                                     @endif
                             @endforeach
-                                @if($storyExistInSprint)
-                                @if($closable_value==true)
+
+                            @if($closable_value==true && strcmp($sprint_status,"Finished")!=0)
                                     <div class="alert alert-info">
-                                        <strong>This Sprint is Already Completed !</strong> Close this Sprint and create new Sprint to start user stories
+                                        <strong>All Stories in the Sprint have been approved !</strong> Close this Sprint and create new Sprint to start user stories
                                     </div>
-                                @endif
-                                @endif
+                            @endif
+                            @if(strcmp($sprint_status,"Finished")==0)
+                                    <div class="alert alert-info">
+                                        <strong>This Sprint is Already Completed !</strong> Create new Sprint to start user stories
+                                    </div>
+                            @endif
+
                         </ol>
                         <input type="hidden" name="project_id" value="{{ $project_id  }}">
                         <input type="hidden" name="sprint_id" value="{{ $sprint_id }}">
@@ -202,7 +199,7 @@ $end_date= $result_sprint_st->end_date;
                                             <tbody>
                                             <tr>
                                                 <td width="10%"><a
-                                                            href="{{ URL::to('user_stories/' . $user_story->story_id) }}">{{ $user_story->story_id }}</a>
+                                                            href="{{ URL::to('user_stories/' . $user_story->story_id) }}" style="z-index: 2500;">{{ $user_story->story_id }}</a>
                                                 </td>
 
                                                 <td width="20%">{{ $project_id_name[$user_story->project_id] }}</td>
@@ -210,12 +207,12 @@ $end_date= $result_sprint_st->end_date;
                                                 <td width="50%">{{ $user_story->summary }}</td>
 
                                                 <td width="10%">
-                                                    <span <?php echo ($user_story->assignee == "Not Assigned") ? "class='label label-danger'" : "class='label label-warning'"; ?> >{{ $dev_id_name[$user_story->assignee] }}</span>
+                                                    <span <?php echo ($user_story->assignee == "Not Assigned") ? "class='label label-danger'" : "class='label label-warning'"; ?> >{{ array_key_exists($user_story->assignee,$dev_id_name)? $dev_id_name[$user_story->assignee]:"" }}</span>
                                                 </td>
 
                                                 <td width="10%">
                                                     @if(DynUI::isUserRole("Project Manager")  || DynUI::isUserRole("Account Head"))
-                                                        <a class="btn btn-small btn-info" style="background-color: #005384"
+                                                        <a class="btn btn-small btn-info" style="background-color: #005384; z-index: 2500;"
                                                            href="{{ URL::to('user_stories/' . $user_story->story_id . '/edit') }}"><i class='glyphicon glyphicon-edit'> </i>Edit</a>
                                                     @endif
                                                 </td>

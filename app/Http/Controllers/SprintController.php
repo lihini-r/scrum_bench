@@ -163,6 +163,24 @@ class SprintController extends Controller
     }
 
     /**
+     * Get the specified resource.
+     *
+     * @param  int $id
+     * @return String status
+     */
+    public static function getStatusOfSprint($id)
+    {
+        $result = DB::table('sprints')->where('id', '=', $id)->get();
+        $sprint_status = "";
+
+        foreach ($result as $res) {
+            $sprint_status = $res->status;
+        }
+
+        return $sprint_status;
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int $id
@@ -388,24 +406,26 @@ class SprintController extends Controller
      * @param $sprint_id
      * @return bool true if Sprint is closable
      */
-    public static function isSprintClosable($sprint_id){
-        $accept=true;
+    public static function isSprintClosable($sprint_id)
+    {
+        $accept = false;
         $stories = array();
 
-        if($sprint_id != null && strcmp($sprint_id,"")!=0){
-            $stories=SprintScheduleController::getStoryInSprint($sprint_id);
-			
-            foreach ($stories as $story_id) {
-                $status=WorkflowController::getStoryStatus($story_id);
+        if ($sprint_id != null && strcmp($sprint_id, "") != 0) {
+            $stories = SprintScheduleController::getStoryInSprint($sprint_id);
 
-				// If any story exists with status that is not Approved, Sprint is considered not closable
-                if($status!='Approved'){
-                    $accept=false;
+            foreach ($stories as $story_id) {
+                $status = WorkflowController::getStoryStatus($story_id);
+                // If any story exists with status that is not Approved, Sprint is considered not closable
+                if ($status != 'Approved') {
+                    $accept = false;
                     break;
+                } else {
+                    $accept = true;
                 }
             }
-        }else{
-            $accept=false;
+        } else {
+            $accept = false;
         }
 
         return $accept;

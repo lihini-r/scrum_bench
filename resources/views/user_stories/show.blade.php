@@ -107,12 +107,12 @@ $dateNoe=date("Y-m-d");
 
                 </ul>
 
-                @if($date_value < 3 && $date_value > 0)
+                @if($date_value < 3 && $date_value > 0 && (strcmp($last_status,"Approved")!=0) && (strcmp($last_status,"Resolved")!=0) )
                     <div class="alert alert-warning">
                         <strong>Only {{$date_value}} days more to complete this user story!!</strong>
                     </div>
                 @endif
-                @if($date_value < 0)
+                @if($date_value < 0 && (strcmp($last_status,"Approved")!=0) && (strcmp($last_status,"Resolved")!=0))
                     <div class="alert alert-danger">
                         <strong>Story is Overdue !!</strong>
                     </div>

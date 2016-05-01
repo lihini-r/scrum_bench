@@ -283,7 +283,7 @@ class StoryController extends Controller
         $current_team_id = "";
         $result_project = "";
 
-        if ($res_des == 'Developer' || $res_des == 'Project Manager') {
+        if ($res_des == 'Developer') {
 			// Get Team that current user has been assigned to
             $result_teams = DB::table('dev_team')->where('user_id', '=', $res_id)->get();
 

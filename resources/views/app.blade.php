@@ -199,7 +199,7 @@ desired effect
                                     <li><!-- start notification -->
                                         <a href="#">
                                             <i class="fa fa-users text-aqua"></i>
-                                            User Story {{$notification->story_id}} Approved
+                                            User Story {{($notification!=null)?$notification->story_id:""}} Approved
                                         </a>
                                     </li><!-- end notification -->
                                 </ul>
@@ -755,10 +755,7 @@ desired effect
 @yield('page_script1')
 
 
-        <!-- REQUIRED JS SCRIPTS -->
-
-<!-- jQuery 2.1.4 -->
-<script src="{{ URL::asset('plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+<!-- REQUIRED JS SCRIPTS -->
 <!-- Bootstrap 3.3.5 -->
 <script src="{{ URL::asset('bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- AdminLTE App -->

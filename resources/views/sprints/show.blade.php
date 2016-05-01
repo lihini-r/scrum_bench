@@ -72,6 +72,7 @@ $total = round($total,1);
  //find sprint is closable to the due date
 $closable_value = \App\Http\Controllers\SprintController::isSprintClosable($sprint->id);
  $date_value=\App\Http\Controllers\SprintController::isDate($sprint->id);
+$sprint_status = \App\Http\Controllers\SprintController::getStatusOfSprint($sprint->id);
  
 ?>
 
@@ -164,7 +165,12 @@ $closable_value = \App\Http\Controllers\SprintController::isSprintClosable($spri
                             </div>
                         @endif
 
-                            @if($closable_value==true )
+                            @if($closable_value==true && strcmp($sprint_status,"Finished")!=0)
+                                <div class="alert alert-info">
+                                    <strong>All Stories in the Sprint have been approved !</strong>
+                                </div>
+                            @endif
+                            @if(strcmp($sprint_status,"Finished")==0)
                                 <div class="alert alert-info">
                                     <strong>This Sprint is Already Completed !</strong>
                                 </div>
