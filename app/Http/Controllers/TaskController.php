@@ -19,9 +19,9 @@ class TaskController extends Controller {
 	public function index()
 	{
 
-		$user = \Auth::user()->name;
+		$user = \Auth::user()->id;
 
-		$tasks = UserStory::where('reporter',$user)->where('assignee','!=','Not Assigned')->orderBy('created_at', 'desc')->get();
+		$tasks = UserStory::where('assignee',$user)->orderBy('created_at', 'desc')->get();
 
 
 		//$messages1s = Messages1::all();

@@ -123,7 +123,7 @@ class EissueController extends Controller {
 		else
 		{
 
-			Session::flashDanger('flash_message', 'Oops!!! Something went wrong. Please check your computer\'s Internet connection!');
+			Session::flash('flash_message', 'Oops!!! Something went wrong. Please check your computer\'s Internet connection!');
 			//Session::flash('flash_message', 'Oops!!! Something went wrong. Please check your computer\'s Internet connection!');
 		}
 
