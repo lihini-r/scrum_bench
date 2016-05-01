@@ -299,15 +299,44 @@ desired effect
             </div>
 
             <!-- search form (Optional) -->
-            <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-                </div>
-            </form>
+
+
+
+
+
+
+
+
+            <!-- search form (Optional) -->
+
+
+
+            {!! Form::open(['route' => 'search.store','class' => 'sidebar-form']) !!}
+            <div class="input-group">
+
+                {!! Form::text('searchinput', null, ['class' => 'form-control' ,'placeholder' => 'Search...']) !!}
+
+                <span class="input-group-btn">
+                    <button class='btn btn-flat' type='submit' >
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+            {!! Form::close() !!}
+
+
+
+
+
+
+                    <!-- /.search form -->
+
+
+
+
+
+
+
             <!-- /.search form -->
 
             <!-- Sidebar Menu -->
