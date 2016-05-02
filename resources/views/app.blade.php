@@ -79,68 +79,87 @@ desired effect
                 <ul class="nav navbar-nav">
                     <a class="btn btn-small btn-info pull-right" style="position:absolute;right: 300px;height: 30px;top:10px;" href="{{ URL::to('todolists') }}">To-Do</a>
                     <!-- Messages: style can be found in dropdown.less-->
+
+
+
                     <li class="dropdown messages-menu">
                         <!-- Menu toggle button -->
                         <?php  $user = Auth::user()->name;
                         $countMessages=DB::table('messages1s')->where('to',$user)->count();
                         ?>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">{{$countMessages}}</span>
-                        </a>
+
+                        @if($countMessages!==null)
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-envelope-o"></i>
+                                <span class="label label-success">{{$countMessages}}</span>
+                            </a>
+                        @endif
+
                         <ul class="dropdown-menu">
-                            <li class="header">You have {{$countMessages}}
-                                messages</li>
-                            <li>
-                                <!-- inner menu: contains the messages -->
-                                <ul class="menu">
-                                    <li><!-- start message -->
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <?php
+                            @if($countMessages!==null)
+                                <li class="header">You have {{$countMessages}}
+                                    messages</li>
+                            @endif
+                                <li>
+                                    <!-- inner menu: contains the messages -->
+                                    <ul class="menu">
+                                        <li><!-- start message -->
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <?php
 
-                                                $user = Auth::user()->name;
-                                                $newMessage=DB::table('messages1s')->where('to',$user)->orderBy('created_at', 'desc')->first();
+                                                    $user = Auth::user()->name;
+                                                    $newMessage=DB::table('messages1s')->where('to',$user)->orderBy('created_at', 'desc')->first();
 
-                                                ?>
+                                                    ?>
+
+                                                    @if($newMessage!==null)
                                                     <img src="{{ URL::asset('dist/img') }}/{{$newMessage->from }}.png" class="img-circle" alt="User Image" width="40px" height="40px">
-                                                <!-- User Image -->
-                                                <?php
+                                                    <!-- User Image -->
+                                                        @endif
+                                                    <?php
 
-                                                use App\Profile;
+                                                    use App\Profile;
 
-                                                $profile = Profile::where('id', '=', Auth::user()->id)->first();
-                                                ?>
+                                                    $profile = Profile::where('id', '=', Auth::user()->id)->first();
+                                                    ?>
 
 
 
-                                                @if ($profile === null)
+                                                    @if ($profile === null)
 
-                                                    {{--<img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">--}}
+                                                        {{--<img src="{{ URL::asset('dist/img/pm.png')}}" class="img-circle" alt="User Image">--}}
 
-                                                @endif
-                                                @if ($profile !== null)
-                                                    {{--<img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" >--}}
+                                                    @endif
+                                                    @if ($profile !== null)
+                                                        {{--<img src="{{ URL::asset('dist/img/'.$profile->profile_pic)}}" class="img-circle" alt="User Image" >--}}
 
-                                                @endif
+                                                    @endif
 
-                                            </div>
-                                            <!-- Message title and timestamp -->
-                                            <h4>
-                                                {{$newMessage->from}}
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                            </h4>
-                                            <!-- The message -->
+                                                </div>
+                                                <!-- Message title and timestamp -->
+                                                @if($newMessage!==null)
+                                                <h4>
+                                                    {{$newMessage->from}}
+                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                </h4>
+                                                <!-- The message -->
+                                                    <p>{{$newMessage->message}}</p>
+                                                 @endif
 
-                                            <p>{{$newMessage->message}}</p>
-                                        </a>
-                                    </li><!-- end message -->
+                                            </a>
+                                        </li><!-- end message -->
 
-                                    </li>
-                                </ul><!-- /.menu -->
+
+
+
+
+
+                               </ul><!-- /.menu -->
+
                             </li>
                             <li class="footer"><a href="{{ url('/messages1s') }}">See All Messages</a></li>
-                        </ul>
+                                                   </ul>
                     </li><!-- /.messages-menu -->
 
                     <?php  $userDesignation= Auth::user()->designation; ?>
@@ -149,33 +168,47 @@ desired effect
                             <!-- Notifications Menu for Project Manager -->
                     <li class="dropdown notifications-menu">
                         <!-- Menu toggle button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
-                            <?php
-                            $userid = Auth::user()->id;
-                            $countNotifications2=DB::table('assign_projects')->where('ProjectManager',$user)->count();
-                            $notification2=DB::table('assign_projects')->where('ProjectManager',$user)->orderBy('created_at', 'desc')->first();
-                            ?>
-                            <span class="label label-warning">{{$countNotifications2}}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have {{$countNotifications2}} notifications</li>
-                            <li>
-                                <!-- Inner Menu: contains the tasks -->
-                                <ul class="menu">
-                                    <li><!-- start notification -->
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i>
-                                            Project {{$notification2->ProjectName}} Assigned
-                                        </a>
-                                    </li><!-- end notification -->
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="{{ url('/notify_project_assigns') }}">View all</a></li>
-                        </ul>
-                    </li>
-                    @endif
+                        <?php
+                        $userid = Auth::user()->id;
+                        $countNotifications2=DB::table('assign_projects')->where('ProjectManager',$user)->count();
+                        $notification2=DB::table('assign_projects')->where('ProjectManager',$user)->orderBy('created_at', 'desc')->first();
+                        ?>
 
+                        @if($countNotifications2!==null)
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bell-o"></i>
+
+
+                                <span class="label label-warning">{{$countNotifications2}}</span>
+
+
+                        </a>@endif
+
+                            <ul class="dropdown-menu">
+                                @if($countNotifications2!==null)
+                                <li class="header">You have {{$countNotifications2}} notifications</li> @endif
+                                <li>
+
+                                    <!-- Inner Menu: contains the tasks -->
+
+                                    <ul class="menu">
+                                        @if($notification2!==null)
+                                        <li><!-- start notification -->
+
+                                            <a href="#">
+                                                <i class="fa fa-users text-aqua"></i>
+                                                Project {{$notification2->ProjectName}} Assigned
+                                            </a>
+                                        </li><!-- end notification -->
+                                        @endif
+                                    </ul>
+
+                                </li>
+                                <li class="footer"><a href="{{ url('/notify_project_assigns') }}">View all</a></li>
+                            </ul>
+                        @endif
+
+                    </li>
 
                     @if($userDesignation=="Developer")
                             <!-- Notifications Menu for developers -->
@@ -189,18 +222,24 @@ desired effect
                             $notification=DB::table('workflows')->where('user_id',$userid)->where('status','Approved')->orderBy('created_at', 'desc')->first();
 
                             ?>
+                            @if($countNotifications!==null)
                             <span class="label label-warning">{{$countNotifications}}</span>
+                                @endif
                         </a>
                         <ul class="dropdown-menu">
+                            @if($countNotifications!==null)
                             <li class="header">You have {{$countNotifications}} notifications</li>
+                            @endif
                             <li>
                                 <!-- Inner Menu: contains the tasks -->
                                 <ul class="menu">
                                     <li><!-- start notification -->
+                                        @if($notification!==null)
                                         <a href="#">
                                             <i class="fa fa-users text-aqua"></i>
                                             User Story {{($notification!=null)?$notification->story_id:""}} Approved
                                         </a>
+                                            @endif
                                     </li><!-- end notification -->
                                 </ul>
                             </li>
@@ -220,10 +259,14 @@ desired effect
                             $user = Auth::user()->id;
                             $countTasks=DB::table('user_stories')->where('assignee',$user)->count();?>
 
+                            @if($countTasks!==null)
                             <span class="label label-danger">{{$countTasks}}</span>
+                            @endif
                         </a>
                         <ul class="dropdown-menu">
+                            @if($countTasks!==null)
                             <li class="header">You have  {{$countTasks}} tasks</li>
+                            @endif
                             <li>
                                 <!-- Inner menu: contains the tasks -->
                                 <ul class="menu">
@@ -239,23 +282,29 @@ desired effect
                                             $newTask=DB::table('user_stories')->where('assignee','=',$user)->orderBy('created_at', 'desc')->first();
 
                                             ?>
+                                            @if($newTask!==null)
                                                     <!-- Task title and progress text -->
                                             <h3>
 
+                                                @if($newTask!==null)
                                                 {{$newTask->story_id}} {{$newTask->summary}}
                                                 <small class="pull-right">{{$newTask->org_est}} %</small>
+                                                    @endif
 
                                             </h3>
                                             <!-- The progress bar -->
                                             <div class="progress xs">
                                                 <!-- Change the css width attribute to simulate progress -->
                                                 <?php $a=$newTask->org_est ?>
+                                                @if($newTask!==null)
                                                 <div class="progress-bar progress-bar-aqua" <?php echo "style=width:".$newTask->org_est ."%"?>
                                                 role="progressbar" aria-valuenow="20" aria-valuemin="0"
                                                      aria-valuemax="100">
                                                     <span class="sr-only">{{$newTask->org_est}}% Complete</span>
                                                 </div>
+                                                    @endif
                                             </div>
+                                            @endif
                                         </a>
                                     </li><!-- end task item -->
                                 </ul>
