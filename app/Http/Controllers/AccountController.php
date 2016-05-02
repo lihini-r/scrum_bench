@@ -147,7 +147,7 @@ class AccountController extends Controller {
 		$tot_org_est=0;
 		$finished_org_est=0;
 
-		$usr_strs=DB::table('workflows')->where('status',"Closed")->get();
+		$usr_strs=DB::table('workflows')->where('status',"Approved")->get();
 
 		foreach($user_stories as $user_story)
 		{
