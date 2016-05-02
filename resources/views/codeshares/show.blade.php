@@ -107,7 +107,9 @@
                 <input type='hidden' id='codeId' style="width: 0px" name='codeId' value={{ $codeshare->codeId }} >
                 <input type='hidden' id='name' style="width: 0px" name='name' value="{{ Auth::user()->name }}"  >
                 <br>
-                <img src="{{ URL::asset('dist/img') }}/{{ Auth::user()->name }}.png" class="img-circle" alt="User Image" width="50px" height="50px">
+
+                <img src="{{ URL::asset('dist/img') }}/{{Auth::user()->name }}.png" class="img-circle" alt="User Image" width="50px" height="50px">
+
                 <input type='text' id='comment' style="width: 800px;height: 35px;padding: 6px 12px;font-size: 14px;" name='comment'  placeholder='Write a comment'>
                 <input type='submit'  id='add' value='Add'  class='btn btn-success'>
                 <hr/>

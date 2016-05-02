@@ -220,14 +220,14 @@ $accept_blocker=StoryController::getPriority("blocker");
 
 
 
-		<div class="container">
+		<div class="container" style="width: 100%;height: 100%">
 			<h1>Account Head Dashboard</h1>
 			<br>
 			<?php  $count=1 ?>
 
 					<!--get all project -->
 			@foreach($projects as $key => $project)
-				@if($count%4==0)
+				@if($count==8)
 					<div class="container" style="position:absolute;left:650px;top: 200px">
 						<div class="col-md-12">
 							<div class="col-lg-3 col-xs-6">
@@ -261,7 +261,7 @@ $accept_blocker=StoryController::getPriority("blocker");
 				@endif
 
 				@if($count%6==0)
-					<div class="container" style="position:absolute;left:650px;top: 480px">
+					<div class="container" style="position:absolute;left:650px;top: 490px">
 						<div class="col-md-12">
 							<div class="col-lg-3 col-xs-6">
 
@@ -313,7 +313,7 @@ $accept_blocker=StoryController::getPriority("blocker");
 				@endif
 
 				@if($count==3)
-					<div class="container" style="position:absolute;left:245px;top: 480px" >
+					<div class="container" style="position:absolute;left:245px;top: 490px" >
 						<div class="col-md-12">
 							<div class="col-lg-3 col-xs-6">
 								<!-- small box -->

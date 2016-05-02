@@ -19,7 +19,7 @@ class CreateTodolistsTable extends Migration {
 			$table->string('task');
 			$table->string('userName');
 			$table->string('color');
-			$table->date('task_date');
+			$table->dateTime('task_date');
 			$table->timestamps();
 		});
 	}
