@@ -50,6 +50,16 @@ foreach ($result as $res) {
     $project_id_name[$res->ProjectID] = $res->ProjectName;
 }
 
+$sprint_names = "";
+$sprint_count = 0;
+foreach ($sprints as $sprint) {
+	if($sprint_count!=0){
+		$sprint_names = $sprint_names . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	}
+    $sprint_names = $sprint_names . $sprint->sprint_name;
+	$sprint_count++;
+}
+
 //draw bar chart using sprint array
 $bar_chart=\App\Http\Controllers\SprintController::getAllSprintsBarChartData($sprints);
 
@@ -125,6 +135,7 @@ $bar_chart=\App\Http\Controllers\SprintController::getAllSprintsBarChartData($sp
                             data-unit="h"
                             data-width="24"></ul>
                     </div>
+					<center>{{$sprint_names}}</center>
                     <!-- data max is the 100% point of the graph -->
                     <!-- set data-grid to 0 for no grid -->
                     <!-- data-width is the individual bars width -->
